@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CompendiumOfMateriaMedica"
+rootProject.name = "Compendium of Materia Medica"
 include(":app")
  
