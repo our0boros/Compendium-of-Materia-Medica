@@ -12,10 +12,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-/*
+/**
  * @author: Haochen Gong
- * json文件读取，返回jsonObject的arraylist
- */
+ * @description: json文件读取，返回jsonObject的arraylist
+ **/
 public class JsonReader {
 
     private final Context context;

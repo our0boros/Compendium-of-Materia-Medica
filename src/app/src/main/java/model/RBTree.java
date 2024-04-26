@@ -2,10 +2,10 @@ package model;
 
 import androidx.annotation.NonNull;
 
-/*
+/**
  * @author: Haochen Gong
- * 红黑树类
- */
+ * @description: 红黑树类
+ **/
 public class RBTree<V> {
     RBTreeNode<V> root;
     private final boolean RED = false;

@@ -1,9 +1,9 @@
 package model;
 
-/*
+/**
  * @author: Haochen Gong
- * 红黑树节点类
- */
+ * @description: 红黑树节点类
+ **/
 public class RBTreeNode<V> {
     private final boolean RED = false;
     private final boolean BLACK = true;

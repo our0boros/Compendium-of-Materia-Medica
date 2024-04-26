@@ -2,10 +2,10 @@ package model;
 
 import androidx.annotation.NonNull;
 
-/*
+/**
  * @author: Haochen Gong
- * User类
- */
+ * @description: User类
+ **/
 public class User implements Comparable<User>{
     private final int id;
     private final String name;

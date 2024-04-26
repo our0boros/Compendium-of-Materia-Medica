@@ -4,10 +4,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
-/*
+/**
  * @author: Haochen Gong
- * plant树的生成器（处理plant的json数据，generateTree()方法可以将处理后的数据生成树）
- */
+ * @description: plant树的生成器（处理plant的json数据，generateTree()方法可以将处理后的数据生成树）
+ **/
 public class PlantTreeGenerator implements TreeGenerator<Plant>{
     private final RBTree<Plant> plantRBTree;
 

@@ -18,6 +18,11 @@ import model.Plant;
 import model.RBTree;
 import model.RBTreeNode;
 
+
+/**
+ * @author: Haochen Gong
+ * @description: 植物数据显示页面。
+ **/
 public class PlantDetailShow extends AppCompatActivity {
 
     private TextView commonName;
@@ -71,7 +76,7 @@ public class PlantDetailShow extends AppCompatActivity {
 
     /**
      * @author: Haochen Gong
-     * 加载数据
+     * @description: 加载数据
      **/
     private void DataInitial() throws JSONException, IOException {
         userTree = GeneratorFactory.tree(this, DataType.USER, R.raw.users);

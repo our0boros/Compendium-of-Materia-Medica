@@ -1,9 +1,9 @@
 package model;
 
-/*
+/**
  * @author: Haochen Gong
- * post树的管理方法类
- */
+ * @description: post树的管理方法类
+ **/
 public class PostTreeManager implements TreeManager<Post>{
 
     private final RBTree<Post> postRBTree;

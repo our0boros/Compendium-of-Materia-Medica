@@ -2,10 +2,10 @@ package model;
 
 import androidx.annotation.NonNull;
 
-/*
+/**
  * @author: Haochen Gong
- * Post类
- */
+ * @description: Post类
+ **/
 public class Post implements Comparable<Post>{
     private final int postId;
     private final int uid;

@@ -8,10 +8,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/*
+/**
  * @author: Haochen Gong
- * 生成树的工厂类，封装了读取json文件，通过对应的树的生成器处理json文件，并生成对应的树的过程。
- */
+ * @description: 生成树的工厂类，封装了读取json文件，通过对应的树的生成器处理json文件，并生成对应的树的过程。
+ **/
 public class GeneratorFactory {
     public static RBTree<?> tree(Context context, DataType dataType, int resourceId) throws JSONException, IOException {
         // 读取文件数据
