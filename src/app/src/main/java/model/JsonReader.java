@@ -2,6 +2,7 @@ package model;
 
 import android.content.Context;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -31,11 +32,20 @@ public class JsonReader {
         InputStream is = context.getResources().openRawResource(resourceId);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-        // 逐行读取并转换为JSONObject,存入array
+        // 读取文件储存为一整个字符串
+        StringBuilder jsonBuilder = new StringBuilder();
         String line = br.readLine();
         while (line != null) {
-            arrayList.add(new JSONObject(line));
+            jsonBuilder.append(line.trim()); // 去掉行首尾的空白字符
             line = br.readLine();
+        }
+
+        // 将完整的文件内容解析为JSONArray
+        JSONArray jsonArray = new JSONArray(jsonBuilder.toString());
+
+        // 遍历JSONArray，将每个元素添加到ArrayList中
+        for (int i = 0; i < jsonArray.length(); i++) {
+            arrayList.add(jsonArray.getJSONObject(i));
         }
 
         // 关闭BufferedReader和InputStream
