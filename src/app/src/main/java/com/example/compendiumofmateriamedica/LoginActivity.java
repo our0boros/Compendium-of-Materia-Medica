@@ -8,6 +8,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
+import model.DataType;
+import model.GeneratorFactory;
+import model.RBTree;
+
 /**
  * @author: Tianhao Shan
  * @datetime: 2024/4/24
@@ -19,10 +27,27 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextUsername, editTextPassword;
     private Button buttonLogin;
 
+
+
+    private RBTree<?> userTree;
+    private RBTree<?> plantTree;
+    private RBTree<?> postTree;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // 运行加载数据的函数
+        try {
+            DataInitial();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         // Initialize UI elements
         editTextUsername = findViewById(R.id.editTextUsername);
@@ -49,4 +74,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+    /*
+     * @author: Haochen Gong
+     * 加载数据
+     */
+    private void DataInitial() throws JSONException, IOException {
+        userTree = GeneratorFactory.tree(this, DataType.USER, R.raw.users);
+        plantTree = GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
+        postTree = GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+    }
+
 }

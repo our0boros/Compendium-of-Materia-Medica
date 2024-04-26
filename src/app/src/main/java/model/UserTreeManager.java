@@ -25,4 +25,6 @@ public class UserTreeManager implements TreeManager<User> {
     public RBTreeNode<User> searchByUID(int id) {
         return userRBTree.search(id);
     }
+
 }
+
