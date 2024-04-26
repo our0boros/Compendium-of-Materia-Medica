@@ -5,13 +5,13 @@ package model;
  * 红黑树类
  */
 public class RBTree<V> {
-    RBTreeNode root;
+    RBTreeNode<V> root;
     private final boolean RED = false;
     private final boolean BLACK = true;
 
     // 通过键值查询节点
-    public RBTreeNode search(int key) {
-        RBTreeNode tmp = root;
+    public RBTreeNode<V> search(int key) {
+        RBTreeNode<V> tmp = root;
         while (tmp != null) {
             if (tmp.getKey() == key)
                 return tmp;
@@ -25,14 +25,14 @@ public class RBTree<V> {
 
     // 插入节点
     public void insert(int key, V value) {
-        RBTreeNode node = new RBTreeNode(key, value);
+        RBTreeNode<V> node = new RBTreeNode<V>(key, value);
         if (root == null) {
             root = node;
             node.setColor(BLACK);
             return;
         }
-        RBTreeNode parent = root;
-        RBTreeNode son = null;
+        RBTreeNode<V> parent = root;
+        RBTreeNode<V> son = null;
         if (key <= parent.getKey()) {
             son = parent.getLeft();
         } else {
@@ -58,12 +58,12 @@ public class RBTree<V> {
         insertFix(node);
     }
 
-    private void insertFix(RBTreeNode node) {
-        RBTreeNode father, grandFather;
+    private void insertFix(RBTreeNode<V> node) {
+        RBTreeNode<V> father, grandFather;
         while ((father = node.getParent()) != null && father.getColor() == RED) {
             grandFather = father.getParent();
             if (grandFather.getLeft() == father) {  //F为G左儿子的情况，如之前的分析
-                RBTreeNode uncle = grandFather.getRight();
+                RBTreeNode<V> uncle = grandFather.getRight();
                 if (uncle != null && uncle.getColor() == RED) {
                     setBlack(father);
                     setBlack(uncle);
@@ -73,7 +73,7 @@ public class RBTree<V> {
                 }
                 if (node == father.getRight()) {
                     leftRotate(father);
-                    RBTreeNode tmp = node;
+                    RBTreeNode<V> tmp = node;
                     node = father;
                     father = tmp;
                 }
@@ -81,7 +81,7 @@ public class RBTree<V> {
                 setRed(grandFather);
                 rightRotate(grandFather);
             } else {                               //F为G的右儿子的情况，对称操作
-                RBTreeNode uncle = grandFather.getLeft();
+                RBTreeNode<V> uncle = grandFather.getLeft();
                 if (uncle != null && uncle.getColor() == RED) {
                     setBlack(father);
                     setBlack(uncle);
@@ -91,7 +91,7 @@ public class RBTree<V> {
                 }
                 if (node == father.getLeft()) {
                     rightRotate(father);
-                    RBTreeNode tmp = node;
+                    RBTreeNode<V> tmp = node;
                     node = father;
                     father = tmp;
                 }
@@ -108,12 +108,12 @@ public class RBTree<V> {
         delete(search(key));
     }
 
-    private void delete(RBTreeNode node) {
+    private void delete(RBTreeNode<V> node) {
         if (node == null)
             return;
         if (node.getLeft() != null && node.getRight() != null) {
-            RBTreeNode replaceNode = node;
-            RBTreeNode tmp = node.getRight();
+            RBTreeNode<V> replaceNode = node;
+            RBTreeNode<V> tmp = node.getRight();
             while (tmp != null) {
                 replaceNode = tmp;
                 tmp = tmp.getLeft();
@@ -124,13 +124,13 @@ public class RBTree<V> {
             delete(replaceNode);
             return;
         }
-        RBTreeNode replaceNode = null;
+        RBTreeNode<V> replaceNode = null;
         if (node.getLeft() != null)
             replaceNode = node.getLeft();
         else
             replaceNode = node.getRight();
 
-        RBTreeNode parent = node.getParent();
+        RBTreeNode<V> parent = node.getParent();
         if (parent == null) {
             root = replaceNode;
             if (replaceNode != null)
@@ -150,10 +150,10 @@ public class RBTree<V> {
     }
 
     //多余的颜色在node里
-    private void removeFix(RBTreeNode father, RBTreeNode node) {
+    private void removeFix(RBTreeNode<V> father, RBTreeNode<V> node) {
         while ((node == null || node.getColor() == BLACK) && node != root) {
             if (father.getLeft() == node) {  //S为P的左儿子的情况，如之前的分析
-                RBTreeNode brother = father.getRight();
+                RBTreeNode<V> brother = father.getRight();
                 if (brother != null && brother.getColor() == RED) {
                     setRed(father);
                     setBlack(brother);
@@ -179,7 +179,7 @@ public class RBTree<V> {
                 leftRotate(father);
                 node = root;//跳出循环
             } else {                         //S为P的右儿子的情况，对称操作
-                RBTreeNode brother = father.getLeft();
+                RBTreeNode<V> brother = father.getLeft();
                 if (brother != null && brother.getColor() == RED) {
                     setRed(father);
                     setBlack(brother);
@@ -211,21 +211,21 @@ public class RBTree<V> {
             node.setColor(BLACK);
     }
 
-    private boolean isBlack(RBTreeNode node) {
+    private boolean isBlack(RBTreeNode<V> node) {
         if (node == null)
             return true;
         return node.getColor() == BLACK;
     }
 
-    private boolean isRed(RBTreeNode node) {
+    private boolean isRed(RBTreeNode<V> node) {
         if (node == null)
             return false;
         return node.getColor() == RED;
     }
 
-    private void leftRotate(RBTreeNode node) {
-        RBTreeNode right = node.getRight();
-        RBTreeNode parent = node.getParent();
+    private void leftRotate(RBTreeNode<V> node) {
+        RBTreeNode<V> right = node.getRight();
+        RBTreeNode<V> parent = node.getParent();
         if (parent == null) {
             root = right;
             right.setParent(null);
@@ -245,9 +245,9 @@ public class RBTree<V> {
         right.setLeft(node);
     }
 
-    private void rightRotate(RBTreeNode node) {
-        RBTreeNode left = node.getLeft();
-        RBTreeNode parent = node.getParent();
+    private void rightRotate(RBTreeNode<V> node) {
+        RBTreeNode<V> left = node.getLeft();
+        RBTreeNode<V> parent = node.getParent();
         if (parent == null) {
             root = left;
             left.setParent(null);
@@ -267,13 +267,13 @@ public class RBTree<V> {
         left.setRight(node);
     }
 
-    private void setBlack(RBTreeNode node) {
+    private void setBlack(RBTreeNode<V> node) {
         if(node != null) {
             node.setColor(BLACK);
         }
     }
 
-    private void setRed(RBTreeNode node) {
+    private void setRed(RBTreeNode<V> node) {
         if(node != null) {
             node.setColor(RED);
         }
@@ -284,7 +284,7 @@ public class RBTree<V> {
         inOrder(root);
     }
 
-    private void inOrder(RBTreeNode node) {
+    private void inOrder(RBTreeNode<V> node) {
         if (node == null)
             return;
         inOrder(node.getLeft());

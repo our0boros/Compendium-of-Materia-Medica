@@ -10,9 +10,9 @@ public class RBTreeNode<V> {
     private int key;
     private V value;
     private boolean color;
-    private RBTreeNode left;
-    private RBTreeNode right;
-    private RBTreeNode parent;
+    private RBTreeNode<V> left;
+    private RBTreeNode<V> right;
+    private RBTreeNode<V> parent;
 
     public RBTreeNode(int key, V value) {
         this.key = key;
@@ -35,28 +35,32 @@ public class RBTreeNode<V> {
         this.color = color;
     }
 
-    public RBTreeNode getLeft() {
+    public RBTreeNode<V> getLeft() {
         return left;
     }
 
-    public void setLeft(RBTreeNode left) {
+    public void setLeft(RBTreeNode<V> left) {
         this.left = left;
     }
 
-    public RBTreeNode getRight() {
+    public RBTreeNode<V> getRight() {
         return right;
     }
 
-    public void setRight(RBTreeNode right) {
+    public void setRight(RBTreeNode<V> right) {
         this.right = right;
     }
 
-    public RBTreeNode getParent() {
+    public RBTreeNode<V> getParent() {
         return parent;
     }
 
-    public void setParent(RBTreeNode parent) {
+    public void setParent(RBTreeNode<V> parent) {
         this.parent = parent;
+    }
+
+    public V getValue() {
+        return value;
     }
 
     public String toString() {

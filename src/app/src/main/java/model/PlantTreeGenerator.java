@@ -9,9 +9,14 @@ import java.util.ArrayList;
  * 处理plant json数据并储存到树
  */
 public class PlantTreeGenerator implements TreeGenerator<Plant>{
+    private RBTree<Plant> plantRBTree;
+
+    public PlantTreeGenerator() {
+        this.plantRBTree = new RBTree<>();
+    }
+
     @Override
-    public RBTree<Plant> tree(ArrayList<JSONObject> arrayList) {
-        RBTree<Plant> plantRBTree = new RBTree<>();
+    public RBTree<Plant> generateTree(ArrayList<JSONObject> arrayList) {
         for(JSONObject jsonObject : arrayList){
             try {
                 int id = jsonObject.getInt("id");

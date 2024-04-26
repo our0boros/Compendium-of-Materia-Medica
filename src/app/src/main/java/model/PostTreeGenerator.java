@@ -9,9 +9,15 @@ import java.util.ArrayList;
  * 处理post json数据并储存到树
  */
 public class PostTreeGenerator implements TreeGenerator<Post>{
+
+    private RBTree<Post> postRBTree;
+
+    public PostTreeGenerator() {
+        this.postRBTree = new RBTree<>();
+    }
+
     @Override
-    public RBTree<Post> tree(ArrayList<JSONObject> arrayList) {
-        RBTree<Post> postRBTree = new RBTree<>();
+    public RBTree<Post> generateTree(ArrayList<JSONObject> arrayList) {
         for(JSONObject jsonObject : arrayList){
             try {
                 int postId = jsonObject.getInt("post_id");
@@ -29,6 +35,6 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                 e.printStackTrace();
             }
         }
-        return null;
+        return postRBTree;
     }
 }

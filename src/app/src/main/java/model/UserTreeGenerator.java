@@ -9,9 +9,15 @@ import java.util.ArrayList;
 * 处理user json数据并储存到树
 */
 public class UserTreeGenerator implements TreeGenerator<User> {
+
+    private final RBTree<User> userRBTree;
+
+    public UserTreeGenerator() {
+        this.userRBTree = new RBTree<>();
+    }
+
     @Override
-    public RBTree<User> tree(ArrayList<JSONObject> arrayList) {
-        RBTree<User> userRBTree = new RBTree<>();
+    public RBTree<User> generateTree(ArrayList<JSONObject> arrayList) {
         for(JSONObject jsonObject : arrayList){
             try {
                 int id = jsonObject.getInt("user_id");
