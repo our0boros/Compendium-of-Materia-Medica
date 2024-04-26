@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 /*
  * @author: Haochen Gong
- * 处理post json数据并储存到树
+ * post树的生成器（处理post的json数据，generateTree()方法可以将处理后的数据生成树）
  */
 public class PostTreeGenerator implements TreeGenerator<Post>{
 
-    private RBTree<Post> postRBTree;
+    private final RBTree<Post> postRBTree;
 
     public PostTreeGenerator() {
         this.postRBTree = new RBTree<>();

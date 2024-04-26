@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 /*
  * @author: Haochen Gong
- * 处理plant json数据并储存到树
+ * plant树的生成器（处理plant的json数据，generateTree()方法可以将处理后的数据生成树）
  */
 public class PlantTreeGenerator implements TreeGenerator<Plant>{
-    private RBTree<Plant> plantRBTree;
+    private final RBTree<Plant> plantRBTree;
 
     public PlantTreeGenerator() {
         this.plantRBTree = new RBTree<>();

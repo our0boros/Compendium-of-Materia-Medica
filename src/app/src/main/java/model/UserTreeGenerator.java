@@ -5,9 +5,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /*
-* @author: Haochen Gong
-* 处理user json数据并储存到树
-*/
+ * @author: Haochen Gong
+ * user树的生成器（处理user的json数据，generateTree()方法可以将处理后的数据生成树）
+ */
 public class UserTreeGenerator implements TreeGenerator<User> {
 
     private final RBTree<User> userRBTree;
