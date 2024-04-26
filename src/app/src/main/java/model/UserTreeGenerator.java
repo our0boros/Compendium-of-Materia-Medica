@@ -13,7 +13,7 @@ public class UserTreeGenerator implements TreeGenerator<User> {
     private final RBTree<User> userRBTree;
 
     public UserTreeGenerator() {
-        this.userRBTree = new RBTree<>();
+        this.userRBTree = new RBTree<User>();
     }
 
     @Override

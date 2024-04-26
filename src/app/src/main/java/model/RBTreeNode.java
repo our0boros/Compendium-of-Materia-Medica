@@ -16,6 +16,7 @@ public class RBTreeNode<V> {
 
     public RBTreeNode(int key, V value) {
         this.key = key;
+        this.value = value;
         this.color = RED;
     }
 

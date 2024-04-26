@@ -1,5 +1,7 @@
 package model;
 
+import androidx.annotation.NonNull;
+
 /*
  * @author: Haochen Gong
  * 红黑树类
@@ -290,5 +292,10 @@ public class RBTree<V> {
         inOrder(node.getLeft());
         System.out.println(node);
         inOrder(node.getRight());
+    }
+
+    @NonNull
+    public String toString(){
+        return "root" + root;
     }
 }

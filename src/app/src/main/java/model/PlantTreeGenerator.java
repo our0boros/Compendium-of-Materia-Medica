@@ -12,7 +12,7 @@ public class PlantTreeGenerator implements TreeGenerator<Plant>{
     private final RBTree<Plant> plantRBTree;
 
     public PlantTreeGenerator() {
-        this.plantRBTree = new RBTree<>();
+        this.plantRBTree = new RBTree<Plant>();
     }
 
     @Override

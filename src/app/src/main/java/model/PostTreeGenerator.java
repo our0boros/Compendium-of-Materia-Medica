@@ -13,7 +13,7 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
     private final RBTree<Post> postRBTree;
 
     public PostTreeGenerator() {
-        this.postRBTree = new RBTree<>();
+        this.postRBTree = new RBTree<Post>();
     }
 
     @Override

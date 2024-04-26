@@ -26,22 +26,10 @@ import model.User;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private RBTree<?> userTree;
-    private RBTree<?> plantTree;
-    private RBTree<?> postTree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // 运行加载数据的函数
-        try {
-            DataInitial();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -56,15 +44,4 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
-
-    /*
-     * @author: Haochen Gong
-     * 加载数据
-     */
-    private void DataInitial() throws JSONException, IOException {
-        userTree = GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-        plantTree = GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-        postTree = GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
-    }
-
 }
