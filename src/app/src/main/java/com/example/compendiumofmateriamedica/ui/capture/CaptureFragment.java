@@ -19,6 +19,7 @@ import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
 
 import java.util.Objects;
 
+import model.SearchGrammarParser;
 import model.Tokenizer;
 
 /**
@@ -60,15 +61,17 @@ public class CaptureFragment extends Fragment {
     }
 
     public void OnClick(View v) {
-        Tokenizer tokenizer = new Tokenizer(searchText.getText().toString());
-        String tokenizerOutput = "Get tokenizer input: ";
-        while (tokenizer.hasNext()) {
+        try {
+            // Search with grammar
+            Tokenizer tokenizer = new Tokenizer(searchText.getText().toString());
+            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer);
+            searchGrammarParser.parseExp();
+            Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search with grammar");
+        } catch (SearchGrammarParser.IllegalProductionException e) {
+            // Search without grammar
 
-            tokenizerOutput = tokenizerOutput + " " + tokenizer.current();
-            tokenizer.next();
+            Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
         }
-        Log.println(Log.ASSERT, "DEBUG", tokenizerOutput);
-        searchText.setText("");
     }
 
     @Override

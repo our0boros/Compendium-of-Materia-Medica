@@ -1,30 +1,12 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Tokenizer {
     private String buffer;          // String to be transformed into tokens each time next() is called.
     private Token currentToken;     // The current token. The next token is extracted when next() is called.
-
-    public static void main(String[] args) {
-        // Create a scanner to get the user's input.
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Test with search grammar:");
-        while (scanner.hasNext()) {
-            String input = scanner.nextLine();
-            // Check if 'quit' is provided.
-            if (input.equals("q")) break;
-            // Create an instance of the tokenizer.
-            Tokenizer tokenizer = new Tokenizer(input);
-            // Print all the tokens.
-            while (tokenizer.hasNext()) {
-                System.out.print(tokenizer.current() + " ");
-                tokenizer.next();
-            }
-            System.out.println();
-        }
-    }
+    private ArrayList<Token> fullToken;
 
     public Tokenizer(String text) {
         buffer = text;
@@ -84,5 +66,14 @@ public class Tokenizer {
      */
     public boolean hasNext() {
         return currentToken != null;
+    }
+
+    public ArrayList<Token> getFullToken() {
+        this.fullToken = new ArrayList<>();
+        while (this.hasNext()) {
+            this.fullToken.add(this.currentToken);
+            this.next();
+        }
+        return this.fullToken;
     }
 }
