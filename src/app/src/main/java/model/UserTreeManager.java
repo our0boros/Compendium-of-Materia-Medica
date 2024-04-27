@@ -1,9 +1,9 @@
 package model;
 
-/*
+/**
  * @author: Haochen Gong
- * user树的管理方法类
- */
+ * @description: user树的管理方法类
+ **/
 public class UserTreeManager implements TreeManager<User> {
 
     private final RBTree<User> userRBTree;
@@ -25,4 +25,6 @@ public class UserTreeManager implements TreeManager<User> {
     public RBTreeNode<User> searchByUID(int id) {
         return userRBTree.search(id);
     }
+
 }
+

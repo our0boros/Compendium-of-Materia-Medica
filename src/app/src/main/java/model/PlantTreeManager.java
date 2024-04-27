@@ -1,9 +1,9 @@
 package model;
 
-/*
+/**
  * @author: Haochen Gong
- * plant树的管理方法类
- */
+ * @description: plant树的管理方法类
+ **/
 public class PlantTreeManager implements TreeManager<Plant>{
 
     private final RBTree<Plant> plantRBTree;

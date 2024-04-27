@@ -12,6 +12,17 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.compendiumofmateriamedica.databinding.ActivityMainBinding;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
+import model.DataType;
+import model.GeneratorFactory;
+import model.Plant;
+import model.Post;
+import model.RBTree;
+import model.User;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -33,5 +44,4 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
-
 }

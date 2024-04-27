@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlantDetailShow">
+
+    <TextView
+        android:id="@+id/common_name_title"
+        android:layout_width="230dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="71dp"
+        android:text="Common name:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/slug_title"
+        android:layout_width="233dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="14dp"
+        android:text="Slug:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/common_name" />
+
+    <TextView
+        android:id="@+id/common_name"
+        android:layout_width="231dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="13dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/common_name_title" />
+
+    <TextView
+        android:id="@+id/scientific_name_title"
+        android:layout_width="227dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="18dp"
+        android:text="Scientific name:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slug" />
+
+    <TextView
+        android:id="@+id/scientific_name"
+        android:layout_width="229dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scientific_name_title" />
+
+    <TextView
+        android:id="@+id/genus_title"
+        android:layout_width="229dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:text="Genus:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scientific_name" />
+
+    <TextView
+        android:id="@+id/genus"
+        android:layout_width="226dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genus_title" />
+
+    <TextView
+        android:id="@+id/family_title"
+        android:layout_width="227dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="19dp"
+        android:text="Family:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genus" />
+
+    <TextView
+        android:id="@+id/family"
+        android:layout_width="227dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/family_title" />
+
+    <TextView
+        android:id="@+id/description_title"
+        android:layout_width="231dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="14dp"
+        android:text="Description:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/family" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="356dp"
+        android:layout_height="242dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_title" />
+
+    <TextView
+        android:id="@+id/slug"
+        android:layout_width="229dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slug_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

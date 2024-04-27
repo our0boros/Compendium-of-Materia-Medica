@@ -2,10 +2,10 @@ package model;
 
 import androidx.annotation.NonNull;
 
-/*
+/**
  * @author: Haochen Gong
- * Plant类
- */
+ * @description: Plant类
+ **/
 public class Plant implements Comparable<Plant>{
     private final int id;
     private final String commonName;
