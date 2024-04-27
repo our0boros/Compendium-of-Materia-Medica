@@ -1,5 +1,6 @@
 package com.example.compendiumofmateriamedica;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,9 +40,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Implement authentication logic here
                 if ((username.equals("comp2100@anu.edu.au") && password.equals("comp2100"))
-                        || (username.equals("comp6442@anu.edu.au") && password.equals("comp6442"))) {
+                        || (username.equals("comp6442@anu.edu.au") && password.equals("comp6442"))
+                        || (username.equals("") && password.equals(""))) {
                     // Successful login
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+
                 } else {
                     // Failed login
                     Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
