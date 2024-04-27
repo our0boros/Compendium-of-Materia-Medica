@@ -1,14 +1,14 @@
-package com.example.compendiumofmateriamedica.ui.dashboard;
+package com.example.compendiumofmateriamedica.ui.capture;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class CaptureViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public CaptureViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is should be Class Capture");
     }

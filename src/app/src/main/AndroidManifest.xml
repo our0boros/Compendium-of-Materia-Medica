@@ -18,26 +18,25 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.CATEGORY_TEST" />
             </intent-filter>
         </activity>
-        <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:label="@string/app_name"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
+         <activity
+         android:name=".MainActivity"
+         android:exported="true"
+         android:label="@string/app_name">
+         <intent-filter>
+         <action android:name="android.intent.action.MAIN" />
+         </intent-filter>
+         </activity>
         <activity
             android:name=".LoginActivity"
-            android:exported="false">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
