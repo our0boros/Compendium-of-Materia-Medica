@@ -8,18 +8,22 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
 
+import java.util.Map;
 import java.util.Objects;
 
 import model.SearchGrammarParser;
+import model.Token;
 import model.Tokenizer;
 
 /**
@@ -57,21 +61,30 @@ public class CaptureFragment extends Fragment {
         searchButton = requireView().findViewById(R.id.searchButton);
         captureButton = requireView().findViewById(R.id.captureButton);
 
-        searchButton.setOnClickListener(this::OnClick);
+        searchButton.setOnClickListener(this::OnSearchButtonClick);
     }
 
-    public void OnClick(View v) {
+    public void OnSearchButtonClick(View v) {
         try {
             // Search with grammar
             Tokenizer tokenizer = new Tokenizer(searchText.getText().toString());
             SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer);
-            searchGrammarParser.parseExp();
+            Map<String, String> searchParam = searchGrammarParser.parseExp();
+            Boolean isOR = searchGrammarParser.getSearchMethod(); // otherwise AND
             Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search with grammar");
-        } catch (SearchGrammarParser.IllegalProductionException e) {
+            Log.println(Log.ASSERT, "DEBUG", "[OnClick] Found searchParam has "
+                    + searchParam.size() + " entities with " + (isOR ? "OR" : "AND"));
+            Toast.makeText(requireActivity().getApplicationContext() ,"Search with grammar", Toast.LENGTH_LONG).show();
+        } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException e) {
             // Search without grammar
 
             Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
+            Toast.makeText(requireActivity().getApplicationContext() ,"Search without grammar", Toast.LENGTH_LONG).show();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
+
+        searchText.setText("");
     }
 
     @Override

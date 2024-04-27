@@ -22,6 +22,10 @@ import java.util.Objects;
  * OR: |
  * AND: &
  * STR: TEXT/ TAG/ ...
+ *
+ * @author: Hongjun Xu
+ * @datetime: 2024/4/27
+ * @description: Basic Tokens
  */
 public class Token {
     // The following enum defines different types of tokens. Example of accessing these: Token.Type.INT

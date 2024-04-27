@@ -4,4 +4,5 @@
     <string name="title_camera">Capture</string>
     <string name="title_profile">Profile</string>
     <string name="search_text"></string>
+    <string name="search_switch">Plant/Post</string>
 </resources>

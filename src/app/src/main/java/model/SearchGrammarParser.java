@@ -94,62 +94,85 @@ public class SearchGrammarParser {
 
     // <TagColumn>  := #: { <Content> },
     public ArrayList<String> parseTagColumn() {
-        Token current = null;
-        StringBuilder toNext = new StringBuilder();
-        int tokenCount = 0;
-        // Check grammar sequence
-        while (tokenizer.hasNext()) {
-            current = tokenizer.current();
-            if (tokenCount == 0 && current.getType() != Token.Type.TAG) throw new IllegalProductionException("Unexpected token: " + current.getToken());
-            else if (tokenCount == 1 && current.getType() != Token.Type.COLON) throw new IllegalProductionException("Unexpected token: " + current.getToken());
-            else if (tokenCount == 2 && current.getType() != Token.Type.LBRACE) throw new IllegalProductionException("Unexpected token: " + current.getToken());
-            else toNext.append(current.getToken()).append(" ");
-            tokenCount++;
-            tokenizer.next();
+        ArrayList<Token> fullToken = tokenizer.getFullToken();
+        if (fullToken.get(0).getType() == Token.Type.TAG &&
+                fullToken.get(1).getType() == Token.Type.COLON &&
+                fullToken.get(2).getType() == Token.Type.LBRACE &&
+                fullToken.get(fullToken.size() - 1).getType() == Token.Type.SEP &&
+                fullToken.get(fullToken.size() - 2).getType() == Token.Type.RBRACE) {
+            StringBuilder recursiveContent = new StringBuilder();
+            for (int idx = 3; idx < fullToken.size() - 2; idx++) {
+                recursiveContent.append(fullToken.get(idx).getToken()).append(" ");
+            }
+            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString()));
+            return searchGrammarParser.parseContent();
+        } else {
+            throw new IllegalProductionException("Unexpected token...");
         }
-        if (current == null || current.getType() != Token.Type.RBRACE) throw new IllegalProductionException("Unexpected token: " + current.getToken());
-        // delete last "}"
-        toNext.substring(toNext.length() - 2, toNext.length() - 1);
-        // get <Content>
-        SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(toNext.toString()));
-        return searchGrammarParser.parseContent();
     }
     // <TextColumn>  := $: { <Content> },
     public ArrayList<String> parseTextColumn() {
-        Token current = null;
-        StringBuilder toNext = new StringBuilder();
-        int tokenCount = 0;
-        // Check grammar sequence
-        while (tokenizer.hasNext()) {
-            current = tokenizer.current();
-            if (tokenCount == 0 && current.getType() != Token.Type.TEXT) throw new IllegalProductionException("Unexpected token: " + current.getToken());
-            else if (tokenCount == 1 && current.getType() != Token.Type.COLON) throw new IllegalProductionException("Unexpected token: " + current.getToken());
-            else if (tokenCount == 2 && current.getType() != Token.Type.LBRACE) throw new IllegalProductionException("Unexpected token: " + current.getToken());
-            else toNext.append(current.getToken()).append(" ");
-            tokenCount++;
-            tokenizer.next();
+        ArrayList<Token> fullToken = tokenizer.getFullToken();
+        if (fullToken.get(0).getType() == Token.Type.TEXT &&
+                fullToken.get(1).getType() == Token.Type.COLON &&
+                fullToken.get(2).getType() == Token.Type.LBRACE &&
+                fullToken.get(fullToken.size() - 1).getType() == Token.Type.SEP &&
+                fullToken.get(fullToken.size() - 2).getType() == Token.Type.RBRACE) {
+            StringBuilder recursiveContent = new StringBuilder();
+            for (int idx = 3; idx < fullToken.size() - 2; idx++) {
+                recursiveContent.append(fullToken.get(idx).getToken()).append(" ");
+            }
+            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString()));
+            return searchGrammarParser.parseContent();
+        } else {
+            throw new IllegalProductionException("Unexpected token...");
         }
-        if (current == null || current.getType() != Token.Type.RBRACE) throw new IllegalProductionException("Unexpected token: " + current.getToken());
-        // delete last "}"
-        toNext.substring(toNext.length() - 2, toNext.length() - 1);
-        // get <Content>
-        SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(toNext.toString()));
-        return searchGrammarParser.parseContent();
     }
     // <Content>    := STR | STR, <Content>
     public ArrayList<String> parseContent() {
-        ArrayList<String> output = new ArrayList<>();
-
-        StringBuilder toNext = new StringBuilder();
-        int tokenCount = 0;
-        while (tokenizer.hasNext()) {
-            toNext.append(tokenizer.current().getToken()).append(" ");
-            tokenCount++;
-            tokenizer.next();
+        ArrayList<Token> fullToken = tokenizer.getFullToken();
+        // Case: STR
+        if (fullToken.size() == 1) {
+            // if [STR]
+            if (fullToken.get(0).getType() == Token.Type.STR) {
+                ArrayList<String> output = new ArrayList<>();
+                output.add(fullToken.get(0).getToken());
+                return output;
+            } else {
+                throw new IllegalProductionException("Unexpected token: " + fullToken.get(0));
+            }
+            // Case: STR, <Content>
+        } else {
+            // if [STR ,]
+            if (fullToken.get(0).getType() == Token.Type.STR &&
+                    fullToken.get(1).getType() == Token.Type.SEP) {
+                StringBuilder recursiveContent = new StringBuilder();
+                for (int idx = 2; idx < fullToken.size(); idx++) {
+                    recursiveContent.append(fullToken.get(idx).getToken()).append(" ");
+                }
+                SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString()));
+                ArrayList<String> output = searchGrammarParser.parseContent();
+                output.add(0, fullToken.get(0).getToken());
+                return output;
+            } else {
+                throw new IllegalProductionException("Unexpected token: " + fullToken.get(0) + " - " + fullToken.get(1));
+            }
         }
-        return null;
     }
+    // *:{&} |  *:{|}
     public Boolean parseMethod() {
-        return null;
+        ArrayList<Token> fullToken = tokenizer.getFullToken();
+        if (fullToken.size() != 5) throw new IllegalProductionException("Invalid Method Form");
+        if (fullToken.get(0).getType() != Token.Type.METHOD) throw new IllegalProductionException("Unexpected Token: " + fullToken.get(0));
+        if (fullToken.get(1).getType() != Token.Type.COLON) throw new IllegalProductionException("Unexpected Token: " + fullToken.get(1));
+        if (fullToken.get(2).getType() != Token.Type.LBRACE) throw new IllegalProductionException("Unexpected Token: " + fullToken.get(2));
+        if (!(fullToken.get(3).getType() == Token.Type.AND || fullToken.get(3).getType() == Token.Type.OR)) throw new IllegalProductionException("Unexpected Token: " + fullToken.get(3));
+        if (fullToken.get(4).getType() != Token.Type.RBRACE) throw new IllegalProductionException("Unexpected Token: " + fullToken.get(4));
+        // AND false, OR true
+        return fullToken.get(3).getType() == Token.Type.OR;
+    }
+
+    public Boolean getSearchMethod() {
+        return searchMethod;
     }
 }
