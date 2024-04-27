@@ -14,7 +14,10 @@ import java.io.IOException;
 
 import model.DataType;
 import model.GeneratorFactory;
+import model.Plant;
+import model.Post;
 import model.RBTree;
+import model.User;
 
 /**
  * @author: Tianhao Shan
@@ -29,9 +32,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private RBTree<?> userTree;
-    private RBTree<?> plantTree;
-    private RBTree<?> postTree;
+    private RBTree<User> userTree;
+    private RBTree<Plant> plantTree;
+    private RBTree<Post> postTree;
 
 
 
@@ -82,9 +85,8 @@ public class LoginActivity extends AppCompatActivity {
      * 加载数据
      */
     private void DataInitial() throws JSONException, IOException {
-        userTree = GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-        plantTree = GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-        postTree = GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
+        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
+        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
     }
-
 }

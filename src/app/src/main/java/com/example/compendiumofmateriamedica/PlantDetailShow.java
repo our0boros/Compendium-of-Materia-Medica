@@ -15,8 +15,12 @@ import java.io.IOException;
 import model.DataType;
 import model.GeneratorFactory;
 import model.Plant;
+import model.PlantTreeManager;
+import model.Post;
 import model.RBTree;
 import model.RBTreeNode;
+import model.TreeManager;
+import model.User;
 
 
 /**
@@ -34,9 +38,9 @@ public class PlantDetailShow extends AppCompatActivity {
 
 
 
-    private RBTree<?> userTree;
-    private RBTree<?> plantTree;
-    private RBTree<?> postTree;
+    private RBTree<User> userTree;
+    private RBTree<Plant> plantTree;
+    private RBTree<Post> postTree;
 
 
     @Override
@@ -62,7 +66,8 @@ public class PlantDetailShow extends AppCompatActivity {
         family = findViewById(R.id.family);
         description = findViewById(R.id.description);
 
-        RBTreeNode<Plant> node = (RBTreeNode<Plant>) plantTree.search(77116);
+        PlantTreeManager plantTreeManager = new PlantTreeManager(plantTree);
+        RBTreeNode<Plant> node = plantTreeManager.searchByPlantID(77116);
         Plant plant = node.getValue();
         commonName.setText(plant.getCommonName());
         slug.setText(plant.getSlug());
@@ -79,9 +84,9 @@ public class PlantDetailShow extends AppCompatActivity {
      * @description: 加载数据
      **/
     private void DataInitial() throws JSONException, IOException {
-        userTree = GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-        plantTree = GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-        postTree = GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
+        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
+        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
     }
 
 
