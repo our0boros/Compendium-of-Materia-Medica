@@ -52,6 +52,7 @@ public class Tokenizer {
         else if (firstChar == '}') currentToken = new Token("}", Token.Type.RBRACE);
         else if (firstChar == ',') currentToken = new Token(",", Token.Type.SEP);
         else if (firstChar == ':') currentToken = new Token(":", Token.Type.COLON);
+        else if (firstChar == '*') currentToken = new Token("*", Token.Type.METHOD);
         else if (firstChar == '|') currentToken = new Token("|", Token.Type.OR);
         else if (firstChar == '&') currentToken = new Token("&", Token.Type.AND);
 
@@ -62,7 +63,7 @@ public class Tokenizer {
             } while (count < buffer.length() && isLetterDigitOrChinese(String.valueOf(buffer.charAt(count))));
             currentToken = new Token(buffer.substring(0, count), Token.Type.STR);
         }
-        else throw new Token.IllegalTokenException("");
+        else throw new Token.IllegalTokenException("Unexpected token");
 
         // Remove the extracted token from buffer
         int tokenLen = currentToken.getToken().length();
