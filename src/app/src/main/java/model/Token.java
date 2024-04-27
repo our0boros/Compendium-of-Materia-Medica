@@ -18,11 +18,13 @@ import java.util.Objects;
  * RBRACE: }
  * SEP: ,
  * COLON: :
+ * OR: |
+ * AND: &
  * STR: TEXT/ TAG/ ...
  */
 public class Token {
     // The following enum defines different types of tokens. Example of accessing these: Token.Type.INT
-    public enum Type {TAG, TEXT, LBRACE, RBRACE, SEP, COLON, STR}
+    public enum Type {TAG, TEXT, LBRACE, RBRACE, SEP, COLON, OR, AND, STR}
 
     /**
      * The following exception should be thrown if a tokenizer attempts to tokenize something that is not of one
