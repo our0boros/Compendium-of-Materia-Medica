@@ -55,7 +55,7 @@
             android:layout_height="265dp" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/captureButton"
             android:layout_width="83dp"
             android:layout_height="82dp"
             android:src="@drawable/ic_camera" />
