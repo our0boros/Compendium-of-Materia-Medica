@@ -11,12 +11,14 @@ import android.widget.TextView;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import model.DataType;
 import model.GeneratorFactory;
 import model.Plant;
 import model.PlantTreeManager;
 import model.Post;
+import model.PostTreeManager;
 import model.RBTree;
 import model.RBTreeNode;
 import model.TreeManager;
@@ -67,8 +69,10 @@ public class PlantDetailShow extends AppCompatActivity {
         description = findViewById(R.id.description);
 
         PlantTreeManager plantTreeManager = new PlantTreeManager(plantTree);
-        RBTreeNode<Plant> node = plantTreeManager.searchByPlantID(77116);
+        ArrayList<RBTreeNode<Plant>> plants = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID,77116);
+        RBTreeNode<Plant> node = plants.get(0);
         Plant plant = node.getValue();
+
         commonName.setText(plant.getCommonName());
         slug.setText(plant.getSlug());
         scientificName.setText(plant.getScientificName());
