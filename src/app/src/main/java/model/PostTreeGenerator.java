@@ -30,7 +30,7 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                 // 创建并插入节点
                 Post post = new Post(postId,uid,plantId,photo,content,timestamp);
                 // 设置plant id 作key
-                postRBTree.insert(plantId, post);
+                postRBTree.insert(postId, post);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

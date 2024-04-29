@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 /**
  * @author: Haochen Gong
  * @description: post树的管理方法类
@@ -7,6 +9,9 @@ package model;
 public class PostTreeManager implements TreeManager<Post>{
 
     private final RBTree<Post> postRBTree;
+    public enum PostInfoType {
+        POST_ID, UID, PLANT_ID;
+    }
 
     public PostTreeManager(RBTree<Post> postRBTree) {
         this.postRBTree = postRBTree;
@@ -22,37 +27,48 @@ public class PostTreeManager implements TreeManager<Post>{
         this.postRBTree.delete(plantId);
     }
 
-    public RBTreeNode<Post> searchByPlantID(int plantId) {
-        return this.postRBTree.search(plantId);
-    }
-
     // 对外的搜索接口，调用这个方法来开始搜索
-    public RBTreeNode<Post> searchByUID(int uid) {
-        return searchByUID(postRBTree.root, uid);
+    public <T> ArrayList<RBTreeNode<Post>> search (PostInfoType infoType, T info) {
+
+        ArrayList<RBTreeNode<Post>> posts = new ArrayList<>();
+
+        if (infoType == PostInfoType.POST_ID) {
+            RBTreeNode<Post> post = postRBTree.search((int)info);
+            if(post != null) {
+                posts.add(post);
+            }
+        } else {
+            search(postRBTree.root, infoType, info, posts);
+        }
+
+        return posts;
     }
 
     // 实际的递归搜索方法
-    private RBTreeNode<Post> searchByUID(RBTreeNode<Post> node, int uid) {
-        // 如果当前节点是null，说明已经到达了叶子节点的子节点，返回null表示没有找到
+    private  <T> void search(RBTreeNode<Post> node, PostInfoType infoType, T info, ArrayList<RBTreeNode<Post>> posts) {
+        // 如果当前节点是null，说明已经到达了叶子节点的子节点，直接返回
         if (node == null) {
-            return null;
+            return;
         }
 
-        // 如果当前节点的值与搜索的值相等，返回当前节点
-        if(node.getValue().getUid() == uid){
-            return node;
+        // 如果当前节点的值与搜索的值相等，加入结果列表
+        switch (infoType) {
+            case UID:
+                if (node.getValue().getUid() == (int)info) {
+                    posts.add(node);
+                }
+            case PLANT_ID:
+                if (node.getValue().getPlantId() == (int)info) {
+                    posts.add(node);
+                }
         }
 
-        // 在左子树中递归搜索
-        RBTreeNode<Post> left = searchByUID(node.getLeft(), uid);
-        // 如果在左子树中找到了，就返回找到的节点
-        if (left != null) {
-            return left;
-        }
-
-        // 在右子树中递归搜索
-        return searchByUID(node.getRight(), uid);
+        // 继续在左子树中递归搜索
+        search(node.getLeft(), infoType, info, posts);
+        // 继续在右子树中递归搜索
+        search(node.getRight(), infoType, info, posts);
     }
+
 
 
 }
