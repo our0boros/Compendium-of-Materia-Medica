@@ -10,7 +10,7 @@ public class PostTreeManager implements TreeManager<Post>{
 
     private final RBTree<Post> postRBTree;
     public enum PostInfoType {
-        POST_ID, UID, PLANT_ID;
+        POST_ID, UID, PLANT_ID, TIME, CONTENT;
     }
 
     public PostTreeManager(RBTree<Post> postRBTree) {
@@ -59,6 +59,17 @@ public class PostTreeManager implements TreeManager<Post>{
                 }
             case PLANT_ID:
                 if (node.getValue().getPlantId() == (int)info) {
+                    posts.add(node);
+                }
+            // 需要提前封装timestamp的处理（这里只是简单的判断了post对象储存的时间戳是否完全一致）
+            case TIME:
+                if (node.getValue().getTimestamp().equals(info)) {
+                    posts.add(node);
+                }
+            // 查找内容里是否含有某字符
+            case CONTENT:
+                String content = node.getValue().getContent(); // 转换成小写字母
+                if (content.toLowerCase().contains((CharSequence) info)) {
                     posts.add(node);
                 }
         }
