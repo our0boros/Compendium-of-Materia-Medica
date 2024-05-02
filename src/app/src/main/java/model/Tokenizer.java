@@ -1,5 +1,7 @@
 package model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,6 +16,7 @@ public class Tokenizer {
     private ArrayList<Token> fullToken;
 
     public Tokenizer(String text) {
+        Log.println(Log.ASSERT, "DEBUG", "[Tokenizer] Init new text: " + text);
         buffer = text;
         next();
     }
@@ -50,7 +53,7 @@ public class Tokenizer {
             } while (count < buffer.length() && isLetterDigitOrChinese(String.valueOf(buffer.charAt(count))));
             currentToken = new Token(buffer.substring(0, count), Token.Type.STR);
         }
-        else throw new Token.IllegalTokenException("Unexpected token");
+        else throw new Token.IllegalTokenException("Unexpected token:" + firstChar);
 
         // Remove the extracted token from buffer
         int tokenLen = currentToken.getToken().length();

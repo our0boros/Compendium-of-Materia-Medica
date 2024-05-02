@@ -1,12 +1,21 @@
 package com.example.compendiumofmateriamedica.ui.capture;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +25,24 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.compendiumofmateriamedica.MainActivity;
+import com.example.compendiumofmateriamedica.PostShare;
 import com.example.compendiumofmateriamedica.R;
+import com.example.compendiumofmateriamedica.SearchedPostResults;
 import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
+import model.DataType;
+import model.GeneratorFactory;
+import model.Plant;
+import model.PlantTreeManager;
+import model.RBTree;
+import model.RBTreeNode;
 import model.SearchGrammarParser;
 import model.Token;
 import model.Tokenizer;
@@ -34,9 +55,11 @@ import model.Tokenizer;
 public class CaptureFragment extends Fragment {
 
     private FragmentCaptureBinding binding;
+    private TextView greeting;
     private EditText searchText;
-    private ImageButton searchButton;
     private ImageButton captureButton;
+    private Boolean searchMethod;
+    private Spinner spinner;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,9 +69,15 @@ public class CaptureFragment extends Fragment {
         binding = FragmentCaptureBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        captureViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        greeting = binding.textDashboard;
+        // TODO: 等一个回传当前User的Class，用于获得当前用户名称
+        captureViewModel.setText(getResources().getString(R.string.greeting_msg).replace("[]", "@TODO"));
+        captureViewModel.getText().observe(getViewLifecycleOwner(), greeting::setText);
 
+        searchText = binding.searchBarText;
+
+        captureButton = binding.captureButton;
+        searchText.getBackground();
         return root;
     }
 
@@ -56,40 +85,69 @@ public class CaptureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // 添加一个下拉菜单
+        spinner = (Spinner) getView().findViewById(R.id.plants_attribute);
+        // Create an ArrayAdapter using the string array and a default spinner layout.
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                getContext(),
+                R.array.plants_attribute,
+                android.R.layout.simple_spinner_item
+        );
+        // Specify the layout to use when the list of choices appears.
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner.
+        spinner.setAdapter(adapter);
 
-        searchText = requireView().findViewById(R.id.searchBarText);
-        searchButton = requireView().findViewById(R.id.searchButton);
-        captureButton = requireView().findViewById(R.id.captureButton);
+        /**
+         * 添加输入框监听，当输入完成时直接进行搜索， 删除原有的按钮搜索方法
+         */
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                // 隐藏键盘
+                InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+                // 如果是空的不进行处理
+                if (textView.getText().toString().trim().equals("")) {
+                    textView.setText("");
+                    return false;
+                }
+                Log.println(Log.ASSERT, "DEBUG", "[OnClick] Get input: " + textView.getText());
+                // 反之进行语法判定逻辑
+                try {
+                    // Search with grammar
+                    Tokenizer tokenizer = new Tokenizer(textView.getText().toString());
+                    SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer);
+                    Map<String, String> searchParam = searchGrammarParser.parseExp();
+                    searchMethod = searchGrammarParser.getSearchMethod(); // otherwise AND
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search with grammar");
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Found searchParam has "
+                            + searchParam.size() + " entities with " + (searchMethod ? "OR" : "AND"));
+                    Toast.makeText(requireActivity().getApplicationContext() ,"Search with grammar", Toast.LENGTH_LONG).show();
+                    textView.setText("");
+                    PlantTreeManager plantTreeManager;
+                    try {
+                        plantTreeManager = new PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(getContext(), DataType.PLANT, R.raw.plants));
+                    } catch (JSONException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, Integer.valueOf(searchParam.get("ID")));
+                    // 跳转界面
+                    Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
+                    postIntent.putExtra("post", searchResult);
+                    startActivity(postIntent);
+                    return true;
+                } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
+                    // Search without grammar
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] catch error: " + e);
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
+                    Toast.makeText(requireActivity().getApplicationContext() ,"Search without grammar", Toast.LENGTH_LONG).show();
+                }
 
-        searchButton.setOnClickListener(this::OnSearchButtonClick);
-    }
-
-    /**
-     * 当搜索按钮被点击时将输入的字符转化为tokenizer，并将tokenizer放入grammarParser中
-     * 如果grammarParser能成功读取语法说明是高级语法，反之则使用低级语法直接搜索
-     * @param v
-     */
-    public void OnSearchButtonClick(View v) {
-        try {
-            // Search with grammar
-            Tokenizer tokenizer = new Tokenizer(searchText.getText().toString());
-            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer);
-            Map<String, String> searchParam = searchGrammarParser.parseExp();
-            Boolean isOR = searchGrammarParser.getSearchMethod(); // otherwise AND
-            Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search with grammar");
-            Log.println(Log.ASSERT, "DEBUG", "[OnClick] Found searchParam has "
-                    + searchParam.size() + " entities with " + (isOR ? "OR" : "AND"));
-            Toast.makeText(requireActivity().getApplicationContext() ,"Search with grammar", Toast.LENGTH_LONG).show();
-        } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException e) {
-            // Search without grammar
-
-            Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
-            Toast.makeText(requireActivity().getApplicationContext() ,"Search without grammar", Toast.LENGTH_LONG).show();
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        searchText.setText("");
+                textView.setText("");
+                return false;
+            }
+        });
     }
 
     @Override

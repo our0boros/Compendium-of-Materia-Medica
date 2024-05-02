@@ -5,4 +5,13 @@
     <string name="title_profile">Profile</string>
     <string name="search_text"></string>
     <string name="search_switch">Plant/Post</string>
+    <string name="greeting_msg">Hi [], what you want to know?</string>
+    <string-array name="plants_attribute">
+        <item>ID</item>
+        <item>Common Name</item>
+        <item>Slug</item>
+        <item>Scientific Name</item>
+        <item>Genus</item>
+        <item>Family</item>
+    </string-array>
 </resources>
