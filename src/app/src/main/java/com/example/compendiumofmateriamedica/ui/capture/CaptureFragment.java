@@ -64,6 +64,11 @@ public class CaptureFragment extends Fragment {
         searchButton.setOnClickListener(this::OnSearchButtonClick);
     }
 
+    /**
+     * 当搜索按钮被点击时将输入的字符转化为tokenizer，并将tokenizer放入grammarParser中
+     * 如果grammarParser能成功读取语法说明是高级语法，反之则使用低级语法直接搜索
+     * @param v
+     */
     public void OnSearchButtonClick(View v) {
         try {
             // Search with grammar

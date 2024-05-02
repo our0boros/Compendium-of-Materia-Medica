@@ -41,9 +41,7 @@ public class MainActivity extends AppCompatActivity {
         // 运行加载数据的函数
         try {
             DataInitial();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -59,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        // 隐藏顶部那个活动栏目
+        this.getSupportActionBar().hide();
     }
 
 
