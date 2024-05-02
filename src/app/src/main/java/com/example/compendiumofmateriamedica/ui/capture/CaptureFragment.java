@@ -132,9 +132,15 @@ public class CaptureFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
                     ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, Integer.valueOf(searchParam.get("ID")));
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] sample search result[0]: " + searchResult.get(0).getKey());
+                    // 既然Node无法序列化那就用Id list
+                    ArrayList<Integer> plantIDList = new ArrayList<>();
+                    for (RBTreeNode<Plant> node : searchResult) {
+                        plantIDList.add(searchResult.get(0).getKey());
+                    }
                     // 跳转界面
                     Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
-                    postIntent.putExtra("post", searchResult);
+                    postIntent.putExtra("post", plantIDList);
                     startActivity(postIntent);
                     return true;
                 } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
