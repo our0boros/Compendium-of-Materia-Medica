@@ -72,4 +72,20 @@ public class MainActivity extends AppCompatActivity {
         plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
         postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
     }
+
+    /**
+     * 获取当前 Activity 下的Tree变量
+     * @return
+     */
+    public RBTree<Plant> getPlantTree() {
+        return plantTree;
+    }
+
+    public RBTree<Post> getPostTree() {
+        return postTree;
+    }
+
+    public RBTree<User> getUserTree() {
+        return userTree;
+    }
 }

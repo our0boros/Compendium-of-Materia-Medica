@@ -125,14 +125,12 @@ public class CaptureFragment extends Fragment {
                             + searchParam.size() + " entities with " + (searchMethod ? "OR" : "AND"));
                     Toast.makeText(requireActivity().getApplicationContext() ,"Search with grammar", Toast.LENGTH_LONG).show();
                     textView.setText("");
-                    PlantTreeManager plantTreeManager;
-                    try {
-                        plantTreeManager = new PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(getContext(), DataType.PLANT, R.raw.plants));
-                    } catch (JSONException | IOException e) {
-                        throw new RuntimeException(e);
-                    }
+
+                    // 生成文件树
+                    PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
                     ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, Integer.valueOf(searchParam.get("ID")));
                     Log.println(Log.ASSERT, "DEBUG", "[OnClick] sample search result[0]: " + searchResult.get(0).getKey());
+
                     // 既然Node无法序列化那就用Id list
                     ArrayList<Integer> plantIDList = new ArrayList<>();
                     for (RBTreeNode<Plant> node : searchResult) {
