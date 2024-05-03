@@ -138,8 +138,25 @@ public class MainActivity extends AppCompatActivity {
      * @param url
      * @param imageView
      */
-    public static void loadImageFromURL(Context context, String url, ImageView imageView){
-        Glide.with(context).load(url).into(imageView);
+    public static void loadImageFromURL(Context context, String url, ImageView imageView, String imageType){
+        int errorImage;
+
+        switch (imageType) {
+            case "Avatar":
+                errorImage = R.drawable.unknown_user;
+                break;
+            case "Photo":
+                errorImage = R.drawable.load_image_fail;
+                break;
+            default:
+                errorImage = R.drawable.load_image_fail;
+                break;
+        }
+        Glide.with(context)
+             .load(url)
+             .placeholder(errorImage) // 加载中的占位图
+             .error(errorImage) // 加载失败的错误图
+             .into(imageView);
     }
 
     /**
@@ -162,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public static List<Post> getRandomPosts(int numberOfPosts) {
         List<Post> randomPosts = new ArrayList<>();
-        //TODO 读取最近的十个post，目前只是在50个post中随机读取10个
+        //TODO 读取最近的十个post，目前只是在50个post中随机读取10个,另外如果50个post都读完了会发生什么还没处理
         List<Integer> allPostIds = generateUniqueRandomNumbers(numberOfPosts,1,50);
         Collections.shuffle(allPostIds);
 

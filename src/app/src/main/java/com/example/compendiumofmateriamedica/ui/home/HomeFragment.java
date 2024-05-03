@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -75,7 +76,9 @@ public class HomeFragment extends Fragment {
                         && firstVisibleItemPosition >= 0) {
                     // 如果滚动到了底部，调用 ViewModel 的 loadMorePosts 方法加载更多帖子
                     homeViewModel.loadMorePosts(5);
+                    Toast.makeText(getContext(), "Loaded more posts", Toast.LENGTH_SHORT).show();
                 }
+                //TODO 只有在拉到底后再向下拉起才会触发更新
             }
         });
 
