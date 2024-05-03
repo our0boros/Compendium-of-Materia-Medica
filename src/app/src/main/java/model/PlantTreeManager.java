@@ -33,7 +33,7 @@ public class PlantTreeManager implements TreeManager<Plant>{
         ArrayList<RBTreeNode<Plant>> plants = new ArrayList<>();
 
         if (infoType == PlantInfoType.ID) {
-            RBTreeNode<Plant> plant = plantRBTree.search((int) info);
+            RBTreeNode<Plant> plant = plantRBTree.search(Integer.parseInt((String) info));
             if (plant != null) {
                 plants.add(plant);
             }

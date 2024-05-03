@@ -15,7 +15,7 @@
         <item>Genus</item>
         <item>Family</item>
     </string-array>
-<!--    POST_ID, UID, PLANT_ID, TIME, CONTENT;-->
+    <!--    POST_ID, UID, PLANT_ID, TIME, CONTENT;-->
     <string-array name="posts_attribute">
         <item>Grammar Search</item>
         <item>ID</item>
@@ -24,4 +24,5 @@
         <item>Time</item>
         <item>Content</item>
     </string-array>
+    <string name="no_result">(～￣▽￣)～          No results yet~</string>
 </resources>

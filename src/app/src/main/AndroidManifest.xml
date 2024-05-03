@@ -17,6 +17,9 @@
         android:theme="@style/Theme.CompendiumOfMateriaMedica"
         tools:targetApi="31">
         <activity
+            android:name=".EmptySearchResult"
+            android:exported="false" />
+        <activity
             android:name=".SearchedPostResults"
             android:exported="false" />
         <activity

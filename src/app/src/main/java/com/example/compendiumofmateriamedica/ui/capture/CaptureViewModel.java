@@ -1,32 +1,34 @@
 package com.example.compendiumofmateriamedica.ui.capture;
 
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.Gravity;
-import android.view.WindowInsetsAnimation;
-import android.widget.LinearLayout;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.compendiumofmateriamedica.MainActivity;
-
 public class CaptureViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private final MutableLiveData<String> greetingText;
+    private final MutableLiveData<String> switchText;
     private final MutableLiveData<Drawable> searchBarIconBackground;
 
     public CaptureViewModel() {
-        mText = new MutableLiveData<>();
+        greetingText = new MutableLiveData<>();
+        switchText = new MutableLiveData<>();
         searchBarIconBackground = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<String> getGreetingText() {
+        return greetingText;
     }
-    public void setText(String text) {
-        mText.setValue(text);
+    public LiveData<String> getSwitchText() {
+        return switchText;
+    }
+    public void setSwitchTextText(String text) {
+        switchText.setValue(text);
+    }
+    public void setGreetingText(String text) {
+        greetingText.setValue(text);
     }
     public LiveData<Drawable> getIconBackground() { return searchBarIconBackground; }
 

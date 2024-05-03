@@ -2,10 +2,7 @@ package com.example.compendiumofmateriamedica.ui.capture;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,28 +24,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.compendiumofmateriamedica.MainActivity;
-import com.example.compendiumofmateriamedica.PostShare;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.SearchedPostResults;
 import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
-import model.DataType;
-import model.GeneratorFactory;
+import com.example.compendiumofmateriamedica.EmptySearchResult;
+
 import model.Plant;
 import model.PlantTreeManager;
-import model.RBTree;
 import model.RBTreeNode;
 import model.SearchGrammarParser;
 import model.Token;
@@ -84,15 +73,15 @@ public class CaptureFragment extends Fragment {
         // ======================== UI ========================
         greeting = binding.textDashboard;
         // 获取当前用户的名称
-        captureViewModel.setText(getResources().getString(R.string.greeting_msg).replace("[]", FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
-        captureViewModel.getText().observe(getViewLifecycleOwner(), greeting::setText);
+        captureViewModel.setGreetingText(getResources().getString(R.string.greeting_msg).replace("[]", FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+        captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
 
         // ======================== 搜索逻辑 ========================
         // 搜索内容切换
         plantPostSwitch = binding.plantPostSwitch;
         // 设置Switch的Text
-        captureViewModel.setText(getResources().getString(R.string.search_switch));
-        captureViewModel.getText().observe(getViewLifecycleOwner(), plantPostSwitch::setText);
+        captureViewModel.setSwitchTextText(getResources().getString(R.string.search_switch));
+        captureViewModel.getSwitchText().observe(getViewLifecycleOwner(), plantPostSwitch::setText);
         // 搜索栏文字监听
         searchText = binding.searchBarText;
         // 添加一个下拉菜单
@@ -100,7 +89,7 @@ public class CaptureFragment extends Fragment {
         // 设置 spinner 列表
         currentArrayAdapter = ArrayAdapter.createFromResource(
                 getContext(),
-                R.array.posts_attribute,
+                R.array.plants_attribute,
                 android.R.layout.simple_spinner_item
         );
         currentArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -189,16 +178,11 @@ public class CaptureFragment extends Fragment {
                             // 生成文件树
                             ArrayList<RBTreeNode<Plant>> temp;
                             PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
-                            // 如果是ID需要搜索Integer类型
-                            if (entry.getKey().equals("ID")) {
-                                temp = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, Integer.valueOf(entry.getValue()));
-                            } else {
-                                int index = plantAttributes.indexOf(entry.getKey());
-                                // 如果没有匹配的则忽略
-                                if (index == -1) continue;
-                                temp = plantTreeManager.search(
-                                        PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
-                            }
+                            int index = plantAttributes.indexOf(entry.getKey());
+                            // 如果没有匹配的则忽略
+                            if (index == -1) continue;
+                            temp = plantTreeManager.search(
+                                    PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
                             // 添加搜索结果
                             for (RBTreeNode<Plant> node : temp) {
                                 if (searchResult.containsKey(node)) {
@@ -224,27 +208,55 @@ public class CaptureFragment extends Fragment {
                             }
 
                         }
-
                         // 跳转界面
-                        Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
-                        postIntent.putExtra("post", plantIDList);
-                        startActivity(postIntent);
-                        return true;
+                        if (plantIDList.size() == 0) {
+                            Intent noResult = new Intent(getContext(), EmptySearchResult.class);
+                            startActivity(noResult);
+                            return false;
+                        } else {
+                            // 跳转界面
+                            Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
+                            postIntent.putExtra("post", plantIDList);
+                            startActivity(postIntent);
+                            return true;
+                        }
+
                     } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] catch error: " + e);
                     }
                 }
-                textView.setText("");
+                // =============================================================================
                 // Search without grammar
+                // =============================================================================
+
                 Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
                 Toast.makeText(requireActivity().getApplicationContext() ,"Search without grammar", Toast.LENGTH_LONG).show();
 
-                switch ((int) spinner.getSelectedItemId()) {
-                    case 1:
-
+                // 搜索节点
+                PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
+                ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(
+                        PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
+                Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
+                    + " with: " + textView.getText().toString().trim());
+                ArrayList<Integer> plantIDList = new ArrayList<>();
+                for (RBTreeNode<Plant> node : searchResult) {
+                    plantIDList.add(node.getKey());
                 }
 
-                return false;
+                // 跳转界面
+                Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + searchResult.size());
+                textView.setText("");
+                if (plantIDList.size() == 0) {
+                    Intent noResult = new Intent(getContext(), EmptySearchResult.class);
+                    startActivity(noResult);
+                    return false;
+                } else {
+                    // 跳转界面
+                    Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
+                    postIntent.putExtra("post", plantIDList);
+                    startActivity(postIntent);
+                    return true;
+                }
             }
         });
     }
