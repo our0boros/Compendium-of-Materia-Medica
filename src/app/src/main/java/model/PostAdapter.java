@@ -77,18 +77,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             // set the content of the viewHolder
             // load avatar image from url
-            MainActivity.loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar);
+            MainActivity.loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar, "Avatar");
             holder.username.setText(postUserUsername);
             holder.content.setText(postContent);
             // load photo from post
-            MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo);
+            MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
         } else {
             String postPhotoURL = post.getPhoto();
 
             holder.username.setText("Unknown User");
             holder.content.setText(post.getContent());
             holder.userAvatar.setImageResource(R.drawable.unknown_user);
-            MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo);
+            MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
         }
 
     }
