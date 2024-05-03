@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
 
                 // Implement authentication logic here
+                // username:user1@test.com password:111111
                 FirebaseAuth firebaseAuth = FirebaseAuthManager.getInstance().getmAuth();
                 firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(LoginActivity.this, task ->{
                     if(task.isSuccessful()){
