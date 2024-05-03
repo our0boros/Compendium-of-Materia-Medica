@@ -19,7 +19,7 @@ public class SearchedPostResults extends AppCompatActivity {
 
         ArrayList<Integer> dataToShow = (ArrayList<Integer>) getIntent().getExtras().getSerializable("post");
         if (dataToShow.size() != 0) {
-            Log.println(Log.ASSERT, "DEBUG", "[SearchedPostResults] sample search result[0]: " + dataToShow.get(0));
+            Log.println(Log.ASSERT, "DEBUG", "[SearchedPostResults] sample search result[0]: " + dataToShow);
         }
 
     }

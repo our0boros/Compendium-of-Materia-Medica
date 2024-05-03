@@ -7,11 +7,21 @@
     <string name="search_switch">Plant/Post</string>
     <string name="greeting_msg">Hi [], what you want to know?</string>
     <string-array name="plants_attribute">
+        <item>Grammar Search</item>
         <item>ID</item>
         <item>Common Name</item>
         <item>Slug</item>
         <item>Scientific Name</item>
         <item>Genus</item>
         <item>Family</item>
+    </string-array>
+<!--    POST_ID, UID, PLANT_ID, TIME, CONTENT;-->
+    <string-array name="posts_attribute">
+        <item>Grammar Search</item>
+        <item>ID</item>
+        <item>User ID</item>
+        <item>Plant ID</item>
+        <item>Time</item>
+        <item>Content</item>
     </string-array>
 </resources>

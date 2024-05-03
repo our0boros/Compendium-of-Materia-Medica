@@ -60,7 +60,7 @@ public class SearchGrammarParser {
 
             tokenizer.next();
         }
-        Log.println(Log.ASSERT, "DEBUG", "[parseExp] found mapping colums: " + columns);
+        Log.println(Log.ASSERT, "DEBUG", "[parseExp] found mapping columns: " + columns);
         if (columns.size() != 3) throw new IllegalProductionException("Mapping columns should be 3/ Tag, Text, Method");
         ArrayList<String> tagList;
         ArrayList<String> textList;
@@ -86,7 +86,7 @@ public class SearchGrammarParser {
         // store output
         output = new HashMap<>();
         for (int idx = 0; idx < tagList.size(); idx++) {
-            output.put(tagList.get(idx), textList.get(idx));
+            output.put(tagList.get(idx).toUpperCase(), textList.get(idx));
         }
 
         return output;

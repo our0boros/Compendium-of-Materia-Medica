@@ -36,6 +36,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +44,7 @@
 
         <EditText
             android:id="@+id/searchBarText"
-            android:layout_width="match_parent"
+            android:layout_width="338dp"
             android:layout_height="64dp"
             android:layout_marginTop="20dp"
             android:background="@color/white"
@@ -56,19 +57,23 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_width="379dp"
+        android:layout_height="53dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/plantPostSwitch"
             android:layout_width="19dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="10sp"
+            android:showText="false"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
             tools:text="@string/search_switch" />
 
         <Spinner
