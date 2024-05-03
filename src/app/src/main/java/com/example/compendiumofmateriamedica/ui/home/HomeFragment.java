@@ -20,6 +20,12 @@ import java.util.ArrayList;
 
 import model.PostAdapter;
 
+/**
+ * @author: Hongjun Xu, Xing Chen
+ * @datetime: 2024/5/2
+ * @description: A fragment to show the social page in app
+ * using HomeViewModel to control the datastream.
+ */
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -37,16 +43,18 @@ public class HomeFragment extends Fragment {
 
         // configure RecyclerView
         postsRecyclerView = binding.postsRecyclerView;
-        postAdapter = new PostAdapter(new ArrayList<>());
+        // ser adapter
+        postAdapter = new PostAdapter(getContext(), new ArrayList<>());
         postsRecyclerView.setAdapter(postAdapter);
+        // set layout of recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         postsRecyclerView.setLayoutManager(layoutManager);
 
 
-        // observe changes
+        // observe changes of the posts
         homeViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             postAdapter.setPosts(posts);
-            postAdapter.notifyDataSetChanged();
+//            postAdapter.notifyDataSetChanged();
         });
 
 

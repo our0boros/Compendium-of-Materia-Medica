@@ -9,11 +9,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.compendiumofmateriamedica.MainActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Post;
 
+/**
+ * @author: Hongjun Xu, Xing Chen
+ * @datetime: 2024/5/2
+ * @description: A ViewModel to control the datastream.
+ */
 public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
@@ -22,12 +29,8 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is Class Social.");
-        postsLiveData = new MutableLiveData<>();
-        List<Post> initialPosts = new ArrayList<>();
-        initialPosts.add(new Post(1,1, 53,"photo1", "Look what I found!", "2024-01-23"));
-        initialPosts.add(new Post(2,2, 64,"photo2", "Wow!", "2024-03-12"));
-        initialPosts.add(new Post(3,1, 9,"photo3", "This flower stinks!", "2024-05-01"));
-        postsLiveData.setValue(initialPosts);
+        postsLiveData = new MutableLiveData<>(new ArrayList<>());
+        loadMorePosts(10);
     }
 
     public LiveData<List<Post>> getPosts() {
@@ -36,4 +39,12 @@ public class HomeViewModel extends ViewModel {
     public LiveData<String> getText(){
         return mText;
     }
+    // load more post into current posts
+    public void loadMorePosts(int number) {
+        List<Post> currentPosts = postsLiveData.getValue();
+        List<Post> newPosts = MainActivity.getRandomPosts(number);
+        currentPosts.addAll(newPosts);
+        postsLiveData.setValue(currentPosts);
+    }
+
 }
