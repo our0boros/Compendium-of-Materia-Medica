@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
  * @description: Post类
  **/
 public class Post implements Comparable<Post>{
+    // Start with 1
     private final int postId;
     private final int uid;
     private final int plantId;
