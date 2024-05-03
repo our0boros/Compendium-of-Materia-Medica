@@ -57,6 +57,27 @@ public class HomeFragment extends Fragment {
 //            postAdapter.notifyDataSetChanged();
         });
 
+        // a scroll listener to show more posts when rolled at the bottom
+        postsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                // 获取 RecyclerView 的布局管理器
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                // 获取当前可见的子项数量
+                int visibleItemCount = layoutManager.getChildCount();
+                // 获取总的子项数量
+                int totalItemCount = layoutManager.getItemCount();
+                // 获取第一个可见子项的位置
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                // 判断是否滚动到了底部
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0) {
+                    // 如果滚动到了底部，调用 ViewModel 的 loadMorePosts 方法加载更多帖子
+                    homeViewModel.loadMorePosts(5);
+                }
+            }
+        });
 
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
