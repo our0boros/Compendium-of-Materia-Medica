@@ -38,6 +38,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -183,7 +184,7 @@ public class CaptureFragment extends Fragment {
                         Toast.makeText(requireActivity().getApplicationContext() ,"Search with grammar", Toast.LENGTH_LONG).show();
 
                         // 遍历搜索attribute
-                        Set<RBTreeNode<Plant>> searchResult = new HashSet<>();
+                        Map<RBTreeNode<Plant>, Integer> searchResult = new HashMap<>();
                         for (Map.Entry<String, String> entry : searchParam.entrySet()) {
                             // 生成文件树
                             ArrayList<RBTreeNode<Plant>> temp;
@@ -198,15 +199,32 @@ public class CaptureFragment extends Fragment {
                                 temp = plantTreeManager.search(
                                         PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
                             }
-                            searchResult.addAll(temp);
+                            // 添加搜索结果
+                            for (RBTreeNode<Plant> node : temp) {
+                                if (searchResult.containsKey(node)) {
+                                    searchResult.put(node, searchResult.get(node) + 1);
+                                } else {
+                                    searchResult.put(node, 1);
+                                }
+                            }
+
                         }
                         textView.setText("");
-
+                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + searchResult.size());
+                        // 准备跳转数据
                         // 既然Node无法序列化那就用Id list
                         ArrayList<Integer> plantIDList = new ArrayList<>();
-                        for (RBTreeNode<Plant> node : searchResult) {
-                            plantIDList.add(node.getKey());
+                        for (Map.Entry<RBTreeNode<Plant>, Integer> entry : searchResult.entrySet()) {
+                            // 如果是AND直接添加
+                            if (!searchMethod) {
+                                plantIDList.add(entry.getKey().getKey());
+                                // 如果是OR 只添加出现次数与attribute size相同的plant
+                            } else if (entry.getValue() == searchResult.size()) {
+                                plantIDList.add(entry.getKey().getKey());
+                            }
+
                         }
+
                         // 跳转界面
                         Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
                         postIntent.putExtra("post", plantIDList);
