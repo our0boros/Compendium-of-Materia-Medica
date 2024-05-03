@@ -9,11 +9,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.json.JSONException;
 
 import java.io.IOException;
 
 import model.DataType;
+import model.FirebaseAuthManager;
 import model.GeneratorFactory;
 import model.Plant;
 import model.Post;
@@ -67,24 +70,22 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
 
                 // Implement authentication logic here
-                if ((username.equals("comp2100@anu.edu.au") && password.equals("comp2100"))
-                        || (username.equals("comp6442@anu.edu.au") && password.equals("comp6442"))
-                        || (username.equals("") && password.equals(""))) {
-                    // Successful login
-                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    // TODO: 创建一个用户虚拟类class User, 将这个类的putExtra 到 Main 下面，后续会用到
-                    startActivity(intent);
-
-                } else {
-                    // Failed login
-                    Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                }
+                FirebaseAuth firebaseAuth = FirebaseAuthManager.getInstance().getmAuth();
+                firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(LoginActivity.this, task ->{
+                    if(task.isSuccessful()){
+                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        // TODO: 创建一个用户虚拟类class User, 将这个类的putExtra 到 Main 下面，后续会用到
+                        startActivity(intent);
+                    }
+                    else {
+                        // Failed login
+                        Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
-
-
 
     /*
      * @author: Haochen Gong

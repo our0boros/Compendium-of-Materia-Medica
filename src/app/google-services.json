@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "666361428315",
+    "project_id": "gp-24s1-fb08c",
+    "storage_bucket": "gp-24s1-fb08c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666361428315:android:65540a587e277b21e2827e",
+        "android_client_info": {
+          "package_name": "com.example.compendiumofmateriamedica"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNkoGNaFgJVnBpfTgjn4McCLqFCgqMHNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
