@@ -66,24 +66,32 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Retrieve entered username and password
-                String username = editTextUsername.getText().toString();
-                String password = editTextPassword.getText().toString();
+                String username = editTextUsername.getText().toString().trim();
+                String password = editTextPassword.getText().toString().trim();
+                // 添加一个全空白时直接跳转
+                if (username == null || password == null ||
+                    username.isEmpty() || password.isEmpty()) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    // Failed login
+                    Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                } else {
 
-                // Implement authentication logic here
-                // username:user1@test.com password:111111
-                FirebaseAuth firebaseAuth = FirebaseAuthManager.getInstance().getmAuth();
-                firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(LoginActivity.this, task ->{
-                    if(task.isSuccessful()){
-                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        // TODO: 创建一个用户虚拟类class User, 将这个类的putExtra 到 Main 下面，后续会用到
-                        startActivity(intent);
-                    }
-                    else {
-                        // Failed login
-                        Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    // Implement authentication logic here
+                    // username:user1@test.com password:111111
+                    FirebaseAuth firebaseAuth = FirebaseAuthManager.getInstance().getmAuth();
+                    firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(LoginActivity.this, task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            // TODO: 创建一个用户虚拟类class User, 将这个类的putExtra 到 Main 下面，后续会用到
+                            startActivity(intent);
+                        } else {
+                            // Failed login
+                            Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }

@@ -29,6 +29,7 @@ import com.example.compendiumofmateriamedica.PostShare;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.SearchedPostResults;
 import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 
@@ -70,8 +71,8 @@ public class CaptureFragment extends Fragment {
         View root = binding.getRoot();
 
         greeting = binding.textDashboard;
-        // TODO: 等一个回传当前User的Class，用于获得当前用户名称
-        captureViewModel.setText(getResources().getString(R.string.greeting_msg).replace("[]", "@TODO"));
+        // 获取当前用户的名称
+        captureViewModel.setText(getResources().getString(R.string.greeting_msg).replace("[]", FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
         captureViewModel.getText().observe(getViewLifecycleOwner(), greeting::setText);
 
         searchText = binding.searchBarText;
