@@ -198,13 +198,13 @@ public class CaptureFragment extends Fragment {
 
                         }
 
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + searchResult.size());
+
                         // 准备跳转数据
                         // 既然Node无法序列化那就用Id list
                         ArrayList<Integer> plantIDList = new ArrayList<>();
                         for (Map.Entry<RBTreeNode<Plant>, Integer> entry : searchResult.entrySet()) {
-                            // 如果是AND直接添加
-                            if (!searchMethod) {
+                            // 如果是OR直接添加
+                            if (searchMethod) {
                                 plantIDList.add(entry.getKey().getKey());
                                 // 如果是OR 只添加出现次数与attribute size相同的plant
                             } else if (entry.getValue() == searchResult.size()) {
@@ -212,7 +212,7 @@ public class CaptureFragment extends Fragment {
                             }
 
                         }
-
+                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + plantIDList.size());
                         // 跳转界面
                         textView.setText("");
                         if (plantIDList.size() == 0) {
@@ -228,6 +228,7 @@ public class CaptureFragment extends Fragment {
                         }
 
                     } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
+                        textView.setText("");
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] catch error: " + e);
                         Toast.makeText(requireActivity().getApplicationContext() ,"Grammar Error", Toast.LENGTH_LONG).show();
                         return false;
