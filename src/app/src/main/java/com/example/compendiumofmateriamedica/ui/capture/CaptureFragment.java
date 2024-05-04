@@ -63,6 +63,7 @@ public class CaptureFragment extends Fragment {
     private TextView greeting;
     private EditText searchText;
     private ImageButton captureButton;
+    private User currentUser;
     // =========== 当前搜索方法设定 ===========
     private Boolean searchMethod;
     private Spinner spinner;
@@ -80,11 +81,12 @@ public class CaptureFragment extends Fragment {
         binding = FragmentCaptureBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
         // ======================== UI ========================
         greeting = binding.textDashboard;
         // 获取当前用户的名称
         captureViewModel.setGreetingText(getResources().getString(R.string.greeting_msg).replace("[]",
-                FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+                currentUser.getName()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
 
         // ======================== 搜索逻辑 ========================
