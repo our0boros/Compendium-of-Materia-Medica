@@ -224,6 +224,7 @@ public class CaptureFragment extends Fragment {
                                 }
                             }
                         }
+
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] searchResult: " + searchResult.size());
 
                         // 准备跳转数据
