@@ -1,7 +1,7 @@
 package model;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +23,12 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
     private Context context;
     private ArrayList<Integer> data;
     private PlantTreeManager plantTreeManager;
-    private PostTreeManager postTreeManager;
 
     public GridAdapter(Context context, ArrayList<Integer> data) throws JSONException, IOException {
         this.context = context;
         this.data = data;
         plantTreeManager = new PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(this.context, DataType.PLANT, R.raw.plants));
-        postTreeManager = new PostTreeManager((RBTree<Post>) GeneratorFactory.tree(this.context, DataType.POST, R.raw.posts));
+
     }
 
     @NonNull
@@ -41,11 +40,13 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
-        String plantURL = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position))).get(0).getValue().getImage();
+        ArrayList<RBTreeNode<Plant>> nodes = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position)));
+        Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: nodes size " + nodes.size());
+        String plantURL = nodes.get(0).getValue().getImage();
         MainActivity.loadImageFromURL(this.context, plantURL, holder.plantImage, "Photo");
-        String plantName = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position))).get(0).getValue().getCommonName();
-        String plantFamily = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position))).get(0).getValue().getFamily();
-        holder.plantHeading.setText(plantName);
+        String plantName = nodes.get(0).getValue().getCommonName();
+        String plantFamily = nodes.get(0).getValue().getFamily();
+        holder.postContent.setText(plantName);
         holder.plantSubheading.setText(plantFamily);
     }
 
@@ -56,14 +57,14 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
 
     public static class GridViewHolder extends RecyclerView.ViewHolder {
         public ImageView plantImage;
-        public TextView plantHeading;
+        public TextView postContent;
         public TextView plantSubheading;
 
 
         public GridViewHolder(View itemView) {
             super(itemView);
             plantImage = itemView.findViewById(R.id.plantImage);
-            plantHeading = itemView.findViewById(R.id.plantHeading);
+            postContent = itemView.findViewById(R.id.plantHeading);
             plantSubheading = itemView.findViewById(R.id.plantSubHeading);
         }
     }

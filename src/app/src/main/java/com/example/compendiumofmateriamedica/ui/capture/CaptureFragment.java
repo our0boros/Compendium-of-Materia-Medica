@@ -254,7 +254,7 @@ public class CaptureFragment extends Fragment {
                         } else {
                             // 跳转界面
                             Intent postIntent = new Intent(getContext(), SearchedResults.class);
-                            postIntent.putExtra("plantOrPost", !isPost);
+                            postIntent.putExtra("isPost", isPost);
                             postIntent.putExtra("idList", plantIDList);
                             startActivity(postIntent);
                             return true;
