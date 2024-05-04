@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.databinding.FragmentNotificationsBinding;
+import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
 
 import model.User;
 
@@ -34,6 +35,11 @@ public class NotificationsFragment extends Fragment {
         // user avatar
         ImageView userAvatar = binding.profileUserAvatar;
         MainActivity.loadImageFromURL(getContext(), currentUser.getAvatar(), userAvatar, "Avatar");
+        // click on avatar will show big picture
+        userAvatar.setOnClickListener(v -> {
+            PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentUser.getAvatar());
+            photoDialogFragment.show(getParentFragmentManager(), "avatar");
+        });
         // username
         TextView textView = binding.profileUsername;
         // user posts number
