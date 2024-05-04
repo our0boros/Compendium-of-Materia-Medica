@@ -12,7 +12,13 @@ import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.compendiumofmateriamedica.R;
+import com.github.chrisbanes.photoview.PhotoView;
 
+/**
+ * @author: Xing Chen
+ * @datetime: 2024/5/4
+ * @description: 这个类用于点击图片后显示图片的详细内容
+ */
 public class PhotoDialogFragment extends DialogFragment {
 
     private static final String PHOTO_URL = "photo_url";
@@ -30,9 +36,18 @@ public class PhotoDialogFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_dialog, container, false);
-        ImageView imageView = view.findViewById(R.id.image_fragment_dialog);
+        PhotoView photoView = view.findViewById(R.id.image_fragment_dialog);
         String photoUrl = getArguments().getString(PHOTO_URL);
-        Glide.with(this).load(photoUrl).error(R.drawable.load_image_fail).into(imageView);
+        // load image
+        Glide.with(this).load(photoUrl).error(R.drawable.load_image_fail).into(photoView);
+        // Set the ImageView click listener to dismiss the dialog
+        photoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dismiss the dialog
+                dismiss();
+            }
+        });
         return view;
     }
 }
