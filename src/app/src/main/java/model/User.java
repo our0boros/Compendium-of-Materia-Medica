@@ -2,11 +2,13 @@ package model;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 /**
  * @author: Haochen Gong
  * @description: User类
  **/
-public class User implements Comparable<User>{
+public class User implements Comparable<User>, Serializable {
     private final int id;
     private final String name;
     private final String email;

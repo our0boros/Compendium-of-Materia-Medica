@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import model.DataType;
 import model.FirebaseAuthManager;
@@ -21,7 +22,10 @@ import model.GeneratorFactory;
 import model.Plant;
 import model.Post;
 import model.RBTree;
+import model.RBTreeNode;
+import model.TreeManager;
 import model.User;
+import model.UserTreeManager;
 
 /**
  * @author: Tianhao Shan
@@ -39,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     private RBTree<User> userTree;
     private RBTree<Plant> plantTree;
     private RBTree<Post> postTree;
+    // 开发用的，这行可删
+    private UserTreeManager userTreeManager;
 
 
 
@@ -55,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        // 开发用的，这行可删
+        userTreeManager = new UserTreeManager(userTree);
 
         // Initialize UI elements
         editTextUsername = findViewById(R.id.editTextUsername);
@@ -72,6 +80,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (username == null || password == null ||
                     username.isEmpty() || password.isEmpty()) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                    // 这段可删，XingChen:这里开发的时候默认是一个指定用户登录的吧，传入后面的界面，后面搞好了可以改
+                    ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.ID, 5);
+                    if(!users.isEmpty()){
+                        User user = users.get(0).getValue();
+                        intent.putExtra("User", user);
+                    }
+
                     startActivity(intent);
                     // Failed login
                     Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();

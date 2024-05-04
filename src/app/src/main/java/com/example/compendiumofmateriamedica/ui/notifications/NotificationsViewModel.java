@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModel;
 
 public class NotificationsViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private final MutableLiveData<String> username;
 
     public NotificationsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is Class Profile");
+        username = new MutableLiveData<>();
+
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<String> getUsername() {
+        return username;
+    }
+    public void updateUsername(String username){
+        this.username.setValue(username);
     }
 }
