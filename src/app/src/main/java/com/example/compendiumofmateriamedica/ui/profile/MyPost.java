@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.compendiumofmateriamedica.ProfileActivity;
 import com.example.compendiumofmateriamedica.R;
 
 public class MyPost extends AppCompatActivity {
@@ -23,7 +23,7 @@ public class MyPost extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyPost.this, ProfileActivity.class);
+                Intent intent = new Intent(MyPost.this, ProfileFragment.class);
                 startActivity(intent);
             }
         });

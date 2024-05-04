@@ -7,7 +7,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.compendiumofmateriamedica.ProfileActivity;
 import com.example.compendiumofmateriamedica.R;
 
 public class PersonalInfo extends AppCompatActivity {
@@ -23,7 +22,7 @@ public class PersonalInfo extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PersonalInfo.this, ProfileActivity.class);
+                Intent intent = new Intent(PersonalInfo.this, ProfileFragment.class);
                 startActivity(intent);
             }
         });
