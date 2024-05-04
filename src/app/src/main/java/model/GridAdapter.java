@@ -1,9 +1,11 @@
 package model;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,8 +41,12 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
-        String item = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position))).get(0).getValue().getCommonName();
-        holder.textView.setText(item);
+        String plantURL = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position))).get(0).getValue().getImage();
+        MainActivity.loadImageFromURL(this.context, plantURL, holder.plantImage, "Photo");
+        String plantName = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position))).get(0).getValue().getCommonName();
+        String plantFamily = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position))).get(0).getValue().getFamily();
+        holder.plantHeading.setText(plantName);
+        holder.plantSubheading.setText(plantFamily);
     }
 
     @Override
@@ -49,11 +55,16 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
     }
 
     public static class GridViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
+        public ImageView plantImage;
+        public TextView plantHeading;
+        public TextView plantSubheading;
+
 
         public GridViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.plantHeading);
+            plantImage = itemView.findViewById(R.id.plantImage);
+            plantHeading = itemView.findViewById(R.id.plantHeading);
+            plantSubheading = itemView.findViewById(R.id.plantSubHeading);
         }
     }
 }
