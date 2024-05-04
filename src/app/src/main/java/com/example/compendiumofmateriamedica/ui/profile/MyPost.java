@@ -12,6 +12,7 @@ import com.example.compendiumofmateriamedica.R;
 
 public class MyPost extends AppCompatActivity {
 
+    private TextView page_name;
     private ImageView back;
 
     @Override
@@ -19,6 +20,8 @@ public class MyPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_list);
 
+        page_name=findViewById(R.id.page_name);
+        page_name.setText("My Post");
         back=findViewById(R.id.back_btn);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
