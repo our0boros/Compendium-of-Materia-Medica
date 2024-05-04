@@ -18,6 +18,14 @@ import com.github.chrisbanes.photoview.PhotoView;
  * @author: Xing Chen
  * @datetime: 2024/5/4
  * @description: 这个类用于点击图片后显示图片的详细内容
+ * 再次点击图片会关闭
+ * 可以复用
+ * 用法如下：
+ * // 设置头像点击事件
+ *             userAvatar.setOnClickListener(v -> {
+ *                 PhotoDialogFragment avatarDialogFragment = PhotoDialogFragment.newInstance(postUserAvatarURL);
+ *                 avatarDialogFragment.show(fragmentManager, "avatar_dialog");
+ *             });
  */
 public class PhotoDialogFragment extends DialogFragment {
 
