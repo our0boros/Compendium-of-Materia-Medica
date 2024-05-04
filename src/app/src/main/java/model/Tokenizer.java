@@ -16,7 +16,7 @@ public class Tokenizer {
     private ArrayList<Token> fullToken;
 
     public Tokenizer(String text) {
-        Log.println(Log.ASSERT, "DEBUG", "[Tokenizer] Init new text: " + text);
+//        Log.println(Log.ASSERT, "DEBUG", "[Tokenizer] Init new text: " + text);
         buffer = text;
         next();
     }

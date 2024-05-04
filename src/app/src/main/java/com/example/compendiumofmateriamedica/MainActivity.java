@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     public static Post getPostByPostId(int postId) {
-        ArrayList<RBTreeNode<Post>> searchResult = postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, postId);
+        ArrayList<RBTreeNode<Post>> searchResult = postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
         if (!searchResult.isEmpty()) {
             return searchResult.get(0).getValue();
         }
