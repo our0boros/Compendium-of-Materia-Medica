@@ -38,10 +38,13 @@ import com.example.compendiumofmateriamedica.EmptySearchResult;
 
 import model.Plant;
 import model.PlantTreeManager;
+import model.Post;
+import model.PostTreeManager;
 import model.RBTreeNode;
 import model.SearchGrammarParser;
 import model.Token;
 import model.Tokenizer;
+import model.TreeManager;
 
 /**
  * @author: Hongjun Xu
@@ -59,9 +62,10 @@ public class CaptureFragment extends Fragment {
     private Boolean searchMethod;
     private Spinner spinner;
     private Switch plantPostSwitch;
+    private boolean isPost = false;
     private ArrayAdapter<CharSequence> currentArrayAdapter;
     private ArrayList<String> plantAttributes = new ArrayList<>(Arrays.asList(new String[]{"ID", "COMMON_NAME", "SLUG", "SCIENTIFIC_NAME", "GENUS", "FAMILY"}));
-    private ArrayList<String> postAttributes = new ArrayList<>(Arrays.asList(new String[]{"POST_ID", "UID", "PLANT_ID", "TIME", "CONTENT"}));
+    private ArrayList<String> postAttributes = new ArrayList<>(Arrays.asList(new String[]{"POST_ID", "USER_ID", "PLANT_ID", "TIME", "CONTENT"}));
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -113,6 +117,7 @@ public class CaptureFragment extends Fragment {
 
                 // True: Post
                 if (b) {
+                    isPost = true;
                     // Create an ArrayAdapter using the string array and a default spinner layout.
                     currentArrayAdapter = ArrayAdapter.createFromResource(
                             getContext(),
@@ -125,6 +130,7 @@ public class CaptureFragment extends Fragment {
                     spinner.setAdapter(currentArrayAdapter);
                     // False: Plant
                 } else {
+                    isPost = false;
                     // Create an ArrayAdapter using the string array and a default spinner layout.
                     currentArrayAdapter = ArrayAdapter.createFromResource(
                             getContext(),
@@ -177,38 +183,61 @@ public class CaptureFragment extends Fragment {
                         Toast.makeText(requireActivity().getApplicationContext() ,"Search with grammar", Toast.LENGTH_LONG).show();
 
                         // 遍历搜索attribute
-                        Map<RBTreeNode<Plant>, Integer> searchResult = new HashMap<>();
+                        Map<RBTreeNode<?>, Integer> searchResult = new HashMap<>();
+                        PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
+                        PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
+
                         for (Map.Entry<String, String> entry : searchParam.entrySet()) {
+                            Log.println(Log.ASSERT, "DEBUG", "[OnClick] search: " + entry.getKey() +
+                                    " value: " + entry.getValue());
                             // 生成文件树
-                            ArrayList<RBTreeNode<Plant>> temp;
-                            PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
-                            int index = plantAttributes.indexOf(entry.getKey());
-                            // 如果没有匹配的则忽略
-                            if (index == -1) continue;
-                            temp = plantTreeManager.search(
-                                    PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
-                            // 添加搜索结果
-                            for (RBTreeNode<Plant> node : temp) {
-                                if (searchResult.containsKey(node)) {
-                                    searchResult.put(node, searchResult.get(node) + 1);
-                                } else {
-                                    searchResult.put(node, 1);
+                            ArrayList temp;
+                            // 如果是搜索植物
+                            if (!isPost) {
+                                int index = plantAttributes.indexOf(entry.getKey());
+                                // 如果没有匹配的则忽略
+                                if (index == -1) continue;
+                                temp = plantTreeManager.search(
+                                        PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
+                                // 添加搜索结果
+                                for (Object node : temp) {
+                                    if (searchResult.containsKey(node)) {
+                                        searchResult.put((RBTreeNode<Plant>) node, searchResult.get(node) + 1);
+                                    } else {
+                                        searchResult.put((RBTreeNode<Plant>) node, 1);
+                                    }
+                                }
+                            } else {
+                                int index = postAttributes.indexOf(entry.getKey());
+                                Log.println(Log.ASSERT, "DEBUG", "[OnClick] index: " + index);
+                                // 如果没有匹配的则忽略
+                                if (index == -1) continue;
+                                temp = postTreeManager.search(
+                                        PostTreeManager.PostInfoType.values()[index], entry.getValue());
+                                // 添加搜索结果
+                                for (Object node : temp) {
+                                    if (searchResult.containsKey(node)) {
+                                        searchResult.put((RBTreeNode<Post>) node, searchResult.get(node) + 1);
+                                    } else {
+                                        searchResult.put((RBTreeNode<Post>) node, 1);
+                                    }
                                 }
                             }
-
                         }
-
+                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] searchResult: " + searchResult.size());
 
                         // 准备跳转数据
                         // 既然Node无法序列化那就用Id list
                         ArrayList<Integer> plantIDList = new ArrayList<>();
-                        for (Map.Entry<RBTreeNode<Plant>, Integer> entry : searchResult.entrySet()) {
+                        for (Map.Entry<RBTreeNode<?>, Integer> entry : searchResult.entrySet()) {
                             // 如果是OR直接添加
                             if (searchMethod) {
-                                plantIDList.add(entry.getKey().getKey());
+                                plantIDList.add((isPost ? (RBTreeNode<Post>) entry.getKey() :
+                                        (RBTreeNode<Plant>) entry.getKey()).getKey());
                                 // 如果是OR 只添加出现次数与attribute size相同的plant
                             } else if (entry.getValue() == searchResult.size()) {
-                                plantIDList.add(entry.getKey().getKey());
+                                plantIDList.add((isPost ? (RBTreeNode<Post>) entry.getKey() :
+                                        (RBTreeNode<Plant>) entry.getKey()).getKey());
                             }
 
                         }
