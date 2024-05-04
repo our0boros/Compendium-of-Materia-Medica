@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
         // configure RecyclerView
         postsRecyclerView = binding.postsRecyclerView;
         // ser adapter
-        postAdapter = new PostAdapter(getContext(), new ArrayList<>());
+        postAdapter = new PostAdapter(getContext(), new ArrayList<>(), getParentFragmentManager());
         postsRecyclerView.setAdapter(postAdapter);
         // set layout of recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
                     homeViewModel.loadMorePosts(5);
                     Toast.makeText(getContext(), "Loaded more posts", Toast.LENGTH_SHORT).show();
                 }
-                //TODO 只有在拉到底后再向下拉起才会触发更新
+                //TODO 只有在拉到底后再向下拉起才会触发更新,
             }
         });
 
