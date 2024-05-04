@@ -20,10 +20,11 @@ public class MyPoints extends AppCompatActivity {
 
         back=findViewById(R.id.back_btn);
         back.setOnClickListener(new View.OnClickListener() {
+            // when start an activity from a fragment, the fragment never got killed
+            // simply come back to original fragment by kill the current activity
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyPoints.this, ProfileFragment.class);
-                startActivity(intent);
+                finish();
             }
         });
 

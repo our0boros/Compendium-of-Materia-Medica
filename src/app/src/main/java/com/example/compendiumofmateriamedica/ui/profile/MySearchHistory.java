@@ -24,10 +24,11 @@ public class MySearchHistory extends AppCompatActivity {
         page_name.setText("My Search History");
         back=findViewById(R.id.back_btn);
         back.setOnClickListener(new View.OnClickListener() {
+            // when start an activity from a fragment, the fragment never got killed
+            // simply come back to original fragment by kill the current activity
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MySearchHistory.this, ProfileFragment.class);
-                startActivity(intent);
+                finish();
             }
         });
 
