@@ -6,11 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
+import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
 
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private Context context;
     // a list of posts
     private List<Post> postsList;
+    private FragmentManager fragmentManager;
     // an inner class to hold and reuse the view
     public static class PostViewHolder extends RecyclerView.ViewHolder{
         public TextView username;
@@ -42,9 +46,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
     }
 
-    public PostAdapter(Context context, List<Post> postsList){
+    public PostAdapter(Context context, List<Post> postsList, FragmentManager fragmentManager){
         this.context = context;
         this.postsList = postsList;
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -75,6 +80,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             String postPhotoURL = post.getPhoto();
             String postContent = post.getContent();
 
+            // 设置头像点击事件
+            holder.userAvatar.setOnClickListener(v -> {
+                PhotoDialogFragment avatarDialogFragment = PhotoDialogFragment.newInstance(postUserAvatarURL);
+                avatarDialogFragment.show(fragmentManager, "avatar_dialog");
+            });
+            // 设置照片点击事件
+            holder.photo.setOnClickListener(v -> {
+                PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(postPhotoURL);
+                photoDialogFragment.show(fragmentManager, "photo_dialog");
+            });
+
             // set the content of the viewHolder
             // load avatar image from url
             MainActivity.loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar, "Avatar");
@@ -84,6 +100,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
         } else {
             String postPhotoURL = post.getPhoto();
+
+            // 如果用户不存在，不做任何操作
+            holder.userAvatar.setOnClickListener(v -> {
+                Toast.makeText(context, "No user info available", Toast.LENGTH_SHORT).show();
+            });
 
             holder.username.setText("Unknown User");
             holder.content.setText(post.getContent());
