@@ -17,7 +17,7 @@ public class EmptySearchResult extends AppCompatActivity {
 
         this.getSupportActionBar().hide();
         textView = findViewById(R.id.noResults);
-
+        // 好小子
         textView.setText(getResources().getString(R.string.no_result));
 
     }

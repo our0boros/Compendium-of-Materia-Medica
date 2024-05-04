@@ -1,5 +1,7 @@
 package com.example.compendiumofmateriamedica.ui.capture;
 
+import static com.example.compendiumofmateriamedica.MainActivity.userTreeManager;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +25,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.compendiumofmateriamedica.LoginActivity;
 import com.example.compendiumofmateriamedica.MainActivity;
+import com.example.compendiumofmateriamedica.PostShareActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.SearchedResults;
 import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
@@ -44,6 +48,8 @@ import model.RBTreeNode;
 import model.SearchGrammarParser;
 import model.Token;
 import model.Tokenizer;
+import model.User;
+import model.UserTreeManager;
 
 /**
  * @author: Hongjun Xu
@@ -101,6 +107,7 @@ public class CaptureFragment extends Fragment {
         // ======================== 拍照 ========================
         // 拍照按钮
         captureButton = binding.captureButton;
+
 
         return root;
     }
@@ -316,6 +323,19 @@ public class CaptureFragment extends Fragment {
                 }
             }
         });
+
+        // ===================== Xing Chen: 测试用，如果点击拍照按钮，会直接跳转至post share页面，并传入当前用户
+
+        captureButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent intent = new Intent(getContext(), PostShareActivity.class);
+                User currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
+                intent.putExtra("User", currentUser);
+                startActivity(intent);
+            }
+        });
+
+        // ===================== Xing Chen： 到这里结束
     }
 
     @Override

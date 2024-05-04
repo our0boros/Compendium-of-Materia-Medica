@@ -52,7 +52,7 @@
             android:name=".SearchedResults"
             android:exported="false" />
         <activity
-            android:name=".PostShare"
+            android:name=".PostShareActivity"
             android:exported="false">
 
             <!-- <intent-filter> -->
