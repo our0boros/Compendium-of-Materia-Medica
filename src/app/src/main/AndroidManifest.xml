@@ -23,7 +23,7 @@
             android:name=".EmptySearchResult"
             android:exported="false" />
         <activity
-            android:name=".SearchedPostResults"
+            android:name=".SearchedResults"
             android:exported="false" />
         <activity
             android:name=".PostShare"

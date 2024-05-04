@@ -54,23 +54,23 @@ public class PlantTreeManager implements TreeManager<Plant>{
         // 如果当前节点的值与搜索的值相等，加入结果列表
         switch (infoType) {
             case COMMON_NAME:
-                if (node.getValue().getCommonName().equals(info)) {
+                if (node.getValue().getCommonName().contains((CharSequence) info)) {
                     plants.add(node);
                 }
             case SLUG:
-                if (node.getValue().getSlug().equals(info)) {
+                if (node.getValue().getSlug().contains((CharSequence) info)) {
                     plants.add(node);
                 }
             case SCIENTIFIC_NAME:
-                if (node.getValue().getScientificName().equals(info)) {
+                if (node.getValue().getScientificName().contains((CharSequence) info)) {
                     plants.add(node);
                 }
             case GENUS:
-                if (node.getValue().getGenus().equals(info)) {
+                if (node.getValue().getGenus().contains((CharSequence) info)) {
                     plants.add(node);
                 }
             case FAMILY:
-                if (node.getValue().getFamily().equals(info)) {
+                if (node.getValue().getFamily().contains((CharSequence) info)) {
                     plants.add(node);
                 }
         }

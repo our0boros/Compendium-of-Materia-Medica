@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
-import com.example.compendiumofmateriamedica.SearchedPostResults;
+import com.example.compendiumofmateriamedica.SearchedResults;
 import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -44,7 +44,6 @@ import model.RBTreeNode;
 import model.SearchGrammarParser;
 import model.Token;
 import model.Tokenizer;
-import model.TreeManager;
 
 /**
  * @author: Hongjun Xu
@@ -78,7 +77,8 @@ public class CaptureFragment extends Fragment {
         // ======================== UI ========================
         greeting = binding.textDashboard;
         // 获取当前用户的名称
-        captureViewModel.setGreetingText(getResources().getString(R.string.greeting_msg).replace("[]", FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+        captureViewModel.setGreetingText(getResources().getString(R.string.greeting_msg).replace("[]",
+                FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
 
         // ======================== 搜索逻辑 ========================
@@ -168,6 +168,8 @@ public class CaptureFragment extends Fragment {
                 // =============================================================================
                 // Search with grammar
                 // =============================================================================
+                PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
+                PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
                 // 如果spinner选择的不是第一项【语法搜索】，反之按照当前选择搜索
                 if (spinner.getSelectedItemId() == 0) {
                     // 反之进行语法判定逻辑
@@ -184,8 +186,6 @@ public class CaptureFragment extends Fragment {
 
                         // 遍历搜索attribute
                         Map<RBTreeNode<?>, Integer> searchResult = new HashMap<>();
-                        PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
-                        PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
 
                         for (Map.Entry<String, String> entry : searchParam.entrySet()) {
                             Log.println(Log.ASSERT, "DEBUG", "[OnClick] search: " + entry.getKey() +
@@ -235,7 +235,7 @@ public class CaptureFragment extends Fragment {
                             if (searchMethod) {
                                 plantIDList.add((isPost ? (RBTreeNode<Post>) entry.getKey() :
                                         (RBTreeNode<Plant>) entry.getKey()).getKey());
-                                // 如果是OR 只添加出现次数与attribute size相同的plant
+                                // 如果是AND 只添加出现次数与attribute size相同的plant
                             } else if (entry.getValue() == searchResult.size()) {
                                 plantIDList.add((isPost ? (RBTreeNode<Post>) entry.getKey() :
                                         (RBTreeNode<Plant>) entry.getKey()).getKey());
@@ -243,6 +243,8 @@ public class CaptureFragment extends Fragment {
 
                         }
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + plantIDList.size());
+
+
                         // 跳转界面
                         textView.setText("");
                         if (plantIDList.size() == 0) {
@@ -251,12 +253,13 @@ public class CaptureFragment extends Fragment {
                             return false;
                         } else {
                             // 跳转界面
-                            Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
-                            postIntent.putExtra("post", plantIDList);
+                            Intent postIntent = new Intent(getContext(), SearchedResults.class);
+                            postIntent.putExtra("plantOrPost", !isPost);
+                            postIntent.putExtra("idList", plantIDList);
                             startActivity(postIntent);
                             return true;
                         }
-
+                        // =============================================================================
                     } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
                         textView.setText("");
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] catch error: " + e);
@@ -275,7 +278,6 @@ public class CaptureFragment extends Fragment {
                     // 搜索节点
                     ArrayList<Integer> plantIDList = new ArrayList<>();
                     if (!isPost) {
-                        PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
                         ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(
                                 PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
@@ -285,7 +287,6 @@ public class CaptureFragment extends Fragment {
                             plantIDList.add(node.getKey());
                         }
                     } else {
-                        PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
                         ArrayList<RBTreeNode<Post>> searchResult = postTreeManager.search(
                                 PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
@@ -306,8 +307,9 @@ public class CaptureFragment extends Fragment {
                         return false;
                     } else {
                         // 跳转界面
-                        Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
-                        postIntent.putExtra("post", plantIDList);
+                        Intent postIntent = new Intent(getContext(), SearchedResults.class);
+                        postIntent.putExtra("plantOrPost", !isPost);
+                        postIntent.putExtra("idList", plantIDList);
                         startActivity(postIntent);
                         return true;
                     }
