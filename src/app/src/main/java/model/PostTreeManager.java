@@ -50,7 +50,6 @@ public class PostTreeManager implements TreeManager<Post>{
         if (node == null) {
             return;
         }
-
         // 如果当前节点的值与搜索的值相等，加入结果列表
         switch (infoType) {
             case UID:
@@ -63,7 +62,7 @@ public class PostTreeManager implements TreeManager<Post>{
                 }
             // 需要提前封装timestamp的处理（这里只是简单的判断了post对象储存的时间戳是否完全一致）
             case TIME:
-                if (node.getValue().getTimestamp().equals(info)) {
+                if (node.getValue().getTimestamp().contains((CharSequence) info)) {
                     posts.add(node);
                 }
             // 查找内容里是否含有某字符

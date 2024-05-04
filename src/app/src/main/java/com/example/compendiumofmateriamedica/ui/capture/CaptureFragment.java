@@ -273,18 +273,32 @@ public class CaptureFragment extends Fragment {
                     Toast.makeText(requireActivity().getApplicationContext(), "Search without grammar", Toast.LENGTH_LONG).show();
 
                     // 搜索节点
-                    PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
-                    ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(
-                            PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
-                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
-                            + " with: " + textView.getText().toString().trim());
                     ArrayList<Integer> plantIDList = new ArrayList<>();
-                    for (RBTreeNode<Plant> node : searchResult) {
-                        plantIDList.add(node.getKey());
+                    if (!isPost) {
+                        PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
+                        ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(
+                                PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
+                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
+                                + " with: " + textView.getText().toString().trim());
+
+                        for (RBTreeNode<Plant> node : searchResult) {
+                            plantIDList.add(node.getKey());
+                        }
+                    } else {
+                        PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
+                        ArrayList<RBTreeNode<Post>> searchResult = postTreeManager.search(
+                                PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
+                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
+                                + " with: " + textView.getText().toString().trim());
+
+                        for (RBTreeNode<Post> node : searchResult) {
+                            plantIDList.add(node.getKey());
+                        }
                     }
 
+
                     // 跳转界面
-                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + searchResult.size());
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + plantIDList.size());
                     textView.setText("");
                     if (plantIDList.size() == 0) {
                         Intent noResult = new Intent(getContext(), EmptySearchResult.class);
