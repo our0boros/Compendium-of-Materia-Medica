@@ -61,6 +61,7 @@ public class CaptureFragment extends Fragment {
     private Switch plantPostSwitch;
     private ArrayAdapter<CharSequence> currentArrayAdapter;
     private ArrayList<String> plantAttributes = new ArrayList<>(Arrays.asList(new String[]{"ID", "COMMON_NAME", "SLUG", "SCIENTIFIC_NAME", "GENUS", "FAMILY"}));
+    private ArrayList<String> postAttributes = new ArrayList<>(Arrays.asList(new String[]{"POST_ID", "UID", "PLANT_ID", "TIME", "CONTENT"}));
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -158,6 +159,9 @@ public class CaptureFragment extends Fragment {
                     return false;
                 }
 
+                // =============================================================================
+                // Search with grammar
+                // =============================================================================
                 // 如果spinner选择的不是第一项【语法搜索】，反之按照当前选择搜索
                 if (spinner.getSelectedItemId() == 0) {
                     // 反之进行语法判定逻辑
@@ -193,14 +197,14 @@ public class CaptureFragment extends Fragment {
                             }
 
                         }
-                        textView.setText("");
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + searchResult.size());
+
+
                         // 准备跳转数据
                         // 既然Node无法序列化那就用Id list
                         ArrayList<Integer> plantIDList = new ArrayList<>();
                         for (Map.Entry<RBTreeNode<Plant>, Integer> entry : searchResult.entrySet()) {
-                            // 如果是AND直接添加
-                            if (!searchMethod) {
+                            // 如果是OR直接添加
+                            if (searchMethod) {
                                 plantIDList.add(entry.getKey().getKey());
                                 // 如果是OR 只添加出现次数与attribute size相同的plant
                             } else if (entry.getValue() == searchResult.size()) {
@@ -208,7 +212,9 @@ public class CaptureFragment extends Fragment {
                             }
 
                         }
+                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + plantIDList.size());
                         // 跳转界面
+                        textView.setText("");
                         if (plantIDList.size() == 0) {
                             Intent noResult = new Intent(getContext(), EmptySearchResult.class);
                             startActivity(noResult);
@@ -222,40 +228,45 @@ public class CaptureFragment extends Fragment {
                         }
 
                     } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
+                        textView.setText("");
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] catch error: " + e);
+                        Toast.makeText(requireActivity().getApplicationContext() ,"Grammar Error", Toast.LENGTH_LONG).show();
+                        return false;
                     }
-                }
-                // =============================================================================
-                // Search without grammar
-                // =============================================================================
-
-                Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
-                Toast.makeText(requireActivity().getApplicationContext() ,"Search without grammar", Toast.LENGTH_LONG).show();
-
-                // 搜索节点
-                PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
-                ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(
-                        PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
-                Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
-                    + " with: " + textView.getText().toString().trim());
-                ArrayList<Integer> plantIDList = new ArrayList<>();
-                for (RBTreeNode<Plant> node : searchResult) {
-                    plantIDList.add(node.getKey());
-                }
-
-                // 跳转界面
-                Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + searchResult.size());
-                textView.setText("");
-                if (plantIDList.size() == 0) {
-                    Intent noResult = new Intent(getContext(), EmptySearchResult.class);
-                    startActivity(noResult);
-                    return false;
                 } else {
+
+                    // =============================================================================
+                    // Search without grammar
+                    // =============================================================================
+
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
+                    Toast.makeText(requireActivity().getApplicationContext(), "Search without grammar", Toast.LENGTH_LONG).show();
+
+                    // 搜索节点
+                    PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
+                    ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(
+                            PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
+                            + " with: " + textView.getText().toString().trim());
+                    ArrayList<Integer> plantIDList = new ArrayList<>();
+                    for (RBTreeNode<Plant> node : searchResult) {
+                        plantIDList.add(node.getKey());
+                    }
+
                     // 跳转界面
-                    Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
-                    postIntent.putExtra("post", plantIDList);
-                    startActivity(postIntent);
-                    return true;
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + searchResult.size());
+                    textView.setText("");
+                    if (plantIDList.size() == 0) {
+                        Intent noResult = new Intent(getContext(), EmptySearchResult.class);
+                        startActivity(noResult);
+                        return false;
+                    } else {
+                        // 跳转界面
+                        Intent postIntent = new Intent(getContext(), SearchedPostResults.class);
+                        postIntent.putExtra("post", plantIDList);
+                        startActivity(postIntent);
+                        return true;
+                    }
                 }
             }
         });
@@ -265,5 +276,6 @@ public class CaptureFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        currentArrayAdapter = null;
     }
 }

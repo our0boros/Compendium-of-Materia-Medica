@@ -22,5 +22,8 @@ public class SearchedPostResults extends AppCompatActivity {
             Log.println(Log.ASSERT, "DEBUG", "[SearchedPostResults] sample search result[0]: " + dataToShow);
         }
 
+        // 上半部分显示搜索到的植物，下班部分显示植物相关的post
+
+
     }
 }
