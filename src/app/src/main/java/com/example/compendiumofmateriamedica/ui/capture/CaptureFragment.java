@@ -226,7 +226,7 @@ public class CaptureFragment extends Fragment {
                         }
 
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] searchResult: " + searchResult.size());
-
+                        searchMethod = true;
                         // 准备跳转数据
                         // 既然Node无法序列化那就用Id list
                         ArrayList<Integer> plantIDList = new ArrayList<>();
@@ -308,7 +308,7 @@ public class CaptureFragment extends Fragment {
                     } else {
                         // 跳转界面
                         Intent postIntent = new Intent(getContext(), SearchedResults.class);
-                        postIntent.putExtra("plantOrPost", !isPost);
+                        postIntent.putExtra("isPost", isPost);
                         postIntent.putExtra("idList", plantIDList);
                         startActivity(postIntent);
                         return true;
