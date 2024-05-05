@@ -1,8 +1,10 @@
 package com.example.compendiumofmateriamedica;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -13,7 +15,9 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Button;
 import android.Manifest;
 
 import java.io.IOException;
@@ -45,6 +49,27 @@ public class PostShareActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_share);
+
+        // 给User和图片赋值
+        // 获取从上个activity处传来的User
+        currentUser = (User) this.getIntent().getSerializableExtra("User");
+        // 此处给图片赋值
+
+        // 显示照片
+
+
+        // 设置cancel按钮点击事件
+        Button buttonCancel = findViewById(R.id.button_post_share_cancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showConfirmDialog();
+            }
+        });
+
+        // 设置Post按钮点击事件
+
+
+
 
         // 实现gps获取和显示
         locationText = (TextView) findViewById(R.id.locationText);
@@ -94,5 +119,31 @@ public class PostShareActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 跳出一个确认窗口，点击确认会返回MainActivity，取消则什么都不做
+     */
+    private void showConfirmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Cancel");
+        builder.setMessage("Are you sure you want to cancel editing?");
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 用户确认取消，返回主界面
+                Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
+                // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Stay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 用户选择留在当前页面，对话框消失，不进行任何操作
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
 
 }
