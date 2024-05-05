@@ -18,8 +18,8 @@ public class PostTreeManager implements TreeManager<Post>{
     }
 
     @Override
-    public void insert(int plantId, Post post) {
-        this.postRBTree.insert(plantId, post);
+    public void insert(int postId, Post post) {
+        this.postRBTree.insert(postId, post);
     }
 
     @Override
@@ -79,6 +79,8 @@ public class PostTreeManager implements TreeManager<Post>{
         search(node.getRight(), infoType, info, posts);
     }
 
-
+    public int getTreeSize(){
+        return postRBTree.size();
+    }
 
 }

@@ -377,14 +377,15 @@ public class CaptureFragment extends Fragment {
                     Log.d("CaptureFragment", "Camera permission grated.");
                 } else {
                     Log.d("CaptureFragment", "call dispatchTakePictureIntent()");
+
                     dispatchTakePictureIntent();
                 }
 
 
-//                Intent intent = new Intent(getContext(), PostShareActivity.class);
-//                User currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
-//                intent.putExtra("User", currentUser);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), PostShareActivity.class);
+                User currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
+                intent.putExtra("User", currentUser);
+                startActivity(intent);
             }
         });
 

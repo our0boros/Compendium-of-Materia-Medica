@@ -15,15 +15,23 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.Manifest;
 
+import com.bumptech.glide.Glide;
+
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import model.Post;
 import model.User;
 
 
@@ -54,20 +62,38 @@ public class PostShareActivity extends AppCompatActivity {
         // 获取从上个activity处传来的User
         currentUser = (User) this.getIntent().getSerializableExtra("User");
         // 此处给图片赋值
-
+        ImageView photo = findViewById(R.id.imageView_post_share_photo);
+        MainActivity.loadImageFromURL(this, testImageURL, photo, "Photo");
         // 显示照片
 
+        // post 内容
+        EditText postContent = findViewById(R.id.editText_post_content);
 
         // 设置cancel按钮点击事件
         Button buttonCancel = findViewById(R.id.button_post_share_cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d("SharePost", "Cancel button clicked");
                 showConfirmDialog();
             }
         });
 
-        // 设置Post按钮点击事件
 
+
+        // 设置Post按钮点击事件
+        Button buttonPost = findViewById(R.id.button_post_share_post);
+        buttonPost.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // share post
+                sharePost(postContent, testImageURL);
+                // go back to MainActivity
+                Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
+                // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                // TODO 这里回到mainactivity之后social的post列表应该刷新一遍以显示用户刚刚发布的post
+            }
+        });
 
 
 
@@ -145,5 +171,22 @@ public class PostShareActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
+    private void sharePost(EditText postContent, String photoURL){
+        Log.d("SharePost", "Share post......");
+        // 为生成post设置变量
+        int postId = MainActivity.postTreeManager.getTreeSize() + 1;
+        int uid = currentUser.getId();
+        int plantId = 5; // 这里随便给个plantid，实际拍到照片识别后再传进来就有了
+        String photo = photoURL;
+        String content = postContent.getText().toString();
+        // 获取当前时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault());
+        Date now = new Date();
+        String timestamp = sdf.format(now);
 
+        // 生成Post并加入到当前app的MainActivity的postTree中
+        Post post = new Post(postId, uid, plantId, photo, content, timestamp);
+        MainActivity.postTreeManager.insert(post.getPostId(), post);
+        Log.d("SharePost", "Post added to the postTree in MainActivity");
+    }
 }
