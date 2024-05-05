@@ -373,19 +373,14 @@ public class CaptureFragment extends Fragment {
                 // 启动相机
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     Log.d("CaptureFragment", "Request for camera permission");
+                    // 请求权限
                     requestPermissionLauncher.launch(Manifest.permission.CAMERA);
                     Log.d("CaptureFragment", "Camera permission grated.");
                 } else {
                     Log.d("CaptureFragment", "call dispatchTakePictureIntent()");
-
+                    // 启动相机
                     dispatchTakePictureIntent();
                 }
-
-
-                Intent intent = new Intent(getContext(), PostShareActivity.class);
-                User currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
-                intent.putExtra("User", currentUser);
-                startActivity(intent);
             }
         });
 
@@ -418,9 +413,11 @@ public class CaptureFragment extends Fragment {
             if (photoFile != null) {
                 Log.d("CaptureFragment", "File created: " + photoFile.getAbsolutePath());
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),
-                        "com.example.android.fileprovider",
+                        "com.example.compendiumofmateriamedica.fileprovider",
                         photoFile);
+                Log.d("CaptureFragment", "URI created");
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                Log.d("CaptureFragment", "Launching camera");
                 cameraLauncher.launch(takePictureIntent);
             } else {
                 Log.d("CaptureFragment", "Failed to create file");

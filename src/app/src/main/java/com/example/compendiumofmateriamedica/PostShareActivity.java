@@ -50,7 +50,7 @@ public class PostShareActivity extends AppCompatActivity {
     private User currentUser;
 
     //一个图片链接，用于测试发布post，实际的图片应当由调用这个Activity的
-    private final String testImageURL = "https://picsum.photos/647/704";
+    private String photoPath;
 
 
     @Override
@@ -61,10 +61,12 @@ public class PostShareActivity extends AppCompatActivity {
         // 给User和图片赋值
         // 获取从上个activity处传来的User
         currentUser = (User) this.getIntent().getSerializableExtra("User");
-        // 此处给图片赋值
-        ImageView photo = findViewById(R.id.imageView_post_share_photo);
-        MainActivity.loadImageFromURL(this, testImageURL, photo, "Photo");
+        // 获取从上个activity处传来的照片路径
+        photoPath = getIntent().getStringExtra("photoPath");
         // 显示照片
+        ImageView photo = findViewById(R.id.imageView_post_share_photo);
+        MainActivity.loadImageFromURL(this, photoPath, photo, "Photo");
+
 
         // post 内容
         EditText postContent = findViewById(R.id.editText_post_content);
@@ -85,7 +87,7 @@ public class PostShareActivity extends AppCompatActivity {
         buttonPost.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // share post
-                sharePost(postContent, testImageURL);
+                sharePost(postContent, photoPath);
                 // go back to MainActivity
                 Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
                 // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
