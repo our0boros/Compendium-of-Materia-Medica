@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import model.DataType;
 import model.GeneratorFactory;
@@ -193,10 +194,20 @@ public class MainActivity extends AppCompatActivity {
 
         return randomPosts;
     }
+
+    // get all posts by user with uid
     public static List<Post> getPostsByUserId(int uid){
-        //TODO
+        ArrayList<RBTreeNode<Post>>  user_post_data = postTreeManager.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+        List<Post> user_post_data_list= new ArrayList<>();
+        if (!user_post_data.isEmpty()) {
+            for (RBTreeNode<Post> node : user_post_data) {
+                user_post_data_list.add(node.getValue());
+            }
+            return user_post_data_list;
+        }
         return null;
     }
+
     // 生成十个min-max的不同的随机整数
     public static List<Integer> generateUniqueRandomNumbers(int count, int min, int max) {
         if (count <= 0 || min >= max || count > max - min + 1) {
