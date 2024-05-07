@@ -61,7 +61,7 @@ public class PostShareActivity extends AppCompatActivity {
         // 给User和图片赋值
         // 获取从上个activity处传来的User
         currentUser = (User) this.getIntent().getSerializableExtra("User");
-        Log.d("SharePost", "Enter share page, user = " + currentUser.getName() + ".");
+        Log.d("SharePost", "Enter share page, user = " + currentUser.getUsername() + ".");
         // 获取从上个activity处传来的照片路径
         photoPath = getIntent().getStringExtra("photoPath");
         // 显示照片
@@ -182,7 +182,7 @@ public class PostShareActivity extends AppCompatActivity {
         Log.d("SharePost", "Share post......");
         // 为生成post设置变量
         int postId = MainActivity.postTreeManager.getTreeSize() + 1;
-        int uid = currentUser.getId();
+        int uid = currentUser.getUser_id();
         int plantId = 5; // 这里随便给个plantid，实际拍到照片识别后再传进来就有了
         String photo = photoURL;
         String content = postContent.getText().toString();

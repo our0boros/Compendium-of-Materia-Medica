@@ -1,10 +1,6 @@
 package com.example.compendiumofmateriamedica.ui.capture;
 
-import static android.app.Activity.RESULT_OK;
-import static com.example.compendiumofmateriamedica.MainActivity.userTreeManager;
-
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -32,19 +28,16 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.compendiumofmateriamedica.LoginActivity;
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.PostShareActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.SearchedResults;
 import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +59,6 @@ import model.SearchGrammarParser;
 import model.Token;
 import model.Tokenizer;
 import model.User;
-import model.UserTreeManager;
 
 /**
  * @author: Hongjun Xu
@@ -126,7 +118,7 @@ public class CaptureFragment extends Fragment {
         greeting = binding.textDashboard;
         // 获取当前用户的名称
         captureViewModel.setGreetingText(getResources().getString(R.string.greeting_msg).replace("[]",
-                currentUser.getName()));
+                currentUser.getUsername()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
 
         // ======================== 搜索逻辑 ========================

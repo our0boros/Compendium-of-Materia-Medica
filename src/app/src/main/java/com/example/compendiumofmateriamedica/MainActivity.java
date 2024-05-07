@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         // 因为UID都是唯一的，所以我们的users中应当只有一个user
         if (!users.isEmpty()) {
             User foundUser = users.get(0).getValue();
-            Log.d("UserTreeManager", "找到用户: " + foundUser.getName());
+            Log.d("UserTreeManager", "找到用户: " + foundUser.getUsername());
             return foundUser;
         } else {
             Log.w("UserTreeManager", "没有找到用户.");
