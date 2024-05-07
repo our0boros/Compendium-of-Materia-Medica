@@ -74,14 +74,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         // get current post
         Post post = postsList.get(position);
         // get uid of this post user
-        int uid = post.getUid();
+        int uid = post.getUser_id();
         // get the user using this uid
         User postUser = MainActivity.findUserById(uid);
         // get the user name,the user's avatar and the post photo
         if (postUser != null){
-            String postUserUsername = postUser.getName();
-            String postUserAvatarURL = postUser.getAvatar();
-            String postPhotoURL = post.getPhoto();
+            String postUserUsername = postUser.getUsername();
+            String postUserAvatarURL = postUser.getAvatar_url();
+            String postPhotoURL = post.getPhoto_url();
             String postContent = post.getContent();
 
             // 设置头像点击事件
@@ -117,7 +117,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             // load photo from post
             MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
         } else {
-            String postPhotoURL = post.getPhoto();
+            String postPhotoURL = post.getPhoto_url();
 
             // 如果用户不存在，不做任何操作
             holder.userAvatar.setOnClickListener(v -> {

@@ -23,8 +23,6 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.Manifest;
 
-import com.bumptech.glide.Glide;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -193,7 +191,7 @@ public class PostShareActivity extends AppCompatActivity {
 
         // 生成Post并加入到当前app的MainActivity的postTree中
         Post post = new Post(postId, uid, plantId, photo, content, timestamp);
-        MainActivity.postTreeManager.insert(post.getPostId(), post);
+        MainActivity.postTreeManager.insert(post.getPost_id(), post);
         Log.d("SharePost", "Post added to the postTree in MainActivity");
     }
 }
