@@ -73,12 +73,12 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Retrieve entered username and password
-                String username = editTextEmail.getText().toString().trim();
+                // Retrieve entered email and password
+                String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
                 // 添加一个全空白时直接跳转
-                if (username == null || password == null ||
-                    username.isEmpty() || password.isEmpty()) {
+                if (email == null || password == null ||
+                    email.isEmpty() || password.isEmpty()) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
                     // 这段可删，XingChen:这里开发的时候默认是一个指定用户登录的吧，传入后面的界面，后面搞好了可以改
@@ -90,13 +90,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     startActivity(intent);
                     // Failed login
-                    Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                 } else {
 
                     // Implement authentication logic here
-                    // username:user1@test.com password:111111
+                    // email:user1@test.com password:111111
                     FirebaseAuth firebaseAuth = FirebaseAuthManager.getInstance().getmAuth();
-                    firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(LoginActivity.this, task -> {
+                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
