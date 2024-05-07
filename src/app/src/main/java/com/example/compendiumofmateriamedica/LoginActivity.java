@@ -35,7 +35,7 @@ import model.UserTreeManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText editTextUsername, editTextPassword;
+    private EditText editTextEmail, editTextPassword;
     private Button buttonLogin;
 
 
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         userTreeManager = new UserTreeManager(userTree);
 
         // Initialize UI elements
-        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextEmail = findViewById(R.id.editTextEmailAddress);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
 
@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Retrieve entered username and password
-                String username = editTextUsername.getText().toString().trim();
+                String username = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
                 // 添加一个全空白时直接跳转
                 if (username == null || password == null ||
