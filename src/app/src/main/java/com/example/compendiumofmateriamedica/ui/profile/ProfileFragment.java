@@ -79,6 +79,7 @@ public class ProfileFragment extends Fragment {
 
 
         // user post number
+        //TODO: (BUG) the number of post is incorrect
         TextView user_post=binding.userPost;
         mViewModel.updateUserPost(getPostsByUserId(currentUser.getUser_id()));
         mViewModel.getUserPost().observe(getViewLifecycleOwner(), value -> {
