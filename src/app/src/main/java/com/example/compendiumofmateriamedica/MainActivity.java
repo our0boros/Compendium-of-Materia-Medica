@@ -1,6 +1,7 @@
 package com.example.compendiumofmateriamedica;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -82,6 +83,24 @@ public class MainActivity extends AppCompatActivity {
 
         // 隐藏顶部那个活动栏目
         this.getSupportActionBar().hide();
+    }
+    // 从其他activity跳转回来时，检测有没有要求跳转到指定fragment
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        // 可能在活动已经启动时接收到新的 Intent
+        // 如果是从PostShare页面过来的，那么默认返回到Social Fragment页面
+        if (intent.hasExtra("navigate_fragment_id")) {
+            int fragmentId = intent.getIntExtra("navigate_fragment_id", 0);
+            if (fragmentId != 0) {
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+                navController.navigate(fragmentId);
+            }
+        }
+        // 返回Social页面后，刷新页面以显示用户刚刚发布的Post
+        // TODO
+
     }
 
 
@@ -194,7 +213,14 @@ public class MainActivity extends AppCompatActivity {
 
         return randomPosts;
     }
+    public static List<Post> getNewestPosts(int numberOfPosts){
 
+        return null;
+    }
+    public static List<Integer> getNewestPostsId(int numberOfPosts){
+
+        return null;
+    }
     // get all posts by user with uid
     public static List<Post> getPostsByUserId(int uid){
         ArrayList<RBTreeNode<Post>>  user_post_data = postTreeManager.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));

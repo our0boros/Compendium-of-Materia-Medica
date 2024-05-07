@@ -61,6 +61,7 @@ public class PostShareActivity extends AppCompatActivity {
         // 给User和图片赋值
         // 获取从上个activity处传来的User
         currentUser = (User) this.getIntent().getSerializableExtra("User");
+        Log.d("SharePost", "Enter share page, user = " + currentUser.getName() + ".");
         // 获取从上个activity处传来的照片路径
         photoPath = getIntent().getStringExtra("photoPath");
         // 显示照片
@@ -92,8 +93,11 @@ public class PostShareActivity extends AppCompatActivity {
                 Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
                 // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                // 指定返回MainActivity中的SocialFragment
+                intent.putExtra("navigate_fragment_id", R.id.navigation_home);
+                intent.putExtra("User", currentUser);
                 startActivity(intent);
-                // TODO 这里回到mainactivity之后social的post列表应该刷新一遍以显示用户刚刚发布的post
+                // TODO 这里回到mainactivity之后social的post列表应该刷新一遍,以最新发布时间显示，从而展示用户刚刚发布的post
             }
         });
 
@@ -161,6 +165,7 @@ public class PostShareActivity extends AppCompatActivity {
                 Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
                 // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("User", currentUser);
                 startActivity(intent);
             }
         });

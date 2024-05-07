@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,12 +31,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     // a list of posts
     private List<Post> postsList;
     private FragmentManager fragmentManager;
+    private boolean isLiked = false;
     // an inner class to hold and reuse the view
     public static class PostViewHolder extends RecyclerView.ViewHolder{
         public TextView username;
         public ImageView userAvatar;
         public TextView content;
         public ImageView photo;
+        public ImageButton buttonLike;
 
         public PostViewHolder(View itemView){
             super(itemView);
@@ -43,6 +46,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             userAvatar = itemView.findViewById(R.id.post_user_avatar);
             content = itemView.findViewById(R.id.post_content);
             photo = itemView.findViewById(R.id.post_photo);
+            buttonLike = itemView.findViewById(R.id.button_post_like);
         }
     }
 
@@ -91,6 +95,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 photoDialogFragment.show(fragmentManager, "photo_dialog");
             });
 
+            // 设置点赞按钮事件
+            holder.buttonLike.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (!isLiked) {
+                        holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
+                        isLiked = true;
+                    } else {
+                        holder.buttonLike.setImageResource(R.drawable.button_post_like);  // 默认图标
+                        isLiked = false;
+                    }
+                }
+            });
             // set the content of the viewHolder
             // load avatar image from url
             MainActivity.loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar, "Avatar");
