@@ -41,10 +41,23 @@ public class HomeViewModel extends ViewModel {
     }
     // load more post into current posts
     public void loadMorePosts(int number) {
-        List<Post> currentPosts = postsLiveData.getValue();
+/*        List<Post> currentPosts = postsLiveData.getValue();
         List<Post> newPosts = MainActivity.getRandomPosts(number);
         currentPosts.addAll(newPosts);
-        postsLiveData.setValue(currentPosts);
+        postsLiveData.setValue(currentPosts); 我先注释了试NewestPost 看着用*/
+
+
+        MainActivity.getNewestPosts(number, new MainActivity.PostCallback() {
+            @Override
+            public void onCallback(List<Post> newPosts) {
+                List<Post> currentPosts = postsLiveData.getValue();
+                if (currentPosts == null) {
+                    currentPosts = new ArrayList<>();
+                }
+                currentPosts.addAll(newPosts);
+                postsLiveData.postValue(currentPosts); // 确保在主线程上更新 LiveData
+            }
+        });
     }
 
 }

@@ -16,6 +16,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.compendiumofmateriamedica.databinding.ActivityMainBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 
@@ -26,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import model.DataType;
 import model.GeneratorFactory;
@@ -213,9 +217,35 @@ public class MainActivity extends AppCompatActivity {
 
         return randomPosts;
     }
-    public static List<Post> getNewestPosts(int numberOfPosts){
 
-        return null;
+    public interface PostCallback {
+        void onCallback(List<Post> posts);
+    }
+    public static List<Post> getNewestPosts(int numberOfPosts, PostCallback callback){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference postsRef = database.getReference("posts");
+
+        // 查询并排序，获取最新的 10 个 posts
+        postsRef.orderByChild("timestamp").limitToLast(numberOfPosts)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<Post> newestPosts = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Post post = snapshot.getValue(Post.class);
+                            newestPosts.add(post);
+                        }
+                        // 将newestPosts 列表反转，因为返回的数据默认是时间升序
+                        Collections.reverse(newestPosts);
+                        callback.onCallback(newestPosts);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                    }
+                });
+
+       return null;
     }
     public static List<Integer> getNewestPostsId(int numberOfPosts){
 
