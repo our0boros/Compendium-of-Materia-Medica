@@ -2,6 +2,7 @@ package com.example.compendiumofmateriamedica;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 
@@ -101,13 +107,41 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             // TODO: 创建一个用户虚拟类class User, 将这个类的putExtra 到 Main 下面，后续会用到
-                            ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.EMAIL, username);
-                            User user = users.get(0).getValue();
-                            intent.putExtra("User", user);
-                            startActivity(intent);
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference usersRef = database.getReference("users");
+
+                            String emailToSearch = email; // 你要查询的电子邮箱地址
+
+                            usersRef.orderByChild("email").equalTo(emailToSearch)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                    Log.d("FirebaseTest", "DataSnapshot: " + snapshot.getValue());
+                                                    User user = snapshot.getValue(User.class);
+                                                    // 处理用户数据，例如打印信息
+                                                    Log.d("UserData", "User ID: " + user.getUsername() + ", Username: " + user.getUser_id());
+                                                    intent.putExtra("User", user);
+                                                    startActivity(intent);
+                                                }
+                                            } else {
+                                                Log.d("UserData", "No user found with email " + emailToSearch);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            Log.w("UserData", "loadUser:onCancelled", databaseError.toException());
+                                        }
+                                    });
+                            /*
+                            ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.EMAIL, email);
+                            User user = users.get(0).getValue();*/
+
                         } else {
                             // Failed login
-                            Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
