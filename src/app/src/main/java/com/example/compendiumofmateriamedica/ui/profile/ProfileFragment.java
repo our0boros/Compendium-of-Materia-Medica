@@ -3,6 +3,7 @@ package com.example.compendiumofmateriamedica.ui.profile;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
+import android.Manifest;
 import android.content.Context;
 import static com.example.compendiumofmateriamedica.MainActivity.getPostsByUserId;
 
@@ -35,6 +36,7 @@ import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import model.User;
 
@@ -49,6 +51,7 @@ public class ProfileFragment extends Fragment {
     }
     LocationManager locationManager;
     LocationListener locationListener;
+    private TextView user_location;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -75,15 +78,34 @@ public class ProfileFragment extends Fragment {
         mViewModel.getUserName().observe(getViewLifecycleOwner(), user_name::setText);
 
         // user location
-        TextView user_location=binding.userLocation;
+        user_location = binding.userLocation;
+
+
+        // user post number
+        TextView user_post=binding.userPost;
+        mViewModel.updateUserPost(getPostsByUserId(currentUser.getId()));
+        mViewModel.getUserPost().observe(getViewLifecycleOwner(), value -> {
+            // Convert integer value to string and set it to TextView
+            user_post.setText(String.valueOf(value));
+        });
+
+        // other features in profile
+        TextView personal_information=binding.personalInformation;
+        TextView messages=binding.messages;
+        TextView settings=binding.settings;
+
+        TextView user_points = binding.userPoints;
+        TextView user_search=binding.userSearch;
+
         // Initialize LocationManager
         locationManager = (LocationManager) ContextCompat.getSystemService(requireContext(), LocationManager.class);
         // Define a LocationListener
+
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 // Convert latitude and longitude to address
-                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
                 try {
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (addresses != null && !addresses.isEmpty()) {
@@ -111,24 +133,6 @@ public class ProfileFragment extends Fragment {
             // Request location updates
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
-
-        // user post number
-        TextView user_post=binding.userPost;
-        mViewModel.updateUserPost(getPostsByUserId(currentUser.getId()));
-        mViewModel.getUserPost().observe(getViewLifecycleOwner(), value -> {
-            // Convert integer value to string and set it to TextView
-            user_post.setText(String.valueOf(value));
-        });
-
-        // other features in profile
-        TextView personal_information=binding.personalInformation;
-        TextView messages=binding.messages;
-        TextView settings=binding.settings;
-
-        TextView user_points = binding.userPoints;
-        TextView user_search=binding.userSearch;
-
-
 
 
         // jump logic
@@ -179,7 +183,19 @@ public class ProfileFragment extends Fragment {
 
         return root;
     }
-
+    // when fragment is resumed, require location update
+    public void onResume(){
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
+    }
+    // when fragment is paused, close update
+    @Override
+    public void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(locationListener);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
