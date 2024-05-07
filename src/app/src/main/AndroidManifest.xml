@@ -61,7 +61,7 @@
         <!--profile activities-->
 
         <activity
-            android:name=".FirebaseActivity"
+            android:name="model.FirebaseActivity"
             android:exported="false" />
         <activity
             android:name=".EmptySearchResult"
