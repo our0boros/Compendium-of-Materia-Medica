@@ -190,6 +190,7 @@ public class PostShareActivity extends AppCompatActivity {
         String timestamp = sdf.format(now);
 
         // 生成Post并加入到当前app的MainActivity的postTree中
+        // TODO 从firebase中读取最新的posts
         Post post = new Post(postId, uid, plantId, photo, content, timestamp);
         MainActivity.postTreeManager.insert(post.getPost_id(), post);
         Log.d("SharePost", "Post added to the postTree in MainActivity");

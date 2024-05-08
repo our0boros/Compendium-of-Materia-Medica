@@ -26,6 +26,7 @@ public class SocialViewModel extends ViewModel {
     public LiveData<Set<Integer>> likedPosts = _likedPosts;
 
     public SocialViewModel() {
+        // 这里是初始化的数据
         mText = new MutableLiveData<>();
         mText.setValue("This is Class Social.");
         postsLiveData = new MutableLiveData<>(new ArrayList<>());
