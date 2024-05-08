@@ -2,6 +2,12 @@ package model;
 
 import androidx.annotation.NonNull;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author: Haochen Gong
  * @description: Post类
@@ -14,6 +20,9 @@ public class Post implements Comparable<Post>{
     private String photo_url;
     private String content;
     private String timestamp;
+    // user id who liked this post
+    private Set<Integer> likes;
+    private Map<Integer, String> comments;
 
     public Post(){}
 
@@ -24,6 +33,18 @@ public class Post implements Comparable<Post>{
         this.photo_url = photo;
         this.content = content;
         this.timestamp = timestamp;
+        this.likes = new HashSet<>();
+        this.comments = new LinkedHashMap<>();
+    }
+    public Post(int postId, int uid, int plantId, String photo, String content, String timestamp, Set<Integer> likes, Map<Integer, String> comments){
+        this.post_id = postId;
+        this.user_id = uid;
+        this.plant_id = plantId;
+        this.photo_url = photo;
+        this.content = content;
+        this.timestamp = timestamp;
+        this.likes = likes;
+        this.comments = comments;
     }
 
     public int getPost_id() {
@@ -50,6 +71,10 @@ public class Post implements Comparable<Post>{
         return timestamp;
     }
 
+    public Set<Integer> getLikes() { return likes; }
+
+    public Map<Integer, String> getComments() { return comments; }
+
     @Override
     public int compareTo(Post post) {
         return this.timestamp.compareTo(post.timestamp);
@@ -63,6 +88,8 @@ public class Post implements Comparable<Post>{
                 + "PlantID: " + plant_id + ", "
                 + "PhotoUrl: " + photo_url + ", "
                 + "Content: " + content + ", "
-                + "Time: " + timestamp + "}";
+                + "Time: " + timestamp + ", "
+                + "Likes: " + likes.toString() + ", "
+                + "Comments: " + comments.toString() + "}";
     }
 }
