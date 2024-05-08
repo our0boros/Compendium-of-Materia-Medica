@@ -2,9 +2,11 @@ package model;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +23,7 @@ public class Post implements Comparable<Post>{
     private String content;
     private String timestamp;
     // user id who liked this post
-    private Set<Integer> likes;
+    private List<Integer> likes;
     private Map<Integer, String> comments;
 
     public Post(){}
@@ -33,10 +35,10 @@ public class Post implements Comparable<Post>{
         this.photo_url = photo;
         this.content = content;
         this.timestamp = timestamp;
-        this.likes = new HashSet<>();
+        this.likes = new ArrayList<>();
         this.comments = new LinkedHashMap<>();
     }
-    public Post(int postId, int uid, int plantId, String photo, String content, String timestamp, Set<Integer> likes, Map<Integer, String> comments){
+    public Post(int postId, int uid, int plantId, String photo, String content, String timestamp, List<Integer> likes, Map<Integer, String> comments){
         this.post_id = postId;
         this.user_id = uid;
         this.plant_id = plantId;
@@ -71,7 +73,7 @@ public class Post implements Comparable<Post>{
         return timestamp;
     }
 
-    public Set<Integer> getLikes() { return likes; }
+    public List<Integer> getLikes() { return likes; }
 
     public Map<Integer, String> getComments() { return comments; }
 
