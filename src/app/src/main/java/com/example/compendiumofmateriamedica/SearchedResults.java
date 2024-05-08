@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -33,6 +35,8 @@ public class SearchedResults extends AppCompatActivity {
     boolean isPost;
     private PlantTreeManager plantTreeManager;
     private PostTreeManager postTreeManager;
+    private TextView viewmore_1;
+    private TextView viewmore_2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +104,24 @@ public class SearchedResults extends AppCompatActivity {
             throw new RuntimeException(e);
         }
         postResults.setAdapter(rowAdapter);
+
+        // ============================================================================
+        // VIEW MORE
+        viewmore_1 = findViewById(R.id.searchedResultViewmore);
+        viewmore_2 = findViewById(R.id.searchedResultViewmore2);
+
+        viewmore_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gridAdapter.setData(plantIDs);
+            }
+        });
+        viewmore_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rowAdapter.setData(postIDs);
+            }
+        });
     }
 
     // 获取 ArrayList 的前 n 项，如果数量不足 n 项则返回原始列表

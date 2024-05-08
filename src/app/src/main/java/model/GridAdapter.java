@@ -68,4 +68,10 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
             plantSubheading = itemView.findViewById(R.id.plantSubHeading);
         }
     }
+
+    public void setData(ArrayList<Integer> data) {
+        this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
+    }
 }

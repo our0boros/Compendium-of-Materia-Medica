@@ -79,4 +79,10 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
             postContent = itemView.findViewById(R.id.rowLayoutPostContent);
         }
     }
+
+    public void setData(ArrayList<Integer> data) {
+        this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
+    }
 }
