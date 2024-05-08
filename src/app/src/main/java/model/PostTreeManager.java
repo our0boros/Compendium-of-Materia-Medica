@@ -1,5 +1,7 @@
 package model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -38,12 +40,12 @@ public class PostTreeManager implements TreeManager<Post>{
         ArrayList<RBTreeNode<Post>> posts = new ArrayList<>();
 
         if (infoType == PostInfoType.POST_ID) {
-            RBTreeNode<Post> post = postRBTree.search(Integer.parseInt((String) info));
+            RBTreeNode<Post> post = this.postRBTree.search(Integer.parseInt((String) info));
             if(post != null) {
                 posts.add(post);
             }
         } else {
-            search(postRBTree.root, infoType, info, posts);
+            search(this.postRBTree.root, infoType, info, posts);
         }
 
         return posts;

@@ -80,7 +80,6 @@ public class ProfileFragment extends Fragment {
 
 
         // user post number
-        //TODO: (BUG) the number of post is incorrect
         TextView user_post=binding.userPost;
 //        Log.d("ProfileFragment", "Current user's uid is " + currentUser.getUser_id());
 //        Log.d("ProfileFragment", "He has " + getPostsByUserId(currentUser.getUser_id()).size() + " posts.");
