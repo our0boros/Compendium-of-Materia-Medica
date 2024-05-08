@@ -1,8 +1,15 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 /**
  * @author: Haochen Gong
@@ -27,8 +34,32 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                 String content = jsonObject.getString("content");
                 String timestamp = jsonObject.getString("timestamp");
 
+                // 解析 likes
+                List<Integer> likes = new ArrayList<>();
+                JSONArray likesArray = jsonObject.getJSONArray("likes");
+                for (int i = 0; i < likesArray.length(); i++) {
+                    likes.add(likesArray.getInt(i));
+                }
+
+                // 解析 likesRecord
+                List<Integer> likesRecord = new ArrayList<>();
+                JSONArray likesRecordArray = jsonObject.getJSONArray("likesRecord");
+                for (int i = 0; i < likesRecordArray.length(); i++) {
+                    likesRecord.add(likesRecordArray.getInt(i));
+                }
+
+                // 解析 comments
+                Map<Integer, String> comments = new LinkedHashMap<>();
+                JSONObject commentsObject = jsonObject.getJSONObject("comments");
+                Iterator<String> keys = commentsObject.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    String value = commentsObject.getString(key);
+                    comments.put(Integer.parseInt(key), value);
+                }
+
                 // 创建并插入节点
-                Post post = new Post(postId,uid,plantId,photo,content,timestamp);
+                Post post = new Post(postId,uid,plantId,photo,content,timestamp,likes,likesRecord,comments);
                 // 设置post id 作key
                 postRBTree.insert(postId, post);
             } catch (JSONException e) {
