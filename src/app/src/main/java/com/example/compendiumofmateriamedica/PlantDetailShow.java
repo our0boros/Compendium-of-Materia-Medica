@@ -38,11 +38,15 @@ public class PlantDetailShow extends AppCompatActivity {
     private TextView family;
     private TextView description;
 
+    // Xing Chen: 这里假设要putExtra一个植物的id
+    private int plantId;
 
 
-    private RBTree<User> userTree;
-    private RBTree<Plant> plantTree;
-    private RBTree<Post> postTree;
+
+
+//    private RBTree<User> userTree;
+//    private RBTree<Plant> plantTree;
+//    private RBTree<Post> postTree;
 
 
     @Override
@@ -60,7 +64,6 @@ public class PlantDetailShow extends AppCompatActivity {
 //            throw new RuntimeException(e);
 //        }
 
-
         commonName = findViewById(R.id.common_name);
         slug = findViewById(R.id.slug);
         scientificName = findViewById(R.id.scientific_name);
@@ -68,8 +71,9 @@ public class PlantDetailShow extends AppCompatActivity {
         family = findViewById(R.id.family);
         description = findViewById(R.id.description);
 
-        PlantTreeManager plantTreeManager = PlantTreeManager.instance;
-        ArrayList<RBTreeNode<Plant>> plants = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID,77116);
+        // Xing Chen: 这里假设要putExtra一个植物的id，key为"PlantId"
+        plantId = (int) this.getIntent().getSerializableExtra("PlantId");
+        ArrayList<RBTreeNode<Plant>> plants = PlantTreeManager.instance.search(PlantTreeManager.PlantInfoType.ID,plantId);
         RBTreeNode<Plant> node = plants.get(0);
         Plant plant = node.getValue();
 
