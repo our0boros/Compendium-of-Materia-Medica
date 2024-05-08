@@ -101,14 +101,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 @Override
                 public void onClick(View v) {
                     if (!isLiked) {
+                        // 此次为点赞操作
                         holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
                         isLiked = true;
                     } else {
+                        // 此次为取消点赞操作
                         holder.buttonLike.setImageResource(R.drawable.button_post_like);  // 默认图标
                         isLiked = false;
                     }
                 }
             });
+
             // set the content of the viewHolder
             // load avatar image from url
             MainActivity.loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar, "Avatar");

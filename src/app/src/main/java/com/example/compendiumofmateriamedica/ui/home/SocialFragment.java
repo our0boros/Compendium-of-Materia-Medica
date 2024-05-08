@@ -1,7 +1,6 @@
 package com.example.compendiumofmateriamedica.ui.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.compendiumofmateriamedica.R;
-import com.example.compendiumofmateriamedica.databinding.FragmentHomeBinding;
+import com.example.compendiumofmateriamedica.databinding.FragmentSocialBinding;
 
 import java.util.ArrayList;
 
@@ -27,19 +25,19 @@ import model.PostAdapter;
  * @description: A fragment to show the social page in app
  * using HomeViewModel to control the datastream.
  */
-public class HomeFragment extends Fragment {
+public class SocialFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentSocialBinding binding;
 
     private RecyclerView postsRecyclerView;
     private PostAdapter postAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        SocialViewModel homeViewModel =
+                new ViewModelProvider(this).get(SocialViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentSocialBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         // configure RecyclerView
@@ -86,7 +84,6 @@ public class HomeFragment extends Fragment {
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
-
 
     @Override
     public void onDestroyView() {

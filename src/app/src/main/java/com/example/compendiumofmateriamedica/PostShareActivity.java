@@ -23,8 +23,6 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.Manifest;
 
-import com.bumptech.glide.Glide;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -94,7 +92,7 @@ public class PostShareActivity extends AppCompatActivity {
                 // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 // 指定返回MainActivity中的SocialFragment
-                intent.putExtra("navigate_fragment_id", R.id.navigation_home);
+                intent.putExtra("navigate_fragment_id", R.id.navigation_social);
                 intent.putExtra("User", currentUser);
                 startActivity(intent);
                 // TODO 这里回到mainactivity之后social的post列表应该刷新一遍,以最新发布时间显示，从而展示用户刚刚发布的post
