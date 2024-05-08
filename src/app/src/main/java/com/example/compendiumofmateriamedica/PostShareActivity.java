@@ -29,9 +29,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import model.Post;
-import model.PostTreeManager;
-import model.User;
+import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
+import model.Datastructure.User;
 
 
 /**

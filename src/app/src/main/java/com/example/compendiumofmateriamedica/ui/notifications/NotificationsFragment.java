@@ -15,7 +15,7 @@ import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.databinding.FragmentNotificationsBinding;
 import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
 
-import model.User;
+import model.Datastructure.User;
 
 public class NotificationsFragment extends Fragment {
 

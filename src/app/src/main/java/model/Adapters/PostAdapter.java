@@ -1,4 +1,4 @@
-package model;
+package model.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,9 +16,10 @@ import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import model.Datastructure.Post;
+import model.Datastructure.User;
 
 /**
  * @author: Xing Chen

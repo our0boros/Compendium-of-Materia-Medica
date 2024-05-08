@@ -1,4 +1,4 @@
-package model;
+package model.Datastructure;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 /**

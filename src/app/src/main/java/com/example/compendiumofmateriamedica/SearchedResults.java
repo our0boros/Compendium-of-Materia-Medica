@@ -1,16 +1,13 @@
 package com.example.compendiumofmateriamedica;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -19,16 +16,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import model.DataType;
-import model.GeneratorFactory;
-import model.GridAdapter;
-import model.Plant;
-import model.PlantTreeManager;
-import model.Post;
-import model.PostTreeManager;
-import model.RBTree;
-import model.RBTreeNode;
-import model.RowAdapter;
+import model.Adapters.GridAdapter;
+import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
+import model.Datastructure.RBTreeNode;
+import model.Adapters.RowAdapter;
 
 public class SearchedResults extends AppCompatActivity {
     ArrayList<Integer> dataToShow;

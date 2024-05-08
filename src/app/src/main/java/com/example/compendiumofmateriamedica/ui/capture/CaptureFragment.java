@@ -33,7 +33,6 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.PostShareActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.SearchedResults;
@@ -50,15 +49,15 @@ import java.util.Map;
 
 import com.example.compendiumofmateriamedica.EmptySearchResult;
 
-import model.Plant;
-import model.PlantTreeManager;
-import model.Post;
-import model.PostTreeManager;
-import model.RBTreeNode;
-import model.SearchGrammarParser;
-import model.Token;
-import model.Tokenizer;
-import model.User;
+import model.Datastructure.Plant;
+import model.Datastructure.PlantTreeManager;
+import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
+import model.Datastructure.RBTreeNode;
+import model.Parser.SearchGrammarParser;
+import model.Parser.Token;
+import model.Parser.Tokenizer;
+import model.Datastructure.User;
 
 /**
  * @author: Hongjun Xu

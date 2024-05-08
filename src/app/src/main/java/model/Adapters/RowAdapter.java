@@ -1,4 +1,4 @@
-package model;
+package model.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -19,17 +19,19 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
+import model.Datastructure.RBTreeNode;
+import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
+
 public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
     private Context context;
     private ArrayList<Integer> data;
-//    private PostTreeManager postTreeManager;
-//    private UserTreeManager userTreeManager;
 
     public RowAdapter(Context context, ArrayList<Integer> data) throws JSONException, IOException {
         this.context = context;
         this.data = data;
-//        postTreeManager = PostTreeManager((RBTree<Post>) GeneratorFactory.tree(this.context, DataType.POST, R.raw.posts));
-//        userTreeManager = new UserTreeManager((RBTree<User>) GeneratorFactory.tree(this.context, DataType.USER, R.raw.users));
     }
 
     @Override
@@ -56,7 +58,12 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
         String postContent = nodes.get(0).getValue().getContent();
         holder.postContent.setText(postContent);
 
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent();
+            }
+        });
     }
 
     @Override

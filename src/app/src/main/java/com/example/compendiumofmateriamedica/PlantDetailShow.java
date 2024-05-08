@@ -1,28 +1,15 @@
 package com.example.compendiumofmateriamedica;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
-import model.DataType;
-import model.GeneratorFactory;
-import model.Plant;
-import model.PlantTreeManager;
-import model.Post;
-import model.PostTreeManager;
-import model.RBTree;
-import model.RBTreeNode;
-import model.TreeManager;
-import model.User;
+import model.Datastructure.Plant;
+import model.Datastructure.PlantTreeManager;
+import model.Datastructure.RBTreeNode;
 
 
 /**
@@ -73,7 +60,7 @@ public class PlantDetailShow extends AppCompatActivity {
 
         // Xing Chen: 这里假设要putExtra一个植物的id，key为"PlantId"
         plantId = (int) this.getIntent().getSerializableExtra("PlantId");
-        ArrayList<RBTreeNode<Plant>> plants = PlantTreeManager.instance.search(PlantTreeManager.PlantInfoType.ID,plantId);
+        ArrayList<RBTreeNode<Plant>> plants = PlantTreeManager.instance.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(plantId));
         RBTreeNode<Plant> node = plants.get(0);
         Plant plant = node.getValue();
 

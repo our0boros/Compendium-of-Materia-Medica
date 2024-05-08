@@ -1,6 +1,7 @@
-package model;
+package model.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.compendiumofmateriamedica.MainActivity;
+import com.example.compendiumofmateriamedica.PlantDetailShow;
 import com.example.compendiumofmateriamedica.R;
 
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import model.Datastructure.Plant;
+import model.Datastructure.PlantTreeManager;
+import model.Datastructure.RBTreeNode;
 
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder> {
     private Context context;
@@ -48,6 +54,15 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
         String plantFamily = nodes.get(0).getValue().getFamily();
         holder.postContent.setText(plantName);
         holder.plantSubheading.setText(plantFamily);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PlantDetailShow.class);
+                intent.putExtra("PlantId",  nodes.get(0).getValue().getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

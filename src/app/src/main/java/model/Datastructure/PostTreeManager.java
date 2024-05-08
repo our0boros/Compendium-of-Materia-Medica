@@ -1,6 +1,4 @@
-package model;
-
-import android.util.Log;
+package model.Datastructure;
 
 import java.util.ArrayList;
 

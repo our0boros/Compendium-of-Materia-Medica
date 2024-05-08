@@ -18,7 +18,7 @@ import com.example.compendiumofmateriamedica.databinding.FragmentSocialBinding;
 
 import java.util.ArrayList;
 
-import model.PostAdapter;
+import model.Adapters.PostAdapter;
 
 /**
  * @author: Hongjun Xu, Xing Chen
