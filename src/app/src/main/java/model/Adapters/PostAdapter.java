@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
-import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
+import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
 import java.util.List;
 

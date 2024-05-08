@@ -1,4 +1,4 @@
-package com.example.compendiumofmateriamedica.ui.home;
+package com.example.compendiumofmateriamedica.ui.social;
 
 import android.util.Log;
 

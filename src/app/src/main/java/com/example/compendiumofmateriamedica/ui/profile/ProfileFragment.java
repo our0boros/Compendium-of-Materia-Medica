@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.databinding.FragmentProfileBinding;
-import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
+import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
 import java.io.IOException;
 import java.util.List;

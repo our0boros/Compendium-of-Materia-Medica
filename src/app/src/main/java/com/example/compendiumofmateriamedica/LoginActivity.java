@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import model.Datastructure.DataType;
-import model.FirebaseAuthManager;
-import model.GeneratorFactory;
 import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
 import model.Datastructure.Post;
@@ -33,6 +31,8 @@ import model.Datastructure.RBTree;
 import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
+import model.FirebaseAuthManager;
+import model.GeneratorFactory;
 
 /**
  * @author: Tianhao Shan
