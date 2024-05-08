@@ -30,12 +30,9 @@ public class SocialViewModel extends ViewModel {
     // 点赞相关
     private MutableLiveData<Set<Integer>> _likedPosts = new MutableLiveData<>();
     public LiveData<Set<Integer>> likedPosts = _likedPosts;
-
-    public SocialViewModel() {
-        // 这里是初始化的数据
     public boolean isLoading = false;
-
-    public HomeViewModel() {
+    
+    public SocialViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is Class Social.");
         postsLiveData = new MutableLiveData<>(new ArrayList<>());
