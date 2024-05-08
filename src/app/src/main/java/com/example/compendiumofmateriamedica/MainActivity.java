@@ -221,29 +221,56 @@ public class MainActivity extends AppCompatActivity {
     public interface PostCallback {
         void onCallback(List<Post> posts);
     }
-    public static List<Post> getNewestPosts(int numberOfPosts, PostCallback callback){
+    public static List<Post> getNewestPosts(int numberOfPosts, String lastLoadedPostTimestamp, PostCallback callback){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference postsRef = database.getReference("posts");
 
-        // 查询并排序，获取最新的 10 个 posts
-        postsRef.orderByChild("timestamp").limitToLast(numberOfPosts)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<Post> newestPosts = new ArrayList<>();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Post post = snapshot.getValue(Post.class);
-                            newestPosts.add(post);
+        if (lastLoadedPostTimestamp == null) {
+            // 如果没有提供时间戳，加载最新的 posts
+            // 查询并排序，获取最新的 10 个 posts
+            postsRef.orderByChild("timestamp").limitToLast(numberOfPosts)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            List<Post> newestPosts = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Post post = snapshot.getValue(Post.class);
+                                newestPosts.add(post);
+                                // Log each post's timestamp for debugging
+                                Log.d("LoadPosts", "Post loaded: ID=" + post.getPost_id() + ", Timestamp=" + post.getTimestamp());
+                            }
+                            // 将newestPosts 列表反转，因为返回的数据默认是时间升序
+                            Collections.reverse(newestPosts);
+                            callback.onCallback(newestPosts);
                         }
-                        // 将newestPosts 列表反转，因为返回的数据默认是时间升序
-                        Collections.reverse(newestPosts);
-                        callback.onCallback(newestPosts);
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                        }
+                    });
+        } else {
+            // 加载时间戳之前的 posts
+            postsRef.orderByChild("timestamp").endAt(lastLoadedPostTimestamp).limitToLast(numberOfPosts)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            List<Post> newestPosts = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Post post = snapshot.getValue(Post.class);
+                                newestPosts.add(post);
+                            }
+                            // 将newestPosts 列表反转，因为返回的数据默认是时间升序
+                            Collections.reverse(newestPosts);
+                            callback.onCallback(newestPosts);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                        }
+                    });
+        }
+
+
 
        return null;
     }

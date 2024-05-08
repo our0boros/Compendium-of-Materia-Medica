@@ -26,11 +26,14 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
     private final MutableLiveData<List<Post>> postsLiveData;
 
+    public boolean isLoading = false;
+
     public HomeViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is Class Social.");
         postsLiveData = new MutableLiveData<>(new ArrayList<>());
         loadMorePosts(10);
+
     }
 
     public LiveData<List<Post>> getPosts() {
@@ -46,16 +49,34 @@ public class HomeViewModel extends ViewModel {
         currentPosts.addAll(newPosts);
         postsLiveData.setValue(currentPosts); 我先注释了试NewestPost 看着用*/
 
+        if (isLoading) {
+            return;  // 如果已经在加载，则不进行新的加载
+        }
+        isLoading = true;  // 标记正在加载
 
-        MainActivity.getNewestPosts(number, new MainActivity.PostCallback() {
+        List<Post> currentPosts = postsLiveData.getValue();
+        String lastTimestamp = null;
+        if (currentPosts != null && !currentPosts.isEmpty()) {
+            lastTimestamp = currentPosts.get(currentPosts.size() - 1).getTimestamp();
+        }
+
+        Log.d("HomeViewModel", "Loading more posts after timestamp: " + lastTimestamp);
+
+        String finalLastTimestamp = lastTimestamp;
+        MainActivity.getNewestPosts(number, lastTimestamp, new MainActivity.PostCallback() {
             @Override
             public void onCallback(List<Post> newPosts) {
+                if (!newPosts.isEmpty() && newPosts.get(0).getTimestamp().equals(finalLastTimestamp)) {
+                    newPosts.remove(0);  // Remove the first post if it is the same as the last one of the current posts
+                }
                 List<Post> currentPosts = postsLiveData.getValue();
                 if (currentPosts == null) {
                     currentPosts = new ArrayList<>();
                 }
                 currentPosts.addAll(newPosts);
                 postsLiveData.postValue(currentPosts); // 确保在主线程上更新 LiveData
+                isLoading = false;
+                Log.d("HomeViewModel", "Posts loaded, new count: " + currentPosts.size());
             }
         });
     }
