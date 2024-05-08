@@ -1,6 +1,7 @@
 package com.example.compendiumofmateriamedica;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -15,10 +16,18 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.compendiumofmateriamedica.databinding.ActivityMainBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,6 +38,7 @@ import java.util.Set;
 import model.DataType;
 import model.GeneratorFactory;
 import model.Plant;
+import model.PlantTreeManager;
 import model.Post;
 import model.PostTreeManager;
 import model.RBTree;
@@ -40,28 +50,33 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-
-    public RBTree<User> userTree;
-    public RBTree<Plant> plantTree;
-    public RBTree<Post> postTree;
-    public static UserTreeManager userTreeManager;
-    public static PostTreeManager postTreeManager;
+    // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//    public RBTree<User> userTree;
+//    public RBTree<Plant> plantTree;
+//    public RBTree<Post> postTree;
+//
+//    private UserTreeManager userTreeManager;
+//    private PostTreeManager postTreeManager;
+//    private PlantTreeManager plantTreeManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 运行加载数据的函数
-        try {
-            DataInitial();
-        } catch (JSONException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//        // 运行加载数据的函数
+//        try {
+//            DataInitial();
+//        } catch (JSONException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        // 初始化TreeManagers
-        userTreeManager = new UserTreeManager(userTree);
-        postTreeManager = new PostTreeManager(postTree);
+//        // 初始化TreeManagers
+//        userTreeManager = UserTreeManager.instance;
+//        postTreeManager = PostTreeManager.instance;
+//        plantTreeManager = PlantTreeManager.instance;
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -73,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_camera, R.id.navigation_notifications)
+                R.id.navigation_social, R.id.navigation_camera, R.id.navigation_profile)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -82,50 +97,68 @@ public class MainActivity extends AppCompatActivity {
         // 隐藏顶部那个活动栏目
         this.getSupportActionBar().hide();
     }
+    // 从其他activity跳转回来时，检测有没有要求跳转到指定fragment
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        // 可能在活动已经启动时接收到新的 Intent
+        // 如果是从PostShare页面过来的，那么默认返回到Social Fragment页面
+        if (intent.hasExtra("navigate_fragment_id")) {
+            int fragmentId = intent.getIntExtra("navigate_fragment_id", 0);
+            if (fragmentId != 0) {
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+                navController.navigate(fragmentId);
+            }
+        }
+        // 返回Social页面后，刷新页面以显示用户刚刚发布的Post
+        // TODO
 
-
-    /**
-     * @author: Haochen Gong
-     * @description: 加载数据
-     **/
-    private void DataInitial() throws JSONException, IOException {
-        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
     }
 
-    /**
-     * 获取当前 Activity 下的Tree变量
-     * @return
-     */
-    public RBTree<Plant> getPlantTree() {
-        return plantTree;
-    }
+    // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//    /**
+//     * @author: Haochen Gong
+//     * @description: 加载数据
+//     **/
+//    private void DataInitial() throws JSONException, IOException {
+//        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
+//        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
+//        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+//    }
 
-    public RBTree<Post> getPostTree() {
-        return postTree;
-    }
-
-    public RBTree<User> getUserTree() {
-        return userTree;
-    }
+//    /**
+//     * 获取当前 Activity 下的Tree变量
+//     * @return
+//     */
+//    public RBTree<Plant> getPlantTree() {
+//        return plantTree;
+//    }
+//
+//    public RBTree<Post> getPostTree() {
+//        return postTree;
+//    }
+//
+//    public RBTree<User> getUserTree() {
+//        return userTree;
+//    }
 
     /**
      * 根据uid找用户的用户名和头像
      * 下面的方法暂时用于在PostAdapter中，在social界面显示用户名和头像
      */
     public static User findUserById(int uid){
-        if (userTreeManager == null) {
+        if (UserTreeManager.instance == null) {
             Log.w("UserTreeManager", "UserTreeManager未初始化");
             return null;
         }
         // 调用userTreeManager的搜索方法来找用户
-        ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.ID, uid);
+        ArrayList<RBTreeNode<User>> users = UserTreeManager.instance.search(UserTreeManager.UserInfoType.ID, uid);
 
         // 因为UID都是唯一的，所以我们的users中应当只有一个user
         if (!users.isEmpty()) {
             User foundUser = users.get(0).getValue();
-            Log.d("UserTreeManager", "找到用户: " + foundUser.getName());
+            Log.d("UserTreeManager", "找到用户: " + foundUser.getUsername());
             return foundUser;
         } else {
             Log.w("UserTreeManager", "没有找到用户.");
@@ -165,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     public static Post getPostByPostId(int postId) {
-        ArrayList<RBTreeNode<Post>> searchResult = postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
+        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
         if (!searchResult.isEmpty()) {
             return searchResult.get(0).getValue();
         }
@@ -193,10 +226,81 @@ public class MainActivity extends AppCompatActivity {
 
         return randomPosts;
     }
-    public static List<Post> getPostsByUserId(int uid){
-        //TODO
+
+    public interface PostCallback {
+        void onCallback(List<Post> posts);
+    }
+    public static List<Post> getNewestPosts(int numberOfPosts, String lastLoadedPostTimestamp, PostCallback callback){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference postsRef = database.getReference("posts");
+
+        if (lastLoadedPostTimestamp == null) {
+            // 如果没有提供时间戳，加载最新的 posts
+            // 查询并排序，获取最新的 10 个 posts
+            postsRef.orderByChild("timestamp").limitToLast(numberOfPosts)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            List<Post> newestPosts = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Post post = snapshot.getValue(Post.class);
+                                newestPosts.add(post);
+                                // Log each post's timestamp for debugging
+                                Log.d("LoadPosts", "Post loaded: ID=" + post.getPost_id() + ", Timestamp=" + post.getTimestamp());
+                            }
+                            // 将newestPosts 列表反转，因为返回的数据默认是时间升序
+                            Collections.reverse(newestPosts);
+                            callback.onCallback(newestPosts);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                        }
+                    });
+        } else {
+            // 加载时间戳之前的 posts
+            postsRef.orderByChild("timestamp").endAt(lastLoadedPostTimestamp).limitToLast(numberOfPosts)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            List<Post> newestPosts = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Post post = snapshot.getValue(Post.class);
+                                newestPosts.add(post);
+                            }
+                            // 将newestPosts 列表反转，因为返回的数据默认是时间升序
+                            Collections.reverse(newestPosts);
+                            callback.onCallback(newestPosts);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                        }
+                    });
+        }
+
+
+
+       return null;
+    }
+    public static List<Integer> getNewestPostsId(int numberOfPosts){
+
         return null;
     }
+    // get all posts by user with uid
+    public static List<Post> getPostsByUserId(int uid){
+        ArrayList<RBTreeNode<Post>>  user_post_data = PostTreeManager.instance.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+        List<Post> user_post_data_list= new ArrayList<>();
+        if (!user_post_data.isEmpty()) {
+            for (RBTreeNode<Post> node : user_post_data) {
+                user_post_data_list.add(node.getValue());
+            }
+            return user_post_data_list;
+        }
+        Log.w("MainActivity", "Get posts by user id" + uid + " failed, there is no posts of this user");
+        return new ArrayList<>(); // 防止出现null指针
+    }
+
     // 生成十个min-max的不同的随机整数
     public static List<Integer> generateUniqueRandomNumbers(int count, int min, int max) {
         if (count <= 0 || min >= max || count > max - min + 1) {
@@ -215,6 +319,26 @@ public class MainActivity extends AppCompatActivity {
         randomNumbers.addAll(uniqueNumbers);
 
         return randomNumbers;
+    }
+    // 用于处理时间戳
+    public static String formatTimestamp(String timestamp) {
+        LocalDateTime dateTime = LocalDateTime.parse(timestamp);
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter;
+
+        if (dateTime.getYear() == currentDate.getYear()) {
+            if (dateTime.toLocalDate().equals(currentDate)) {
+                // 今天的日期，格式为 "Today HH:mm"
+                formatter = DateTimeFormatter.ofPattern("'Today' HH:mm");
+            } else {
+                // 今年的其他日子，格式为 "MM-dd HH"
+                formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+            }
+        } else {
+            // 不是今年，格式为 "yyyy-MM-dd"
+            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        }
+        return dateTime.format(formatter);
     }
 
 }

@@ -12,9 +12,15 @@ public class UserTreeManager implements TreeManager<User> {
     public enum UserInfoType {
         ID, NAME, EMAIL, AVATAR;
     }
-
-    public UserTreeManager(RBTree<User> userRBTree) {
+    public static UserTreeManager instance;
+    private UserTreeManager(RBTree<User> userRBTree) {
         this.userRBTree = userRBTree;
+    }
+    public static synchronized UserTreeManager getInstance(RBTree<User> userRBTree){
+        if(instance == null){
+            instance = new UserTreeManager(userRBTree);
+        }
+            return instance;
     }
 
     @Override
@@ -54,7 +60,7 @@ public class UserTreeManager implements TreeManager<User> {
         // 如果当前节点的值与搜索的值相等，加入结果列表
         switch (infoType) {
             case NAME:
-                if (node.getValue().getName().equals(info)) {
+                if (node.getValue().getUsername().equals(info)) {
                     users.add(node);
                 }
             case EMAIL:
@@ -62,7 +68,7 @@ public class UserTreeManager implements TreeManager<User> {
                     users.add(node);
                 }
             case AVATAR:
-                if (node.getValue().getAvatar().equals(info)) {
+                if (node.getValue().getAvatar_url().equals(info)) {
                     users.add(node);
                 }
         }

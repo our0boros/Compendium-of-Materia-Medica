@@ -298,5 +298,19 @@ public class RBTree<V> {
     public String toString(){
         return "root" + root;
     }
+
+    /**
+     * Xing Chen
+     * Below are usd wo get the size of this tree
+     */
+    public int size() {
+        return countNodes(root);
+    }
+    private int countNodes(RBTreeNode<V> node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + countNodes(node.getLeft()) + countNodes(node.getRight());
+    }
 }
 

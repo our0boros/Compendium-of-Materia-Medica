@@ -9,14 +9,21 @@ import java.util.ArrayList;
 public class PlantTreeManager implements TreeManager<Plant>{
 
     private final RBTree<Plant> plantRBTree;
+
     public enum PlantInfoType {
         ID, COMMON_NAME, SLUG, SCIENTIFIC_NAME, GENUS, FAMILY;
     }
 
-    public PlantTreeManager(RBTree<Plant> plantRBTree) {
+    public static PlantTreeManager instance;
+    private PlantTreeManager(RBTree<Plant> plantRBTree) {
         this.plantRBTree = plantRBTree;
     }
-
+    public static synchronized PlantTreeManager getInstance(RBTree<Plant> plantRBTree) {
+        if (instance == null) {
+            instance = new PlantTreeManager(plantRBTree);
+        }
+        return instance;
+    }
     @Override
     public void insert(int id, Plant plant) {
         plantRBTree.insert(id,plant);

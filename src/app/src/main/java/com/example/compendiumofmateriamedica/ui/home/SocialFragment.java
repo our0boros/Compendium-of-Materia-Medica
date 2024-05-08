@@ -14,8 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.compendiumofmateriamedica.R;
-import com.example.compendiumofmateriamedica.databinding.FragmentHomeBinding;
+import com.example.compendiumofmateriamedica.databinding.FragmentSocialBinding;
 
 import java.util.ArrayList;
 
@@ -27,19 +26,19 @@ import model.PostAdapter;
  * @description: A fragment to show the social page in app
  * using HomeViewModel to control the datastream.
  */
-public class HomeFragment extends Fragment {
+public class SocialFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentSocialBinding binding;
 
     private RecyclerView postsRecyclerView;
     private PostAdapter postAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        SocialViewModel homeViewModel =
+                new ViewModelProvider(this).get(SocialViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentSocialBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         // configure RecyclerView
@@ -73,9 +72,10 @@ public class HomeFragment extends Fragment {
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
                 // 判断是否滚动到了底部
                 if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                        && firstVisibleItemPosition >= 0) {
+                        && firstVisibleItemPosition >= 0 && !homeViewModel.isLoading) {
                     // 如果滚动到了底部，调用 ViewModel 的 loadMorePosts 方法加载更多帖子
                     homeViewModel.loadMorePosts(5);
+                    Log.d("HomeFragment", "Bottom of list reached, attempting to load more posts.");
                     Toast.makeText(getContext(), "Loaded more posts", Toast.LENGTH_SHORT).show();
                 }
                 //TODO 只有在拉到底后再向下拉起才会触发更新,
@@ -86,7 +86,6 @@ public class HomeFragment extends Fragment {
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
-
 
     @Override
     public void onDestroyView() {

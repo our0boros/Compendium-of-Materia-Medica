@@ -1,10 +1,14 @@
 package com.example.compendiumofmateriamedica.ui.capture;
 
-import static com.example.compendiumofmateriamedica.MainActivity.userTreeManager;
-
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,21 +24,27 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.compendiumofmateriamedica.LoginActivity;
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.PostShareActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.SearchedResults;
 import com.example.compendiumofmateriamedica.databinding.FragmentCaptureBinding;
-import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,7 +59,6 @@ import model.SearchGrammarParser;
 import model.Token;
 import model.Tokenizer;
 import model.User;
-import model.UserTreeManager;
 
 /**
  * @author: Hongjun Xu
@@ -72,7 +81,30 @@ public class CaptureFragment extends Fragment {
     private ArrayAdapter<CharSequence> currentArrayAdapter;
     private ArrayList<String> plantAttributes = new ArrayList<>(Arrays.asList(new String[]{"ID", "COMMON_NAME", "SLUG", "SCIENTIFIC_NAME", "GENUS", "FAMILY"}));
     private ArrayList<String> postAttributes = new ArrayList<>(Arrays.asList(new String[]{"POST_ID", "USER_ID", "PLANT_ID", "TIME", "CONTENT"}));
+    // ================ Xing Chen 拍照用
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private String currentPhotoPath;
 
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    dispatchTakePictureIntent();
+                } else {
+                    // 权限被拒绝,你可以在这里处理,例如显示一个 Toast 提示用户
+                    Toast.makeText(getContext(), "需要相机权限才能拍照", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == getActivity().RESULT_OK) {
+                    Intent intent = new Intent(getActivity(), PostShareActivity.class);
+                    intent.putExtra("photoPath", currentPhotoPath);
+                    intent.putExtra("User", getActivity().getIntent().getSerializableExtra("User"));
+                    startActivity(intent);
+                }
+            });
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         CaptureViewModel captureViewModel =
@@ -86,7 +118,7 @@ public class CaptureFragment extends Fragment {
         greeting = binding.textDashboard;
         // 获取当前用户的名称
         captureViewModel.setGreetingText(getResources().getString(R.string.greeting_msg).replace("[]",
-                currentUser.getName()));
+                currentUser.getUsername()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
 
         // ======================== 搜索逻辑 ========================
@@ -177,8 +209,8 @@ public class CaptureFragment extends Fragment {
                 // =============================================================================
                 // Search with grammar
                 // =============================================================================
-                PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
-                PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
+//                PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
+//                PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
                 // 如果spinner选择的不是第一项【语法搜索】，反之按照当前选择搜索
                 if (spinner.getSelectedItemId() == 0) {
                     // 反之进行语法判定逻辑
@@ -206,7 +238,7 @@ public class CaptureFragment extends Fragment {
                                 int index = plantAttributes.indexOf(entry.getKey());
                                 // 如果没有匹配的则忽略
                                 if (index == -1) continue;
-                                temp = plantTreeManager.search(
+                                temp = PlantTreeManager.instance.search(
                                         PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
                                 // 添加搜索结果
                                 for (Object node : temp) {
@@ -221,7 +253,7 @@ public class CaptureFragment extends Fragment {
                                 Log.println(Log.ASSERT, "DEBUG", "[OnClick] index: " + index);
                                 // 如果没有匹配的则忽略
                                 if (index == -1) continue;
-                                temp = postTreeManager.search(
+                                temp = PostTreeManager.instance.search(
                                         PostTreeManager.PostInfoType.values()[index], entry.getValue());
                                 // 添加搜索结果
                                 for (Object node : temp) {
@@ -287,7 +319,7 @@ public class CaptureFragment extends Fragment {
                     // 搜索节点
                     ArrayList<Integer> plantIDList = new ArrayList<>();
                     if (!isPost) {
-                        ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(
+                        ArrayList<RBTreeNode<Plant>> searchResult = PlantTreeManager.instance.search(
                                 PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                                 + " with: " + textView.getText().toString().trim());
@@ -296,7 +328,7 @@ public class CaptureFragment extends Fragment {
                             plantIDList.add(node.getKey());
                         }
                     } else {
-                        ArrayList<RBTreeNode<Post>> searchResult = postTreeManager.search(
+                        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.instance.search(
                                 PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                                 + " with: " + textView.getText().toString().trim());
@@ -327,18 +359,26 @@ public class CaptureFragment extends Fragment {
         });
 
         // ===================== Xing Chen: 测试用，如果点击拍照按钮，会直接跳转至post share页面，并传入当前用户
-
         captureButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                Intent intent = new Intent(getContext(), PostShareActivity.class);
-                User currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
-                intent.putExtra("User", currentUser);
-                startActivity(intent);
+                Log.d("CaptureFragment", "Capture button clicked");
+                // 启动相机
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    Log.d("CaptureFragment", "Request for camera permission");
+                    // 请求权限
+                    requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                    Log.d("CaptureFragment", "Camera permission grated.");
+                } else {
+                    Log.d("CaptureFragment", "call dispatchTakePictureIntent()");
+                    // 启动相机
+                    dispatchTakePictureIntent();
+                }
             }
         });
 
         // ===================== Xing Chen： 到这里结束
     }
+
 
     @Override
     public void onDestroyView() {
@@ -346,4 +386,54 @@ public class CaptureFragment extends Fragment {
         binding = null;
         currentArrayAdapter = null;
     }
+    // ===================== Xing Chen: 测试用，点击拍照会进入拍照界面
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            Log.d("CaptureFragment", "Camera app is available");
+            // 创建文件来保存图片
+            File photoFile = null;
+            try {
+                Log.d("CaptureFragment", "call createImageFile");
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // 错误处理
+                Log.d("CaptureFragment", "Error creating file: " + ex.getMessage());
+            }
+            // 继续只有当文件被成功创建
+            Log.d("CaptureFragment", "Camera intent is about to launch");
+            if (photoFile != null) {
+                Log.d("CaptureFragment", "File created: " + photoFile.getAbsolutePath());
+                Uri photoURI = FileProvider.getUriForFile(getActivity(),
+                        "com.example.compendiumofmateriamedica.fileprovider",
+                        photoFile);
+                Log.d("CaptureFragment", "URI created");
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                Log.d("CaptureFragment", "Launching camera");
+                cameraLauncher.launch(takePictureIntent);
+            } else {
+                Log.d("CaptureFragment", "Failed to create file");
+            }
+        } else{
+            Log.w("CaptureFragment", "takePictureIntent.resolveActivity(getActivity().getPackageManager()) is null");
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // 创建一个唯一的文件名
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* 前缀 */
+                ".jpg",         /* 后缀 */
+                storageDir      /* 目录 */
+        );
+
+        // 保存文件:路径用于与Intent数据一起传递
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    // ===================== Xing Chen： 到这里结束
 }

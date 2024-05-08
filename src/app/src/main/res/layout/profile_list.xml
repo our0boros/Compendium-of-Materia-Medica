@@ -14,14 +14,14 @@
         android:layout_height="24dp"
         android:src="@drawable/ic_arrow_left_24dp"/>
     <TextView
-        android:id="@+id/profile_second_page_name"
+        android:id="@+id/page_name"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="30sp"
-        android:text="My Search History"/>
+        android:text="List"/>
 
     <!--Same layout for My Post/ Messages-->
 

@@ -34,10 +34,10 @@ public class NotificationsFragment extends Fragment {
 
         // user avatar
         ImageView userAvatar = binding.profileUserAvatar;
-        MainActivity.loadImageFromURL(getContext(), currentUser.getAvatar(), userAvatar, "Avatar");
+        MainActivity.loadImageFromURL(getContext(), currentUser.getAvatar_url(), userAvatar, "Avatar");
         // click on avatar will show big picture
         userAvatar.setOnClickListener(v -> {
-            PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentUser.getAvatar());
+            PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentUser.getAvatar_url());
             photoDialogFragment.show(getParentFragmentManager(), "avatar");
         });
         // username
@@ -47,7 +47,7 @@ public class NotificationsFragment extends Fragment {
         // text 'Posts'
         TextView postsText = binding.profilePostsText;
         // set username
-        notificationsViewModel.updateUsername(currentUser.getName());
+        notificationsViewModel.updateUsername(currentUser.getUsername());
         notificationsViewModel.getUsername().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }

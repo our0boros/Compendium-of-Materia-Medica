@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_social">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.compendiumofmateriamedica.ui.home.HomeFragment"
+        android:id="@+id/navigation_social"
+        android:name="com.example.compendiumofmateriamedica.ui.home.SocialFragment"
         android:label="@string/title_social"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_social" />
 
     <fragment
         android:id="@+id/navigation_camera"
@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_capture" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.compendiumofmateriamedica.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_profile"
+        android:name="com.example.compendiumofmateriamedica.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_profile" />
 </navigation>
