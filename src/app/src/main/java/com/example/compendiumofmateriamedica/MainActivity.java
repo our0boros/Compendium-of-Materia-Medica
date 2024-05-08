@@ -25,6 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_camera, R.id.navigation_profile)
+                R.id.navigation_social, R.id.navigation_camera, R.id.navigation_profile)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -309,6 +312,26 @@ public class MainActivity extends AppCompatActivity {
         randomNumbers.addAll(uniqueNumbers);
 
         return randomNumbers;
+    }
+    // 用于处理时间戳
+    public static String formatTimestamp(String timestamp) {
+        LocalDateTime dateTime = LocalDateTime.parse(timestamp);
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter;
+
+        if (dateTime.getYear() == currentDate.getYear()) {
+            if (dateTime.toLocalDate().equals(currentDate)) {
+                // 今天的日期，格式为 "Today HH:mm"
+                formatter = DateTimeFormatter.ofPattern("'Today' HH:mm");
+            } else {
+                // 今年的其他日子，格式为 "MM-dd HH"
+                formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+            }
+        } else {
+            // 不是今年，格式为 "yyyy-MM-dd"
+            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        }
+        return dateTime.format(formatter);
     }
 
 }

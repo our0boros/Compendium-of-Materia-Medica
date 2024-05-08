@@ -39,6 +39,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public TextView content;
         public ImageView photo;
         public ImageButton buttonLike;
+        public TextView timestamp;
 
         public PostViewHolder(View itemView){
             super(itemView);
@@ -47,6 +48,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             content = itemView.findViewById(R.id.post_content);
             photo = itemView.findViewById(R.id.post_photo);
             buttonLike = itemView.findViewById(R.id.button_post_like);
+            timestamp = itemView.findViewById(R.id.post_timestamp);
         }
     }
 
@@ -83,6 +85,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             String postUserAvatarURL = postUser.getAvatar_url();
             String postPhotoURL = post.getPhoto_url();
             String postContent = post.getContent();
+            String postTimestamp = post.getTimestamp();
+
 
             // 设置头像点击事件
             holder.userAvatar.setOnClickListener(v -> {
@@ -101,19 +105,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 @Override
                 public void onClick(View v) {
                     if (!isLiked) {
+                        // 此次为点赞操作
                         holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
                         isLiked = true;
                     } else {
+                        // 此次为取消点赞操作
                         holder.buttonLike.setImageResource(R.drawable.button_post_like);  // 默认图标
                         isLiked = false;
                     }
                 }
             });
+
             // set the content of the viewHolder
             // load avatar image from url
             MainActivity.loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar, "Avatar");
             holder.username.setText(postUserUsername);
             holder.content.setText(postContent);
+            // 处理时间戳
+            holder.timestamp.setText(MainActivity.formatTimestamp(postTimestamp));
             // load photo from post
             MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
         } else {

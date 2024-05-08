@@ -39,6 +39,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:text="username"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/post_user_avatar"
                 app:layout_constraintTop_toTopOf="@+id/post_user_avatar" />
 
@@ -46,10 +49,9 @@
                 android:id="@+id/post_content"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginTop="8dp"
                 android:text="post content"
                 app:layout_constraintStart_toStartOf="@+id/post_user_name"
-                app:layout_constraintTop_toBottomOf="@+id/post_user_name" />
+                app:layout_constraintTop_toBottomOf="@+id/post_timestamp" />
 
             <ImageView
                 android:id="@+id/post_photo"
@@ -75,6 +77,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/post_photo"
                 app:srcCompat="@drawable/button_post_like" />
+
+            <TextView
+                android:id="@+id/post_timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2024-5-8"
+                android:textColor="#303030"
+                app:layout_constraintStart_toStartOf="@+id/post_user_name"
+                app:layout_constraintTop_toBottomOf="@+id/post_user_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

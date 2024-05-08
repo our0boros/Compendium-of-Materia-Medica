@@ -13,6 +13,7 @@ import com.example.compendiumofmateriamedica.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import model.Post;
 
@@ -21,11 +22,16 @@ import model.Post;
  * @datetime: 2024/5/2
  * @description: A ViewModel to control the datastream.
  */
-public class HomeViewModel extends ViewModel {
+public class SocialViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
     private final MutableLiveData<List<Post>> postsLiveData;
+    // 点赞相关
+    private MutableLiveData<Set<Integer>> _likedPosts = new MutableLiveData<>();
+    public LiveData<Set<Integer>> likedPosts = _likedPosts;
 
+    public SocialViewModel() {
+        // 这里是初始化的数据
     public boolean isLoading = false;
 
     public HomeViewModel() {
@@ -33,7 +39,6 @@ public class HomeViewModel extends ViewModel {
         mText.setValue("This is Class Social.");
         postsLiveData = new MutableLiveData<>(new ArrayList<>());
         loadMorePosts(10);
-
     }
 
     public LiveData<List<Post>> getPosts() {

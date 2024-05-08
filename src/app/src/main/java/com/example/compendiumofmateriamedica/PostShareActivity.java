@@ -92,7 +92,7 @@ public class PostShareActivity extends AppCompatActivity {
                 // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 // 指定返回MainActivity中的SocialFragment
-                intent.putExtra("navigate_fragment_id", R.id.navigation_home);
+                intent.putExtra("navigate_fragment_id", R.id.navigation_social);
                 intent.putExtra("User", currentUser);
                 startActivity(intent);
                 // TODO 这里回到mainactivity之后social的post列表应该刷新一遍,以最新发布时间显示，从而展示用户刚刚发布的post
@@ -190,6 +190,7 @@ public class PostShareActivity extends AppCompatActivity {
         String timestamp = sdf.format(now);
 
         // 生成Post并加入到当前app的MainActivity的postTree中
+        // TODO 从firebase中读取最新的posts
         Post post = new Post(postId, uid, plantId, photo, content, timestamp);
         MainActivity.postTreeManager.insert(post.getPost_id(), post);
         Log.d("SharePost", "Post added to the postTree in MainActivity");
