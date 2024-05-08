@@ -96,8 +96,9 @@ public class ProfileFragment extends Fragment {
         TextView messages=binding.messages;
         TextView settings=binding.settings;
 
-        TextView user_points = binding.userPoints;
-        TextView user_search=binding.userSearch;
+        // deleted profile features (maybe Temporary)
+//        TextView user_points = binding.userPoints;
+//        TextView user_search=binding.userSearch;
 
         // Initialize LocationManager
         locationManager = (LocationManager) ContextCompat.getSystemService(requireContext(), LocationManager.class);
@@ -138,25 +139,25 @@ public class ProfileFragment extends Fragment {
 
 
         // jump logic
-        user_points.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MyPoints.class);
-                startActivity(intent);
-            }
-        });
-        user_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MySearchHistory.class);
-                startActivity(intent);
-            }
-        });
+//        user_points.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), MyPoints.class);
+//                startActivity(intent);
+//            }
+//        });
+//        user_search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), MySearchHistory.class);
+//                startActivity(intent);
+//            }
+//        });
         user_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MyPost.class);
-
+                intent.putExtra("CurrentUser", currentUser); // Pass the current user object
                 startActivity(intent);
             }
         });
@@ -164,6 +165,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PersonalInfo.class);
+                intent.putExtra("CurrentUser", currentUser); // Pass the current user object
                 startActivity(intent);
             }
         });
@@ -171,7 +173,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Messages.class);
-
+                intent.putExtra("CurrentUser", currentUser); // Pass the current user object
                 startActivity(intent);
             }
         });
@@ -179,6 +181,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Settings.class);
+                intent.putExtra("CurrentUser", currentUser); // Pass the current user object
                 startActivity(intent);
             }
         });

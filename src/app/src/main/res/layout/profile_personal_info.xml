@@ -43,7 +43,7 @@
                 android:textSize="25sp"
                 android:layout_gravity="center_vertical" />
             <ImageView
-                android:id="@+id/user_avater"
+                android:id="@+id/user_avatar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"

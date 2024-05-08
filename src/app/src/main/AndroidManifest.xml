@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <queries>
+
         <!-- 如果你的应用中有使用相机的功能 -->
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
@@ -38,28 +39,32 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-        <!--profile activities-->
+        <!-- profile activities -->
         <activity
             android:name=".ui.profile.Messages"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.profile.MyPoints"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.profile.MyPost"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.profile.MySearchHistory"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.profile.PersonalInfo"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.profile.Settings"
-            android:exported="false"/>
-        <!--profile activities-->
-
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.AboutUs"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.PrivacyPolicy"
+            android:exported="false" />
+        <!-- profile activities -->
         <activity
             android:name="model.FirebaseActivity"
             android:exported="false" />

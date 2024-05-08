@@ -45,6 +45,10 @@ public class User implements Comparable<User>, Serializable {
         return avatar_url;
     }
 
+//    public void setAvatar_url(String avatar_url){ this.avatar_url=avatar_url;}
+//
+//    public void setUser_name (String username){ this.username=username;}
+
     @Override
     public int compareTo(User user) {
         return user_id - user.user_id;
