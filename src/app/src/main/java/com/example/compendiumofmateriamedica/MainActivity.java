@@ -22,9 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,16 +32,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import model.DataType;
-import model.GeneratorFactory;
-import model.Plant;
-import model.PlantTreeManager;
-import model.Post;
-import model.PostTreeManager;
-import model.RBTree;
-import model.RBTreeNode;
-import model.User;
-import model.UserTreeManager;
+import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
+import model.Datastructure.RBTreeNode;
+import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
 
 public class MainActivity extends AppCompatActivity {
 

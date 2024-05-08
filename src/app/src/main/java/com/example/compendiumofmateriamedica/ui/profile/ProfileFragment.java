@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +29,13 @@ import android.widget.TextView;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.databinding.FragmentProfileBinding;
-import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
+import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import model.User;
+import model.Datastructure.User;
 
 
 public class ProfileFragment extends Fragment {

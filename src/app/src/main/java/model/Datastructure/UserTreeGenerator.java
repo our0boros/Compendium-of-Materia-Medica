@@ -1,4 +1,4 @@
-package model;
+package model.Datastructure;
 
 import org.json.JSONException;
 import org.json.JSONObject;

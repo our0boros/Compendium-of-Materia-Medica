@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_social"
-        android:name="com.example.compendiumofmateriamedica.ui.home.SocialFragment"
+        android:name="com.example.compendiumofmateriamedica.ui.social.SocialFragment"
         android:label="@string/title_social"
         tools:layout="@layout/fragment_social" />
 

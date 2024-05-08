@@ -1,5 +1,7 @@
 package com.example.compendiumofmateriamedica.ui.capture;
 
+import static com.example.compendiumofmateriamedica.MainActivity.loadImageFromURL;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -31,9 +34,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.PostShareActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.SearchedResults;
@@ -50,15 +53,16 @@ import java.util.Map;
 
 import com.example.compendiumofmateriamedica.EmptySearchResult;
 
-import model.Plant;
-import model.PlantTreeManager;
-import model.Post;
-import model.PostTreeManager;
-import model.RBTreeNode;
-import model.SearchGrammarParser;
-import model.Token;
-import model.Tokenizer;
-import model.User;
+import model.Datastructure.Plant;
+import model.Datastructure.PlantTreeManager;
+import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
+import model.Datastructure.RBTreeNode;
+import model.Datastructure.UserTreeManager;
+import model.Parser.SearchGrammarParser;
+import model.Parser.Token;
+import model.Parser.Tokenizer;
+import model.Datastructure.User;
 
 /**
  * @author: Hongjun Xu
@@ -71,6 +75,7 @@ public class CaptureFragment extends Fragment {
 
     private TextView greeting;
     private EditText searchText;
+    private ImageView userImage;
     private ImageButton captureButton;
     private User currentUser;
     // =========== 当前搜索方法设定 ===========
@@ -120,7 +125,20 @@ public class CaptureFragment extends Fragment {
         captureViewModel.setGreetingText(getResources().getString(R.string.greeting_msg).replace("[]",
                 currentUser.getUsername()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
+        userImage = binding.userHeader;
+        String userURL = UserTreeManager.instance.search(UserTreeManager.UserInfoType.ID, currentUser.getUser_id()).get(0).getValue().getAvatar_url();
+        loadImageFromURL(getContext(), userURL, userImage, "Avatar");
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                FragmentManager fragmentManager = getParentFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.fragment_capture, fragmentManager.findFragmentById(R.id.fragment_profile))
+//                        .addToBackStack(null)
+//                        .commit();
 
+            }
+        });
         // ======================== 搜索逻辑 ========================
         // 搜索内容切换
         plantPostSwitch = binding.plantPostSwitch;

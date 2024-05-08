@@ -1,9 +1,6 @@
-package model;
-
-import android.util.Log;
+package model.Parser;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * @author: Hongjun Xu

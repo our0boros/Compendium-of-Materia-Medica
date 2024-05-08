@@ -1,4 +1,4 @@
-package model;
+package model.Parser;
 
 import android.util.Log;
 
@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Stack;
 
 /**

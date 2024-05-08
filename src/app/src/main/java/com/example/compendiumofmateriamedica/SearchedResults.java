@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONException;
 
@@ -14,23 +16,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import model.DataType;
-import model.GeneratorFactory;
-import model.GridAdapter;
-import model.Plant;
-import model.PlantTreeManager;
-import model.Post;
-import model.PostTreeManager;
-import model.RBTree;
-import model.RBTreeNode;
-import model.RowAdapter;
+import model.Adapters.GridAdapter;
+import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
+import model.Datastructure.RBTreeNode;
+import model.Adapters.RowAdapter;
 
 public class SearchedResults extends AppCompatActivity {
     ArrayList<Integer> dataToShow;
     boolean isPost;
-    // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
-//    private PlantTreeManager plantTreeManager;
-//    private PostTreeManager postTreeManager;
+    private TextView viewmore_1;
+    private TextView viewmore_2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +40,6 @@ public class SearchedResults extends AppCompatActivity {
                     + " " + (isPost ? "Post" : "Plant"));
         }
 
-        // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
-//        // 准备Plant和Post的ID
-//        try {
-//            plantTreeManager = new PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(getBaseContext(), DataType.PLANT, R.raw.plants));
-//            postTreeManager = new PostTreeManager((RBTree<Post>) GeneratorFactory.tree(getBaseContext(), DataType.POST, R.raw.posts));
-//        } catch (JSONException | IOException e) {
-//            throw new RuntimeException(e);
-//        }
 
         ArrayList<Integer> plantIDs, postIDs;
         if (!isPost) {
@@ -99,6 +87,24 @@ public class SearchedResults extends AppCompatActivity {
             throw new RuntimeException(e);
         }
         postResults.setAdapter(rowAdapter);
+
+        // ============================================================================
+        // VIEW MORE
+        viewmore_1 = findViewById(R.id.searchedResultViewmore);
+        viewmore_2 = findViewById(R.id.searchedResultViewmore2);
+
+        viewmore_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gridAdapter.setData(plantIDs);
+            }
+        });
+        viewmore_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rowAdapter.setData(postIDs);
+            }
+        });
     }
 
     // 获取 ArrayList 的前 n 项，如果数量不足 n 项则返回原始列表

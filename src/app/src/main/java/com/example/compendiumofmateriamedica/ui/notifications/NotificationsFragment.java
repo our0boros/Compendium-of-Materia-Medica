@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.databinding.FragmentNotificationsBinding;
-import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
+import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
-import model.User;
+import model.Datastructure.User;
 
 public class NotificationsFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package model;
+package model.Datastructure;
 
 import org.json.JSONObject;
 

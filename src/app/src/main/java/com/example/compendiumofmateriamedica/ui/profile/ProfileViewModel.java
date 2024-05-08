@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import model.Post;
+import model.Datastructure.Post;
 
 public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<String> user_name;

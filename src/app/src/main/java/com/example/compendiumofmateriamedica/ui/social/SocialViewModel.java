@@ -1,9 +1,6 @@
-package com.example.compendiumofmateriamedica.ui.home;
-
-import static java.security.AccessController.getContext;
+package com.example.compendiumofmateriamedica.ui.social;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,11 +9,10 @@ import androidx.lifecycle.ViewModel;
 import com.example.compendiumofmateriamedica.MainActivity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.Post;
+import model.Datastructure.Post;
 
 /**
  * @author: Hongjun Xu, Xing Chen

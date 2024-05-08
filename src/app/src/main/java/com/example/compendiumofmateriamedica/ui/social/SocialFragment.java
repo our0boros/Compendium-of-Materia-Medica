@@ -1,4 +1,4 @@
-package com.example.compendiumofmateriamedica.ui.home;
+package com.example.compendiumofmateriamedica.ui.social;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +18,7 @@ import com.example.compendiumofmateriamedica.databinding.FragmentSocialBinding;
 
 import java.util.ArrayList;
 
-import model.PostAdapter;
+import model.Adapters.PostAdapter;
 
 /**
  * @author: Hongjun Xu, Xing Chen
