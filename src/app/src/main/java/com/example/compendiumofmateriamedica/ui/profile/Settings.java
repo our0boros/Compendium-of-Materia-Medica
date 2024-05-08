@@ -14,7 +14,6 @@ import com.example.compendiumofmateriamedica.LoginActivity;
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 
-import model.User;
 
 public class Settings extends AppCompatActivity {
 

@@ -14,7 +14,7 @@ import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import model.User;
+import model.Datastructure.User;
 
 public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
 
