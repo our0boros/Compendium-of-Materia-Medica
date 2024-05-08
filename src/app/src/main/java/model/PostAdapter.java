@@ -108,12 +108,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 public void onClick(View v) {
                     if (!isLiked) {
                         // 此次为点赞操作
+                        // UI逻辑
                         holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
                         isLiked = true;
+                        //后台逻辑
+
                     } else {
                         // 此次为取消点赞操作
+                        // UI逻辑
                         holder.buttonLike.setImageResource(R.drawable.button_post_like);  // 默认图标
                         isLiked = false;
+                        //后台逻辑
                     }
                 }
             });

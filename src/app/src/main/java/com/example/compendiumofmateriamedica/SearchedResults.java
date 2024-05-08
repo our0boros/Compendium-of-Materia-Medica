@@ -28,8 +28,9 @@ import model.RowAdapter;
 public class SearchedResults extends AppCompatActivity {
     ArrayList<Integer> dataToShow;
     boolean isPost;
-    private PlantTreeManager plantTreeManager;
-    private PostTreeManager postTreeManager;
+    // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//    private PlantTreeManager plantTreeManager;
+//    private PostTreeManager postTreeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,20 +44,21 @@ public class SearchedResults extends AppCompatActivity {
                     + " " + (isPost ? "Post" : "Plant"));
         }
 
-        // 准备Plant和Post的ID
-        try {
-            plantTreeManager = new PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(getBaseContext(), DataType.PLANT, R.raw.plants));
-            postTreeManager = new PostTreeManager((RBTree<Post>) GeneratorFactory.tree(getBaseContext(), DataType.POST, R.raw.posts));
-        } catch (JSONException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//        // 准备Plant和Post的ID
+//        try {
+//            plantTreeManager = new PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(getBaseContext(), DataType.PLANT, R.raw.plants));
+//            postTreeManager = new PostTreeManager((RBTree<Post>) GeneratorFactory.tree(getBaseContext(), DataType.POST, R.raw.posts));
+//        } catch (JSONException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
         ArrayList<Integer> plantIDs, postIDs;
         if (!isPost) {
             plantIDs = dataToShow;
             postIDs = new ArrayList<>();
             for (Integer id : plantIDs) {
-                ArrayList<RBTreeNode<Post>> temp = postTreeManager.search(PostTreeManager.PostInfoType.PLANT_ID, String.valueOf(id));
+                ArrayList<RBTreeNode<Post>> temp = PostTreeManager.instance.search(PostTreeManager.PostInfoType.PLANT_ID, String.valueOf(id));
                 for (RBTreeNode<Post> node : temp) {
                     postIDs.add(node.getValue().getPost_id());
                 }
@@ -65,7 +67,7 @@ public class SearchedResults extends AppCompatActivity {
             postIDs = dataToShow;
             Set<Integer> plantSets = new HashSet<>();
             for (Integer id : postIDs) {
-                ArrayList<RBTreeNode<Post>> temp = postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(id));
+                ArrayList<RBTreeNode<Post>> temp = PostTreeManager.instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(id));
                 if (temp.size() != 0) plantSets.add(temp.get(0).getValue().getPlant_id());
             }
             plantIDs = new ArrayList<>();

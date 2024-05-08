@@ -50,15 +50,15 @@ public class PlantDetailShow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_detail_show);
 
-
-        // 运行加载数据的函数
-        try {
-            DataInitial();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//        // 运行加载数据的函数
+//        try {
+//            DataInitial();
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
         commonName = findViewById(R.id.common_name);
@@ -68,7 +68,7 @@ public class PlantDetailShow extends AppCompatActivity {
         family = findViewById(R.id.family);
         description = findViewById(R.id.description);
 
-        PlantTreeManager plantTreeManager = new PlantTreeManager(plantTree);
+        PlantTreeManager plantTreeManager = PlantTreeManager.instance;
         ArrayList<RBTreeNode<Plant>> plants = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID,77116);
         RBTreeNode<Plant> node = plants.get(0);
         Plant plant = node.getValue();
@@ -82,16 +82,16 @@ public class PlantDetailShow extends AppCompatActivity {
     }
 
 
-
-    /**
-     * @author: Haochen Gong
-     * @description: 加载数据
-     **/
-    private void DataInitial() throws JSONException, IOException {
-        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
-    }
+    // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//    /**
+//     * @author: Haochen Gong
+//     * @description: 加载数据
+//     **/
+//    private void DataInitial() throws JSONException, IOException {
+//        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
+//        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
+//        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+//    }
 
 
 }

@@ -22,12 +22,12 @@ import java.util.ArrayList;
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder> {
     private Context context;
     private ArrayList<Integer> data;
-    private PlantTreeManager plantTreeManager;
+//    private PlantTreeManager plantTreeManager;
 
     public GridAdapter(Context context, ArrayList<Integer> data) throws JSONException, IOException {
         this.context = context;
         this.data = data;
-        plantTreeManager = new PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(this.context, DataType.PLANT, R.raw.plants));
+//        plantTreeManager = PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(this.context, DataType.PLANT, R.raw.plants));
 
     }
 
@@ -40,7 +40,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
-        ArrayList<RBTreeNode<Plant>> nodes = plantTreeManager.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position)));
+        ArrayList<RBTreeNode<Plant>> nodes = PlantTreeManager.instance.search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position)));
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: nodes size " + nodes.size());
         String plantURL = nodes.get(0).getValue().getImage();
         MainActivity.loadImageFromURL(this.context, plantURL, holder.plantImage, "Photo");

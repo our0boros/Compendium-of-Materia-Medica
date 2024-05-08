@@ -26,7 +26,9 @@ import model.DataType;
 import model.FirebaseAuthManager;
 import model.GeneratorFactory;
 import model.Plant;
+import model.PlantTreeManager;
 import model.Post;
+import model.PostTreeManager;
 import model.RBTree;
 import model.RBTreeNode;
 import model.TreeManager;
@@ -51,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
     private RBTree<Post> postTree;
     // 开发用的，这行可删
     private UserTreeManager userTreeManager;
+    private PostTreeManager postTreeManager;
+    private PlantTreeManager plantTreeManager;
 
 
 
@@ -67,8 +71,10 @@ public class LoginActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        // 开发用的，这行可删
-        userTreeManager = new UserTreeManager(userTree);
+        // 创建user，post和plant的管理类的全局单例
+        userTreeManager = UserTreeManager.getInstance(userTree);
+        postTreeManager = PostTreeManager.getInstance(postTree);
+        plantTreeManager = PlantTreeManager.getInstance(plantTree);
 
         // Initialize UI elements
         editTextEmail = findViewById(R.id.editTextEmailAddress);

@@ -7,16 +7,21 @@ import java.util.ArrayList;
  * @description: post树的管理方法类
  **/
 public class PostTreeManager implements TreeManager<Post>{
-
     private final RBTree<Post> postRBTree;
     public enum PostInfoType {
         POST_ID, UID, PLANT_ID, TIME, CONTENT;
     }
-
-    public PostTreeManager(RBTree<Post> postRBTree) {
+    // singleton design pattern
+    public static PostTreeManager instance;
+    private PostTreeManager(RBTree<Post> postRBTree) {
         this.postRBTree = postRBTree;
     }
-
+    public static synchronized PostTreeManager getInstance(RBTree<Post> postRBTree) {
+        if (instance == null) {
+            instance = new PostTreeManager(postRBTree);
+        }
+        return instance;
+    }
     @Override
     public void insert(int postId, Post post) {
         this.postRBTree.insert(postId, post);
@@ -56,21 +61,25 @@ public class PostTreeManager implements TreeManager<Post>{
                 if (node.getValue().getUser_id() == Integer.parseInt((String) info)) {
                     posts.add(node);
                 }
+                break;
             case PLANT_ID:
                 if (node.getValue().getPlant_id() == Integer.parseInt((String) info)) {
                     posts.add(node);
                 }
+                break;
             // 需要提前封装timestamp的处理（这里只是简单的判断了post对象储存的时间戳是否完全一致）
             case TIME:
                 if (node.getValue().getTimestamp().contains((CharSequence) info)) {
                     posts.add(node);
                 }
+                break;
             // 查找内容里是否含有某字符
             case CONTENT:
                 String content = node.getValue().getContent(); // 转换成小写字母
                 if (content.toLowerCase().contains((CharSequence) info)) {
                     posts.add(node);
                 }
+                break;
         }
 
         // 继续在左子树中递归搜索

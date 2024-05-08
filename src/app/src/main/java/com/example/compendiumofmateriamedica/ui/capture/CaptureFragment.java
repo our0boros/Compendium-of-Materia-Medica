@@ -209,8 +209,8 @@ public class CaptureFragment extends Fragment {
                 // =============================================================================
                 // Search with grammar
                 // =============================================================================
-                PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
-                PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
+//                PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
+//                PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
                 // 如果spinner选择的不是第一项【语法搜索】，反之按照当前选择搜索
                 if (spinner.getSelectedItemId() == 0) {
                     // 反之进行语法判定逻辑
@@ -238,7 +238,7 @@ public class CaptureFragment extends Fragment {
                                 int index = plantAttributes.indexOf(entry.getKey());
                                 // 如果没有匹配的则忽略
                                 if (index == -1) continue;
-                                temp = plantTreeManager.search(
+                                temp = PlantTreeManager.instance.search(
                                         PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
                                 // 添加搜索结果
                                 for (Object node : temp) {
@@ -253,7 +253,7 @@ public class CaptureFragment extends Fragment {
                                 Log.println(Log.ASSERT, "DEBUG", "[OnClick] index: " + index);
                                 // 如果没有匹配的则忽略
                                 if (index == -1) continue;
-                                temp = postTreeManager.search(
+                                temp = PostTreeManager.instance.search(
                                         PostTreeManager.PostInfoType.values()[index], entry.getValue());
                                 // 添加搜索结果
                                 for (Object node : temp) {
@@ -319,7 +319,7 @@ public class CaptureFragment extends Fragment {
                     // 搜索节点
                     ArrayList<Integer> plantIDList = new ArrayList<>();
                     if (!isPost) {
-                        ArrayList<RBTreeNode<Plant>> searchResult = plantTreeManager.search(
+                        ArrayList<RBTreeNode<Plant>> searchResult = PlantTreeManager.instance.search(
                                 PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                                 + " with: " + textView.getText().toString().trim());
@@ -328,7 +328,7 @@ public class CaptureFragment extends Fragment {
                             plantIDList.add(node.getKey());
                         }
                     } else {
-                        ArrayList<RBTreeNode<Post>> searchResult = postTreeManager.search(
+                        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.instance.search(
                                 PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                                 + " with: " + textView.getText().toString().trim());

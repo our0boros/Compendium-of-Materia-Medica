@@ -12,9 +12,15 @@ public class UserTreeManager implements TreeManager<User> {
     public enum UserInfoType {
         ID, NAME, EMAIL, AVATAR;
     }
-
-    public UserTreeManager(RBTree<User> userRBTree) {
+    public static UserTreeManager instance;
+    private UserTreeManager(RBTree<User> userRBTree) {
         this.userRBTree = userRBTree;
+    }
+    public static synchronized UserTreeManager getInstance(RBTree<User> userRBTree){
+        if(instance == null){
+            instance = new UserTreeManager(userRBTree);
+        }
+            return instance;
     }
 
     @Override

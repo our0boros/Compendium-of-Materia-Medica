@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,10 @@ public class ProfileFragment extends Fragment {
         // user post number
         //TODO: (BUG) the number of post is incorrect
         TextView user_post=binding.userPost;
+//        Log.d("ProfileFragment", "Current user's uid is " + currentUser.getUser_id());
+//        Log.d("ProfileFragment", "He has " + getPostsByUserId(currentUser.getUser_id()).size() + " posts.");
+//        Log.d("ProfileFragment", "Trying to get a post using post id " + 94);
+//        Log.d("ProfileFragment", "The post content is " + MainActivity.getPostByPostId(94).getContent());
         mViewModel.updateUserPost(getPostsByUserId(currentUser.getUser_id()));
         mViewModel.getUserPost().observe(getViewLifecycleOwner(), value -> {
             // Convert integer value to string and set it to TextView

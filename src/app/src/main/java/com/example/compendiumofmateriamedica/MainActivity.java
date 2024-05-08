@@ -38,6 +38,7 @@ import java.util.Set;
 import model.DataType;
 import model.GeneratorFactory;
 import model.Plant;
+import model.PlantTreeManager;
 import model.Post;
 import model.PostTreeManager;
 import model.RBTree;
@@ -49,28 +50,33 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-
-    public RBTree<User> userTree;
-    public RBTree<Plant> plantTree;
-    public RBTree<Post> postTree;
-    public static UserTreeManager userTreeManager;
-    public static PostTreeManager postTreeManager;
+    // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//    public RBTree<User> userTree;
+//    public RBTree<Plant> plantTree;
+//    public RBTree<Post> postTree;
+//
+//    private UserTreeManager userTreeManager;
+//    private PostTreeManager postTreeManager;
+//    private PlantTreeManager plantTreeManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 运行加载数据的函数
-        try {
-            DataInitial();
-        } catch (JSONException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//        // 运行加载数据的函数
+//        try {
+//            DataInitial();
+//        } catch (JSONException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        // 初始化TreeManagers
-        userTreeManager = new UserTreeManager(userTree);
-        postTreeManager = new PostTreeManager(postTree);
+//        // 初始化TreeManagers
+//        userTreeManager = UserTreeManager.instance;
+//        postTreeManager = PostTreeManager.instance;
+//        plantTreeManager = PlantTreeManager.instance;
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -110,44 +116,44 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
+//    /**
+//     * @author: Haochen Gong
+//     * @description: 加载数据
+//     **/
+//    private void DataInitial() throws JSONException, IOException {
+//        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
+//        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
+//        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+//    }
 
-    /**
-     * @author: Haochen Gong
-     * @description: 加载数据
-     **/
-    private void DataInitial() throws JSONException, IOException {
-        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
-    }
-
-    /**
-     * 获取当前 Activity 下的Tree变量
-     * @return
-     */
-    public RBTree<Plant> getPlantTree() {
-        return plantTree;
-    }
-
-    public RBTree<Post> getPostTree() {
-        return postTree;
-    }
-
-    public RBTree<User> getUserTree() {
-        return userTree;
-    }
+//    /**
+//     * 获取当前 Activity 下的Tree变量
+//     * @return
+//     */
+//    public RBTree<Plant> getPlantTree() {
+//        return plantTree;
+//    }
+//
+//    public RBTree<Post> getPostTree() {
+//        return postTree;
+//    }
+//
+//    public RBTree<User> getUserTree() {
+//        return userTree;
+//    }
 
     /**
      * 根据uid找用户的用户名和头像
      * 下面的方法暂时用于在PostAdapter中，在social界面显示用户名和头像
      */
     public static User findUserById(int uid){
-        if (userTreeManager == null) {
+        if (UserTreeManager.instance == null) {
             Log.w("UserTreeManager", "UserTreeManager未初始化");
             return null;
         }
         // 调用userTreeManager的搜索方法来找用户
-        ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.ID, uid);
+        ArrayList<RBTreeNode<User>> users = UserTreeManager.instance.search(UserTreeManager.UserInfoType.ID, uid);
 
         // 因为UID都是唯一的，所以我们的users中应当只有一个user
         if (!users.isEmpty()) {
@@ -192,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     public static Post getPostByPostId(int postId) {
-        ArrayList<RBTreeNode<Post>> searchResult = postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
+        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
         if (!searchResult.isEmpty()) {
             return searchResult.get(0).getValue();
         }
@@ -283,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // get all posts by user with uid
     public static List<Post> getPostsByUserId(int uid){
-        ArrayList<RBTreeNode<Post>>  user_post_data = postTreeManager.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+        ArrayList<RBTreeNode<Post>>  user_post_data = PostTreeManager.instance.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
         List<Post> user_post_data_list= new ArrayList<>();
         if (!user_post_data.isEmpty()) {
             for (RBTreeNode<Post> node : user_post_data) {
@@ -291,7 +297,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return user_post_data_list;
         }
-        return null;
+        Log.w("MainActivity", "Get posts by user id" + uid + " failed, there is no posts of this user");
+        return new ArrayList<>(); // 防止出现null指针
     }
 
     // 生成十个min-max的不同的随机整数
