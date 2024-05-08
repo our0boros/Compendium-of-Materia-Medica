@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.compendiumofmateriamedica.MainActivity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

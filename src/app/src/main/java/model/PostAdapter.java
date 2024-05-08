@@ -16,7 +16,9 @@ import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author: Xing Chen
