@@ -41,6 +41,13 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                     likes.add(likesArray.getInt(i));
                 }
 
+                // 解析 likesRecord
+                List<Integer> likesRecord = new ArrayList<>();
+                JSONArray likesRecordArray = jsonObject.getJSONArray("likesRecord");
+                for (int i = 0; i < likesRecordArray.length(); i++) {
+                    likesRecord.add(likesRecordArray.getInt(i));
+                }
+
                 // 解析 comments
                 Map<Integer, String> comments = new LinkedHashMap<>();
                 JSONObject commentsObject = jsonObject.getJSONObject("comments");
@@ -52,7 +59,7 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                 }
 
                 // 创建并插入节点
-                Post post = new Post(postId,uid,plantId,photo,content,timestamp,likes,comments);
+                Post post = new Post(postId,uid,plantId,photo,content,timestamp,likes,likesRecord,comments);
                 // 设置post id 作key
                 postRBTree.insert(postId, post);
             } catch (JSONException e) {
