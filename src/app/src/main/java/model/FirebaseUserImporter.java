@@ -15,11 +15,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 
-public class UserFirebaseImporter {
+public class FirebaseUserImporter {
     private FirebaseAuth mAuth;
     private Context mContext; // Context to access application assets
 
-    public UserFirebaseImporter(Context context) {
+    public FirebaseUserImporter(Context context) {
         this.mAuth = FirebaseAuth.getInstance();
         this.mContext = context;
     }
@@ -56,7 +56,7 @@ public class UserFirebaseImporter {
                     if (task.isSuccessful()) {
                         // 注册成功
                         FirebaseUser user = mAuth.getCurrentUser();
-                        System.out.println("User created successfully: " + user.getUid() + user.getEmail());
+                        System.out.println("User created successfully: " + user.getEmail());
                     } else {
                         // 如果注册失败，显示一个消息给用户
                         System.out.println("Failed to create user: " + task.getException().getMessage());

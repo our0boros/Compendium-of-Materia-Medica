@@ -2,6 +2,7 @@ package com.example.compendiumofmateriamedica;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 
@@ -35,7 +41,7 @@ import model.UserTreeManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText editTextUsername, editTextPassword;
+    private EditText editTextEmail, editTextPassword;
     private Button buttonLogin;
 
 
@@ -65,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         userTreeManager = new UserTreeManager(userTree);
 
         // Initialize UI elements
-        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextEmail = findViewById(R.id.editTextEmailAddress);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
 
@@ -73,12 +79,12 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Retrieve entered username and password
-                String username = editTextUsername.getText().toString().trim();
+                // Retrieve entered email and password
+                String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
                 // 添加一个全空白时直接跳转
-                if (username == null || password == null ||
-                    username.isEmpty() || password.isEmpty()) {
+                if (email == null || password == null ||
+                    email.isEmpty() || password.isEmpty()) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
                     // 这段可删，XingChen:这里开发的时候默认是一个指定用户登录的吧，传入后面的界面，后面搞好了可以改
@@ -90,24 +96,52 @@ public class LoginActivity extends AppCompatActivity {
 
                     startActivity(intent);
                     // Failed login
-                    Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                 } else {
 
                     // Implement authentication logic here
-                    // username:user1@test.com password:111111
+                    // email:user1@test.com password:111111
                     FirebaseAuth firebaseAuth = FirebaseAuthManager.getInstance().getmAuth();
-                    firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(LoginActivity.this, task -> {
+                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             // TODO: 创建一个用户虚拟类class User, 将这个类的putExtra 到 Main 下面，后续会用到
-                            ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.EMAIL, username);
-                            User user = users.get(0).getValue();
-                            intent.putExtra("User", user);
-                            startActivity(intent);
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference usersRef = database.getReference("users");
+
+                            String emailToSearch = email; // 你要查询的电子邮箱地址
+
+                            usersRef.orderByChild("email").equalTo(emailToSearch)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                    Log.d("FirebaseTest", "DataSnapshot: " + snapshot.getValue());
+                                                    User user = snapshot.getValue(User.class);
+                                                    // 处理用户数据，例如打印信息
+                                                    Log.d("UserData", "User ID: " + user.getUsername() + ", Username: " + user.getUser_id());
+                                                    intent.putExtra("User", user);
+                                                    startActivity(intent);
+                                                }
+                                            } else {
+                                                Log.d("UserData", "No user found with email " + emailToSearch);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            Log.w("UserData", "loadUser:onCancelled", databaseError.toException());
+                                        }
+                                    });
+                            /*
+                            ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.EMAIL, email);
+                            User user = users.get(0).getValue();*/
+
                         } else {
                             // Failed login
-                            Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

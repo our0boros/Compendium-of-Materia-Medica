@@ -1,10 +1,8 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.Manifest;
-import android.content.Context;
+
 import static com.example.compendiumofmateriamedica.MainActivity.getPostsByUserId;
 
 import androidx.core.content.ContextCompat;
@@ -36,7 +34,6 @@ import com.example.compendiumofmateriamedica.ui.home.PhotoDialogFragment;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import model.User;
 
@@ -65,16 +62,16 @@ public class ProfileFragment extends Fragment {
 
         // user avatar
         ImageView userAvatar = binding.userAvater;
-        MainActivity.loadImageFromURL(getContext(), currentUser.getAvatar(), userAvatar, "Avatar");
+        MainActivity.loadImageFromURL(getContext(), currentUser.getAvatar_url(), userAvatar, "Avatar");
         // click on avatar will show big picture
         userAvatar.setOnClickListener(v -> {
-            PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentUser.getAvatar());
+            PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentUser.getAvatar_url());
             photoDialogFragment.show(getParentFragmentManager(), "avatar");
         });
 
         // user name
         TextView user_name=binding.userName;
-        mViewModel.updateUserName(currentUser.getName());
+        mViewModel.updateUserName(currentUser.getUsername());
         mViewModel.getUserName().observe(getViewLifecycleOwner(), user_name::setText);
 
         // user location
@@ -82,8 +79,9 @@ public class ProfileFragment extends Fragment {
 
 
         // user post number
+        //TODO: (BUG) the number of post is incorrect
         TextView user_post=binding.userPost;
-        mViewModel.updateUserPost(getPostsByUserId(currentUser.getId()));
+        mViewModel.updateUserPost(getPostsByUserId(currentUser.getUser_id()));
         mViewModel.getUserPost().observe(getViewLifecycleOwner(), value -> {
             // Convert integer value to string and set it to TextView
             user_post.setText(String.valueOf(value));

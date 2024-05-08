@@ -6,14 +6,14 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Username EditText -->
+    <!-- Email EditText -->
 
     <EditText
-        android:id="@+id/editTextUsername"
+        android:id="@+id/editTextEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Username"
-        android:inputType="text" />
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
 
     <!-- Password EditText -->
     <EditText
@@ -29,5 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login" />
+
+
 
 </LinearLayout>

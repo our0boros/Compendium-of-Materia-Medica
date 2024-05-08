@@ -1,14 +1,11 @@
 package com.example.compendiumofmateriamedica;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -61,7 +58,7 @@ public class SearchedResults extends AppCompatActivity {
             for (Integer id : plantIDs) {
                 ArrayList<RBTreeNode<Post>> temp = postTreeManager.search(PostTreeManager.PostInfoType.PLANT_ID, String.valueOf(id));
                 for (RBTreeNode<Post> node : temp) {
-                    postIDs.add(node.getValue().getPostId());
+                    postIDs.add(node.getValue().getPost_id());
                 }
             }
         } else {
@@ -69,7 +66,7 @@ public class SearchedResults extends AppCompatActivity {
             Set<Integer> plantSets = new HashSet<>();
             for (Integer id : postIDs) {
                 ArrayList<RBTreeNode<Post>> temp = postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(id));
-                if (temp.size() != 0) plantSets.add(temp.get(0).getValue().getPlantId());
+                if (temp.size() != 0) plantSets.add(temp.get(0).getValue().getPlant_id());
             }
             plantIDs = new ArrayList<>();
             plantIDs.addAll(plantSets);

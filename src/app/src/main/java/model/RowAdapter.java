@@ -43,15 +43,15 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
         ArrayList<RBTreeNode<Post>> nodes = postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(data.get(position)));
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: nodes size " + nodes.size());
         // 加载Post图片
-        String postURL = nodes.get(0).getValue().getPhoto();
+        String postURL = nodes.get(0).getValue().getPhoto_url();
         MainActivity.loadImageFromURL(this.context, postURL, holder.postImage, "Photo");
         // 加载用户图片
-        RBTreeNode<User> user = userTreeManager.search(UserTreeManager.UserInfoType.ID, nodes.get(0).getValue().getUid()).get(0);
-        String userURL = user.getValue().getAvatar();
+        RBTreeNode<User> user = userTreeManager.search(UserTreeManager.UserInfoType.ID, nodes.get(0).getValue().getUser_id()).get(0);
+        String userURL = user.getValue().getAvatar_url();
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: user avatar: " + userURL);
         MainActivity.loadImageFromURL(this.context, userURL, holder.userImage, "Avatar");
         // 加载用户名字
-        holder.userName.setText(user.getValue().getName());
+        holder.userName.setText(user.getValue().getUsername());
 
         String postContent = nodes.get(0).getValue().getContent();
         holder.postContent.setText(postContent);
