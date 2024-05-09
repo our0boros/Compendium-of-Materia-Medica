@@ -1,16 +1,21 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Plant_Identification {
 
@@ -106,45 +111,77 @@ public class Plant_Identification {
 	}
 
 	public static String getPlantNetAPIResult(String imagePath) {
-		StringBuilder response = new StringBuilder();
-		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R";
-		String PROJECT = "all"; // 尝试特定的植物区域: "weurope", "canada"…
-		String API_ENDPOINT = "https://my-api.plantnet.org/v2/identify/" + PROJECT + "?api-key=" + API_KEY;
+		StringBuffer response = new StringBuffer();
+
+		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // Your API_KEY here
+		String PROJECT = "all"; // try specific floras: "weurope", "canada"…
+		String api_endpoint = String.format("https://my-api.plantnet.org/v2/identify/%s?api-key=%s",
+				PROJECT, API_KEY);
+
+		File imageFile = new File(imagePath);
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("organs", new String[]{"flower"}); // leaf
 
 		try {
-			// 读取图像文件并转换为字节数组
-			byte[] imageData = Files.readAllBytes(new File(imagePath).toPath());
-
-			// 构建 HTTP 请求
-			HttpURLConnection connection = (HttpURLConnection) new URL(API_ENDPOINT).openConnection();
+			URL url = new URL(api_endpoint);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoOutput(true);
-			connection.setRequestProperty("Content-Type", "multipart/form-data");
-			// 构建请求体
-			try (OutputStream out = connection.getOutputStream()) {
-				// 写入图像数据
-				out.write(("--boundary\r\n").getBytes());
-				out.write(("Content-Disposition: form-data; name=\"images\"; filename=\"image_1.jpeg\"\r\n").getBytes());
-				out.write(("Content-Type: image/jpeg\r\n\r\n").getBytes());
-				out.write(imageData);
-				out.write(("\r\n--boundary\r\n").getBytes());
+			connection.setDoInput(true);
+
+			String boundary = UUID.randomUUID().toString();
+			connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+			OutputStream outputStream = connection.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+			// Adding data
+			for (Map.Entry<String, Object> entry : data.entrySet()) {
+				writer.write("--" + boundary + "\r\n");
+				writer.write("Content-Disposition: form-data; name=\"" + entry.getKey() + "\"\r\n\r\n");
+				if (entry.getValue() instanceof String) {
+					writer.write((String) entry.getValue() + "\r\n");
+				} else if (entry.getValue() instanceof String[]) {
+					String[] values = (String[]) entry.getValue();
+					for (String value : values) {
+						writer.write(value + "\r\n");
+					}
+				}
 			}
 
-			// 发送请求并获取响应
-			int responseCode = connection.getResponseCode();
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					response.append(line);
-				}
-				reader.close();
-//				System.out.println("Response Code: " + responseCode);
-//				System.out.println("Response Body:\n" + response.toString());
-			} else {
-//				System.out.println("Request failed: " + responseCode + " " + connection.getResponseMessage());
-				return "ERROR" + responseCode + " " + connection.getResponseMessage();
+			// Adding file
+			writer.write("--" + boundary + "\r\n");
+			writer.write("Content-Disposition: form-data; name=\"images\"; filename=\"" + imageFile.getName() + "\"\r\n");
+			writer.write("Content-Type: " + HttpURLConnection.guessContentTypeFromName(imageFile.getName()) + "\r\n\r\n");
+			writer.flush();
+
+			FileInputStream fileInputStream = new FileInputStream(imageFile);
+			byte[] buffer = new byte[4096];
+			int bytesRead;
+			while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, bytesRead);
 			}
+			outputStream.flush();
+			fileInputStream.close();
+
+			writer.write("\r\n");
+			writer.write("--" + boundary + "--\r\n");
+			writer.close();
+
+			int responseCode = connection.getResponseCode();
+//			System.out.println("Response Code: " + responseCode);
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String inputLine;
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+//			System.out.println("Response: " + response.toString());
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
