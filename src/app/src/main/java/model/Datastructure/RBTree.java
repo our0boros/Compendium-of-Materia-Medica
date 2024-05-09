@@ -2,6 +2,9 @@ package model.Datastructure;
 
 import androidx.annotation.NonNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author: Haochen Gong
  * @description: 红黑树类
@@ -311,6 +314,21 @@ public class RBTree<V> {
             return 0;
         }
         return 1 + countNodes(node.getLeft()) + countNodes(node.getRight());
+    }
+
+    // 添加用于遍历的方法
+    private void inorderTraversal(RBTreeNode<V> node, Set<V> set) {
+        if (node != null) {
+            inorderTraversal(node.getLeft(), set);
+            set.add(node.getValue());
+            inorderTraversal(node.getRight(), set);
+        }
+    }
+    // for getAll
+    public Set<V> getAllElements() {
+        Set<V> resultSet = new HashSet<>();
+        inorderTraversal(root, resultSet);
+        return resultSet;
     }
 }
 

@@ -1,6 +1,8 @@
 package model.Datastructure;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author: Haochen Gong
@@ -85,6 +87,8 @@ public class UserTreeManager implements TreeManager<User> {
         search(node.getRight(), infoType, info, users);
     }
 
-
+    public Set<User> getAllUser() {
+        return this.userRBTree.getAllElements();
+    }
 }
 
