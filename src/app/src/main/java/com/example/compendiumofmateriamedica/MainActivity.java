@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        eventHandler = NewEventHandler.getInstance(new ArrayList<>());
+        eventHandler = NewEventHandler.getInstance();
         // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
 //        // 运行加载数据的函数
 //        try {
@@ -111,59 +111,58 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NotificationService.class);
         intent.putExtra("User", this.getIntent().getSerializableExtra("User"));
         startService(intent);
-        // 注册 EventBus
-        EventBus.getDefault().register(this);
+//        // 注册 EventBus
+//        EventBus.getDefault().register(this);
     }
     @Override
     protected void onStop() {
         super.onStop();
-        // 停止通知服务
-        Intent intent = new Intent(this, NotificationService.class);
-        stopService(intent);
-        // 注销 EventBus
-        EventBus.getDefault().unregister(this);
+//        // 停止通知服务
+//        Intent intent = new Intent(this, NotificationService.class);
+//        stopService(intent);
+//        // 注销 EventBus
+//        EventBus.getDefault().unregister(this);
     }
 
-    /**
-     * 收到通知时间时，显示通知
-     * @param event
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNewLikeEvent(NewEvent event) {
-        // 显示点赞通知
-        showNotification(event.getEventUser().getUsername() + " liked your post (Post id: " + event.getPostId() + ")");
-        // 添加时间到EventHandler中
-        eventHandler.addEvent(event);
-    }
+//    /**
+//     * 收到通知时间时，显示通知
+//     * @param event
+//     */
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onNewLikeEvent(NewEvent event) {
+//        // 显示点赞通知
+//        showNotification(event.getEventUser().getUsername() + " liked your post (Post id: " + event.getPostId() + ")");
+//        // 添加时间到EventHandler中
+//        eventHandler.addEvent(event);
+//    }
 
-    /**
-     * 显示一个弹窗页面
-     * @param message
-     */
-    private void showNotification(String message) {
-        // 在这里显示顶部弹出窗口,显示点赞通知
-        // 可以使用 Toast 或自定义的弹窗来显示
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        // TODO 用系统通知显示
-        // 检查通道是否已创建
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // 请求权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 200);
-        }
-        // 已经有权限，可以创建通知渠道
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("YOUR_CHANNEL_ID", "Channel human readable title", NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
-        }
-        Notification notification = new NotificationCompat.Builder(this, "YOUR_CHANNEL_ID")
-                .setContentTitle("New Like")
-                .setContentText(message)
-                .setSmallIcon(R.drawable.button_post_unlike)
-                .setAutoCancel(true)
-                .build();
-        notificationManager.notify(1, notification); // 1是这个通知的唯一ID
-    }
+//    /**
+//     * 显示一个弹窗页面
+//     * @param message
+//     */
+//    private void showNotification(String message) {
+//        // 在这里显示顶部弹出窗口,显示点赞通知
+//        // 可以使用 Toast 或自定义的弹窗来显示
+//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//        // 检查通道是否已创建
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+//            // 请求权限
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 200);
+//        }
+//        // 已经有权限，可以创建通知渠道
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            NotificationChannel channel = new NotificationChannel("YOUR_CHANNEL_ID", "Channel human readable title", NotificationManager.IMPORTANCE_HIGH);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//        Notification notification = new NotificationCompat.Builder(this, "YOUR_CHANNEL_ID")
+//                .setContentTitle("New Like")
+//                .setContentText(message)
+//                .setSmallIcon(R.drawable.button_post_unlike)
+//                .setAutoCancel(true)
+//                .build();
+//        notificationManager.notify(1, notification); // 1是这个通知的唯一ID
+//    }
     // 从其他activity跳转回来时，检测有没有要求跳转到指定fragment
     @Override
     protected void onNewIntent(Intent intent) {

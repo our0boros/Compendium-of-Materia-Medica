@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.compendiumofmateriamedica.LoginActivity;
 import com.example.compendiumofmateriamedica.MainActivity;
+import com.example.compendiumofmateriamedica.NotificationService;
 import com.example.compendiumofmateriamedica.R;
 
 
@@ -68,6 +69,10 @@ public class Settings extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 停止通知服务
+                Intent intentService = new Intent(Settings.this, NotificationService.class);
+                stopService(intentService);
+
                 // Navigate to the login activity
                 Intent intent = new Intent(Settings.this, LoginActivity.class);
                 // Clear the back stack so that the user can't navigate back to this activity
