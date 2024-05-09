@@ -233,7 +233,7 @@ public class ProfileFragment extends Fragment {
 
     private void updateNotificationCount() {
         // 获取当前用户的未读通知数量,并更新界面
-        notificationCountTextView.setText(eventHandler.getEventList().size());
+//        notificationCountTextView.setText(eventHandler.getEventList().size());
     }
 
 }
