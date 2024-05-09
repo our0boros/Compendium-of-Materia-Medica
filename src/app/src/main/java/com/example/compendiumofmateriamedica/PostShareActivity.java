@@ -23,6 +23,10 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.Manifest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +36,7 @@ import java.util.Locale;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
+import model.Plant_Identification;
 
 
 /**
@@ -66,8 +71,27 @@ public class PostShareActivity extends AppCompatActivity {
         // 显示照片
         ImageView photo = findViewById(R.id.imageView_post_share_photo);
         MainActivity.loadImageFromURL(this, photoPath, photo, "Photo");
+        // ======================================================================
+        // 对接API
+        // 创建网络请求线程
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = null;
+                try {
+                    // result = Plant_Identification.getAPIResult(photoPath);
+                    // Assume we get api result - only 50 tokens left
+                    result = "{\"access_token\": \"VaoHnUbHUUTrlUq\", \"model_version\": \"plant_id:3.7.0\", \"custom_id\": null, \"input\": {\"latitude\": null, \"longitude\": null, \"images\": [\"https://plant.id/media/imgs/68e89f3331274854ae9eaab6cb9c3bab.jpg\"], \"datetime\": \"2024-05-09T12:51:06.506002+00:00\"}, \"result\": {\"is_plant\": {\"probability\": 0.005755537, \"threshold\": 0.5, \"binary\": false}, \"classification\": {\"suggestions\": [{\"id\": \"c4f244a57446113e\", \"name\": \"Kalanchoe\", \"probability\": 0.2058, \"details\": {\"language\": \"en\", \"entity_id\": \"c4f244a57446113e\"}}, {\"id\": \"052682b3b44e8310\", \"name\": \"Crassula ovata\", \"probability\": 0.1916, \"details\": {\"language\": \"en\", \"entity_id\": \"052682b3b44e8310\"}}, {\"id\": \"fb1f0f0b31562030\", \"name\": \"Dracaena trifasciata\", \"probability\": 0.1372, \"details\": {\"language\": \"en\", \"entity_id\": \"fb1f0f0b31562030\"}}, {\"id\": \"7201879bcfec317f\", \"name\": \"Albuca\", \"probability\": 0.122, \"details\": {\"language\": \"en\", \"entity_id\": \"7201879bcfec317f\"}}, {\"id\": \"62b9d1fe2846a316\", \"name\": \"Cucurbita pepo\", \"probability\": 0.1071, \"details\": {\"language\": \"en\", \"entity_id\": \"62b9d1fe2846a316\"}}, {\"id\": \"aa8668f208a31ae8\", \"name\": \"Curio\", \"probability\": 0.0965, \"details\": {\"language\": \"en\", \"entity_id\": \"aa8668f208a31ae8\"}}, {\"id\": \"9e6267a55d42384c\", \"name\": \"Ornithogalum\", \"probability\": 0.0555, \"details\": {\"language\": \"en\", \"entity_id\": \"9e6267a55d42384c\"}}, {\"id\": \"c1396f242d8786ff\", \"name\": \"Cucumis sativus\", \"probability\": 0.0441, \"details\": {\"language\": \"en\", \"entity_id\": \"c1396f242d8786ff\"}}, {\"id\": \"4ba05f1050481731\", \"name\": \"Aloe vera\", \"probability\": 0.0216, \"details\": {\"language\": \"en\", \"entity_id\": \"4ba05f1050481731\"}}, {\"id\": \"f3a94555ecc4cfde\", \"name\": \"Sedum \\u00d7 rubrotinctum\", \"probability\": 0.0186, \"details\": {\"language\": \"en\", \"entity_id\": \"f3a94555ecc4cfde\"}}]}}, \"status\": \"COMPLETED\", \"sla_compliant_client\": true, \"sla_compliant_system\": true, \"created\": 1715259066.506002, \"completed\": 1715259066.703937}"
 
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Log.println(Log.ASSERT, "API RESULT", result);
+            }
+        });
+        thread.start(); // 启动线程
 
+        // ======================================================================
         // post 内容
         EditText postContent = findViewById(R.id.editText_post_content);
 
