@@ -71,14 +71,14 @@ public class MessagesActivity extends AppCompatActivity {
 
 
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNewLikeEvent(NewEvent event) {
-        // 将新的点赞事件添加到通知列表中
-        notificationAdapter.getNotifications().add(event);
-        notificationAdapter.notifyDataSetChanged();
-
-        eventHandler.addEvent(event);
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onNewLikeEvent(NewEvent event) {
+//        // 将新的点赞事件添加到通知列表中
+//        notificationAdapter.getNotifications().add(event);
+//        notificationAdapter.notifyDataSetChanged();
+//
+//        eventHandler.addEvent(event);
+//    }
 //    private List<Notification> getNotificationsForUser(int userId) {
 //        List<Notification> notifications = new ArrayList<>();
 //        List<Post> posts = PostTreeManager.getInstance().getPostsByUserId(userId);
