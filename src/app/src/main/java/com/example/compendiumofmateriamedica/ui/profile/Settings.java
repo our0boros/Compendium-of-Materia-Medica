@@ -30,7 +30,7 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.profile_settings);
 
         // TODO: keep or remove 'languages' feature
-        languages = findViewById(R.id.languages);
+//        languages = findViewById(R.id.languages);
         // content pages
         privacy_policy = findViewById(R.id.privacy_policy);
         about_us= findViewById(R.id.about_us);
