@@ -23,6 +23,10 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.Manifest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +36,7 @@ import java.util.Locale;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
+import model.Plant_Identification;
 
 
 /**
@@ -66,8 +71,24 @@ public class PostShareActivity extends AppCompatActivity {
         // 显示照片
         ImageView photo = findViewById(R.id.imageView_post_share_photo);
         MainActivity.loadImageFromURL(this, photoPath, photo, "Photo");
+        // ======================================================================
+        // 对接API
+        // 创建网络请求线程
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = null;
+                try {
+                    result = Plant_Identification.getAPIResult(photoPath);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Log.println(Log.ASSERT, "API RESULT", result);
+            }
+        });
+        thread.start(); // 启动线程
 
-
+        // ======================================================================
         // post 内容
         EditText postContent = findViewById(R.id.editText_post_content);
 

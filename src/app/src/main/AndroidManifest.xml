@@ -30,6 +30,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CompendiumOfMateriaMedica"
         tools:targetApi="31">
+        <activity
+            android:name=".PostDetailShow"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -39,15 +42,11 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>
-
-        <!-- Notification Service -->
+        </provider> <!-- Notification Service -->
         <service
             android:name=".NotificationService"
             android:enabled="true"
-            android:exported="false" />
-
-        <!-- profile activities -->
+            android:exported="false" /> <!-- profile activities -->
         <activity
             android:name=".ui.profile.MessagesActivity"
             android:exported="false" />
@@ -71,8 +70,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.profile.PrivacyPolicy"
-            android:exported="false" />
-        <!-- profile activities -->
+            android:exported="false" /> <!-- profile activities -->
         <activity
             android:name="model.FirebaseActivity"
             android:exported="false" />
