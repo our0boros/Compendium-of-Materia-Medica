@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Glide.with(context)
              .load(url)
-             .placeholder(errorImage) // 加载中的占位图
+             .placeholder(R.drawable.loading_image) // 加载中的占位图
              .error(errorImage) // 加载失败的错误图
              .into(imageView);
     }
