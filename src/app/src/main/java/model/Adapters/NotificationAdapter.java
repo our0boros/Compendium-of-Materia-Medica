@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.compendiumofmateriamedica.MainActivity;
-import com.example.compendiumofmateriamedica.NewEvent;
+import model.Datastructure.NewEvent;
 import com.example.compendiumofmateriamedica.R;
 
 import java.util.ArrayList;
@@ -44,8 +44,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             userActivityTime = itemView.findViewById(R.id.message_user_activity_time);
         }
     }
-    public NotificationAdapter(Context context) {
+    public NotificationAdapter(Context context, List<NewEvent> notifications) {
         this.context = context;
+        this.notifications = notifications;
     }
     @NonNull
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType){

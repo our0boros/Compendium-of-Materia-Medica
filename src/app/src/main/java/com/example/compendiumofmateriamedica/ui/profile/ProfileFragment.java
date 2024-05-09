@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import model.Datastructure.NewEventHandler;
 import model.Datastructure.User;
 
 
@@ -45,7 +46,7 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel mViewModel;
     private FragmentProfileBinding binding;
     private User currentUser;
-    private int currentUserUnreadNotificationsCount;
+    private NewEventHandler eventHandler;
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
@@ -66,6 +67,7 @@ public class ProfileFragment extends Fragment {
         View root = binding.getRoot();
 
         currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
+        eventHandler = NewEventHandler.getInstance();
 
         // user avatar
         ImageView userAvatar = binding.profileUserAvatar;
@@ -231,7 +233,7 @@ public class ProfileFragment extends Fragment {
 
     private void updateNotificationCount() {
         // 获取当前用户的未读通知数量,并更新界面
-        notificationCountTextView.setText(String.valueOf(currentUserUnreadNotificationsCount));
+        notificationCountTextView.setText(eventHandler.getEventList().size());
     }
 
 }

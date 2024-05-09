@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import model.Datastructure.NewEvent;
 import model.Datastructure.Post;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;

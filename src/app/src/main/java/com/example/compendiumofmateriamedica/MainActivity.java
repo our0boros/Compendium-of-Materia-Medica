@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import model.Datastructure.NewEvent;
+import model.Datastructure.NewEventHandler;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTreeNode;
@@ -54,6 +56,7 @@ import model.Datastructure.UserTreeManager;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private NewEventHandler eventHandler;
 
     // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
 //    public RBTree<User> userTree;
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        eventHandler = NewEventHandler.getInstance(new ArrayList<>());
         // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
 //        // 运行加载数据的函数
 //        try {
@@ -128,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
     public void onNewLikeEvent(NewEvent event) {
         // 显示点赞通知
         showNotification(event.getEventUser().getUsername() + " liked your post (Post id: " + event.getPostId() + ")");
+        // 添加时间到EventHandler中
+        eventHandler.addEvent(event);
     }
 
     /**

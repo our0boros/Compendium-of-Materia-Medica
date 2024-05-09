@@ -1,4 +1,4 @@
-package com.example.compendiumofmateriamedica;
+package model.Datastructure;
 
 import java.util.Date;
 

@@ -1,5 +1,6 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
+import android.app.usage.UsageEvents;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,13 +10,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.compendiumofmateriamedica.NewEvent;
+import model.Datastructure.NewEvent;
 import com.example.compendiumofmateriamedica.R;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import model.Adapters.NotificationAdapter;
+import model.Datastructure.NewEventHandler;
 import model.Datastructure.User;
 
 public class MessagesActivity extends AppCompatActivity {
@@ -25,6 +29,7 @@ public class MessagesActivity extends AppCompatActivity {
     private User currentUser;
     private RecyclerView notificationRecyclerView;
     private NotificationAdapter notificationAdapter;
+    private NewEventHandler eventHandler;
 
 
     @Override
@@ -34,6 +39,10 @@ public class MessagesActivity extends AppCompatActivity {
 
         // 当前user
         currentUser = (User) this.getIntent().getSerializableExtra("CurrentUser");
+        // 获得单例
+        eventHandler = NewEventHandler.getInstance();
+        // 获得当前通知列表
+        List<NewEvent> notifications = eventHandler.getEventList();
 
         page_name=findViewById(R.id.page_name);
         page_name.setText("Messages");
@@ -50,7 +59,7 @@ public class MessagesActivity extends AppCompatActivity {
         // 找到 RecyclerView
         notificationRecyclerView = findViewById(R.id.messages_recyclerView);
         // 创建适配器
-        notificationAdapter = new NotificationAdapter(this);
+        notificationAdapter = new NotificationAdapter(this, notifications);
         notificationRecyclerView.setAdapter(notificationAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         notificationRecyclerView.setLayoutManager(layoutManager);
@@ -67,6 +76,8 @@ public class MessagesActivity extends AppCompatActivity {
         // 将新的点赞事件添加到通知列表中
         notificationAdapter.getNotifications().add(event);
         notificationAdapter.notifyDataSetChanged();
+
+        eventHandler.addEvent(event);
     }
 //    private List<Notification> getNotificationsForUser(int userId) {
 //        List<Notification> notifications = new ArrayList<>();
