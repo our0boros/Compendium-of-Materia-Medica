@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.Manifest;
 
+import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,6 +77,11 @@ public class PostShareActivity extends AppCompatActivity {
         // 显示照片
         ImageView photo = findViewById(R.id.imageView_post_share_photo);
         MainActivity.loadImageFromURL(this, photoPath, photo, "Photo");
+        // 点击显示大图
+        photo.setOnClickListener(v -> {
+            PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(photoPath);
+            photoDialogFragment.show(getSupportFragmentManager(), "photo_dialog");
+        });
         // ======================================================================
         // 对接API
         // 创建网络请求线程
