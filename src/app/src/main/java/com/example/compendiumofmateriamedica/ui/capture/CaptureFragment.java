@@ -3,6 +3,7 @@ package com.example.compendiumofmateriamedica.ui.capture;
 import static com.example.compendiumofmateriamedica.MainActivity.loadImageFromURL;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 
@@ -77,6 +78,7 @@ public class CaptureFragment extends Fragment {
     private EditText searchText;
     private ImageView userImage;
     private ImageButton captureButton;
+    private ImageView searchHint;
     private User currentUser;
     // =========== 当前搜索方法设定 ===========
     private Boolean searchMethod;
@@ -139,6 +141,27 @@ public class CaptureFragment extends Fragment {
 
             }
         });
+        searchHint = binding.searchHint;
+        searchHint.setImageDrawable(getResources().getDrawable(R.drawable.ic_error_outline_24));
+        searchHint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.println(Log.ASSERT, "DEBUG", "Hint button click");
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                        .setTitle("Search Grammar")
+                        .setMessage(getResources().getString(R.string.hint_message) + "\n\n" +
+                                " * parser grammar:\n" +
+                                " * <Exp>        := <TagColumn>, <TextColumn>, <METHOD> | <TextColumn>, <TagColumn>, <METHOD>\n" +
+                                " * <TagColumn>  := #: { <Content> },\n" +
+                                " * <TextColumn> := $: { <Content> },\n" +
+                                " * <Method>     :=  *:{&} |  *:{|}\n" +
+                                " * <Content>    := STR | STR, <Content>")
+                        .setIcon(R.drawable.ic_error_outline_24)
+                        .create();
+                alertDialog.show();
+            }
+        });
+
         // ======================== 搜索逻辑 ========================
         // 搜索内容切换
         plantPostSwitch = binding.plantPostSwitch;

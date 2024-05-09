@@ -25,4 +25,5 @@
         <item>Content</item>
     </string-array>
     <string name="no_result">(～￣▽￣)～          No results yet~</string>
+    <string name="hint_message">This syntax logic is primarily divided into three sections: the tag column, the content column, and the search method column. The tag column and content column are matched one-to-one, with users enclosing search content within curly braces and using \"$\" and \"#\" to determine whether the input content is text or a tag. Finally, the search logic is expressed through the AND or OR operators in the search method column. For example, with the given sample \"*: {|}, #:{ID, COMMON_NAME, SLUG, GENUS, FAMILY}, $:{77116, Milfoil, dactylis-glomerata, Quercus, Asteraceae}\", it can be used to search for plant entries containing any of the aforementioned relationships.</string>
 </resources>
