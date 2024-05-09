@@ -39,6 +39,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <!-- Notification Service -->
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"
+            android:exported="false" />
+
         <!-- profile activities -->
         <activity
             android:name=".ui.profile.Messages"
