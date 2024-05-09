@@ -1,6 +1,5 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,7 +17,7 @@ public class MySearchHistory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_list);
+        setContentView(R.layout.activity_messages);
 
         page_name=findViewById(R.id.page_name);
         page_name.setText("My Search History");

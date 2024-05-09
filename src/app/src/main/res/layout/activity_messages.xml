@@ -25,15 +25,9 @@
 
     <!--Same layout for My Post/ Messages-->
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messages_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scroll">
-        <LinearLayout
-            android:id="@+id/linLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent" />
+
 </LinearLayout>

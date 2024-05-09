@@ -7,14 +7,13 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import model.Datastructure.Post;
-import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
 
@@ -84,10 +83,13 @@ public class NotificationService extends Service {
             User randomUser = getRandomUser();
             userNewestPost.likedByUser(randomUser.getUser_id());
 
+            //记录当前时间
+            Date now = new Date();
+
             // TODO 此处通知用户被点赞了
 
             Log.d(TAG, randomUser.getUsername() + " liked your post (Post id:" + userNewestPost.getPost_id() + ")");
-            EventBus.getDefault().post(new NewLikeEvent(userNewestPost.getPost_id(), randomUser));
+            EventBus.getDefault().post(new NewEvent(userNewestPost.getPost_id(), randomUser, NewEvent.EventType.LIKE, now));
         }
     }
     // 获取除了uid之外的其他随机一个用户

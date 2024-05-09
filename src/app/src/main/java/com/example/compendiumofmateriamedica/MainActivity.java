@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -121,11 +119,21 @@ public class MainActivity extends AppCompatActivity {
         // 注销 EventBus
         EventBus.getDefault().unregister(this);
     }
+
+    /**
+     * 收到通知时间时，显示通知
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNewLikeEvent(NewLikeEvent event) {
+    public void onNewLikeEvent(NewEvent event) {
         // 显示点赞通知
-        showNotification(event.getLiker().getUsername() + " liked your post (Post id: " + event.getPostId() + ")");
+        showNotification(event.getEventUser().getUsername() + " liked your post (Post id: " + event.getPostId() + ")");
     }
+
+    /**
+     * 显示一个弹窗页面
+     * @param message
+     */
     private void showNotification(String message) {
         // 在这里显示顶部弹出窗口,显示点赞通知
         // 可以使用 Toast 或自定义的弹窗来显示

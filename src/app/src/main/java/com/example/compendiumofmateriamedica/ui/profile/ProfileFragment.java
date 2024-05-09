@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +45,17 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel mViewModel;
     private FragmentProfileBinding binding;
     private User currentUser;
+    private int currentUserUnreadNotificationsCount;
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
     LocationManager locationManager;
     LocationListener locationListener;
     private TextView user_location;
+    private static final long NOTIFICATION_UPDATE_INTERVAL = 5000; // 通知状态5秒更新一次
+    private TextView notificationCountTextView;
+    private Handler handler;
+    private Runnable notificationUpdateRunnable;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -61,7 +68,7 @@ public class ProfileFragment extends Fragment {
         currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
 
         // user avatar
-        ImageView userAvatar = binding.userAvater;
+        ImageView userAvatar = binding.profileUserAvatar;
         MainActivity.loadImageFromURL(getContext(), currentUser.getAvatar_url(), userAvatar, "Avatar");
         // click on avatar will show big picture
         userAvatar.setOnClickListener(v -> {
@@ -70,7 +77,7 @@ public class ProfileFragment extends Fragment {
         });
 
         // user name
-        TextView user_name=binding.userName;
+        TextView user_name=binding.profileUsername;
         mViewModel.updateUserName(currentUser.getUsername());
         mViewModel.getUserName().observe(getViewLifecycleOwner(), user_name::setText);
 
@@ -89,10 +96,22 @@ public class ProfileFragment extends Fragment {
             // Convert integer value to string and set it to TextView
             user_post.setText(String.valueOf(value));
         });
+        // messages
+        TextView messages=binding.messages;
+        // 找到显示通知数量的 TextView
+        notificationCountTextView = binding.messagesCount;
+        // 创建 Handler 和 Runnable,用于定期更新通知数量
+        handler = new Handler(Looper.getMainLooper());
+        notificationUpdateRunnable = new Runnable() {
+            @Override
+            public void run() {
+                updateNotificationCount();
+                handler.postDelayed(this, NOTIFICATION_UPDATE_INTERVAL);
+            }
+        };
 
         // other features in profile
         TextView personal_information=binding.personalInformation;
-        TextView messages=binding.messages;
         TextView settings=binding.settings;
 
         // deleted profile features (maybe Temporary)
@@ -171,7 +190,7 @@ public class ProfileFragment extends Fragment {
         messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Messages.class);
+                Intent intent = new Intent(getActivity(), MessagesActivity.class);
                 intent.putExtra("CurrentUser", currentUser); // Pass the current user object
                 startActivity(intent);
             }
@@ -193,17 +212,26 @@ public class ProfileFragment extends Fragment {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
+        // 开始定期更新通知数量
+        handler.post(notificationUpdateRunnable);
     }
     // when fragment is paused, close update
     @Override
     public void onPause() {
         super.onPause();
         locationManager.removeUpdates(locationListener);
+        // 停止定期更新通知数量
+        handler.removeCallbacks(notificationUpdateRunnable);
     }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void updateNotificationCount() {
+        // 获取当前用户的未读通知数量,并更新界面
+        notificationCountTextView.setText(String.valueOf(currentUserUnreadNotificationsCount));
     }
 
 }

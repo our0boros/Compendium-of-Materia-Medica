@@ -49,7 +49,7 @@
 
         <!-- profile activities -->
         <activity
-            android:name=".ui.profile.Messages"
+            android:name=".ui.profile.MessagesActivity"
             android:exported="false" />
         <activity
             android:name=".ui.profile.MyPoints"
