@@ -50,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="post content"
+                android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="@+id/post_user_name"
                 app:layout_constraintTop_toBottomOf="@+id/post_timestamp" />
 
@@ -83,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2024-5-8"
-                android:textColor="#303030"
+                android:textColor="#4A4A4A"
                 app:layout_constraintStart_toStartOf="@+id/post_user_name"
                 app:layout_constraintTop_toBottomOf="@+id/post_user_name" />
 

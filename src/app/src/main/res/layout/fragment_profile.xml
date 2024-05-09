@@ -20,15 +20,16 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:src="@drawable/edit_profile"/>
+
             <TextView
                 android:id="@+id/user_name"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="21sp"
-                android:text="[User Name]"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="[User Name]"
+                android:textSize="24sp"
+                android:textStyle="bold" />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,12 +109,15 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent">
+
                     <TextView
                         android:id="@+id/user_post"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="[#Post]"
+                        android:textColor="#03A9F4"
                         android:textSize="20sp"
-                        android:text="[#Post]"/>
+                        android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
