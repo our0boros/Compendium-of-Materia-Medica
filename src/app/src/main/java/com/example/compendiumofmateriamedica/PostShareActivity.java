@@ -180,7 +180,7 @@ public class PostShareActivity extends AppCompatActivity {
     private void sharePost(EditText postContent, String photoURL){
         Log.d("SharePost", "Share post......");
         // 为生成post设置变量
-        int postId = PostTreeManager.instance.getTreeSize() + 1;
+        int postId = PostTreeManager.getInstance().getTreeSize() + 1;
         int uid = currentUser.getUser_id();
         int plantId = 5; // 这里随便给个plantid，实际拍到照片识别后再传进来就有了
         String photo = photoURL;
@@ -193,7 +193,7 @@ public class PostShareActivity extends AppCompatActivity {
         // 生成Post并加入到当前app的MainActivity的postTree中
         // TODO 从firebase中读取最新的posts
         Post post = new Post(postId, uid, plantId, photo, content, timestamp);
-        PostTreeManager.instance.insert(post.getPost_id(), post);
+        PostTreeManager.getInstance().insert(post.getPost_id(), post);
         Log.d("SharePost", "Post added to the postTree in MainActivity");
     }
 }

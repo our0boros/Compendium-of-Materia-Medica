@@ -14,13 +14,19 @@ public class PlantTreeManager implements TreeManager<Plant>{
         ID, COMMON_NAME, SLUG, SCIENTIFIC_NAME, GENUS, FAMILY;
     }
 
-    public static PlantTreeManager instance;
+    private static PlantTreeManager instance;
     private PlantTreeManager(RBTree<Plant> plantRBTree) {
         this.plantRBTree = plantRBTree;
     }
     public static synchronized PlantTreeManager getInstance(RBTree<Plant> plantRBTree) {
         if (instance == null) {
             instance = new PlantTreeManager(plantRBTree);
+        }
+        return instance;
+    }
+    public static PlantTreeManager getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Instance not created. Call getInstance(RBTree<Plant>) first.");
         }
         return instance;
     }

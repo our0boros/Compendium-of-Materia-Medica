@@ -59,6 +59,7 @@ dependencies {
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("com.google.firebase:firebase-database:21.0.0")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.greenrobot:eventbus:3.3.1")
 
 
 }

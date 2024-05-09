@@ -140,12 +140,12 @@ public class MainActivity extends AppCompatActivity {
      * 下面的方法暂时用于在PostAdapter中，在social界面显示用户名和头像
      */
     public static User findUserById(int uid){
-        if (UserTreeManager.instance == null) {
+        if (UserTreeManager.getInstance() == null) {
             Log.w("UserTreeManager", "UserTreeManager未初始化");
             return null;
         }
         // 调用userTreeManager的搜索方法来找用户
-        ArrayList<RBTreeNode<User>> users = UserTreeManager.instance.search(UserTreeManager.UserInfoType.ID, uid);
+        ArrayList<RBTreeNode<User>> users = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, uid);
 
         // 因为UID都是唯一的，所以我们的users中应当只有一个user
         if (!users.isEmpty()) {
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     public static Post getPostByPostId(int postId) {
-        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
+        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
         if (!searchResult.isEmpty()) {
             return searchResult.get(0).getValue();
         }
@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // get all posts by user with uid
     public static List<Post> getPostsByUserId(int uid){
-        ArrayList<RBTreeNode<Post>>  user_post_data = PostTreeManager.instance.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+        ArrayList<RBTreeNode<Post>>  user_post_data = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
         List<Post> user_post_data_list= new ArrayList<>();
         if (!user_post_data.isEmpty()) {
             for (RBTreeNode<Post> node : user_post_data) {

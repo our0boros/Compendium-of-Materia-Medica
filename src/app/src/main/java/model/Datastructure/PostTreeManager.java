@@ -12,13 +12,20 @@ public class PostTreeManager implements TreeManager<Post>{
         POST_ID, UID, PLANT_ID, TIME, CONTENT;
     }
     // singleton design pattern
-    public static PostTreeManager instance;
+    private static PostTreeManager instance;
     private PostTreeManager(RBTree<Post> postRBTree) {
         this.postRBTree = postRBTree;
     }
     public static synchronized PostTreeManager getInstance(RBTree<Post> postRBTree) {
         if (instance == null) {
             instance = new PostTreeManager(postRBTree);
+        }
+        return instance;
+    }
+    // getter
+    public static PostTreeManager getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Instance not created. Call getInstance(RBTree<Post>) first.");
         }
         return instance;
     }

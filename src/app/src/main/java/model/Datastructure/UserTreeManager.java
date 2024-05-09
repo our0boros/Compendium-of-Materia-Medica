@@ -12,7 +12,7 @@ public class UserTreeManager implements TreeManager<User> {
     public enum UserInfoType {
         ID, NAME, EMAIL, AVATAR;
     }
-    public static UserTreeManager instance;
+    private static UserTreeManager instance;
     private UserTreeManager(RBTree<User> userRBTree) {
         this.userRBTree = userRBTree;
     }
@@ -21,6 +21,12 @@ public class UserTreeManager implements TreeManager<User> {
             instance = new UserTreeManager(userRBTree);
         }
             return instance;
+    }
+    public static UserTreeManager getInstance(){
+        if(instance == null){
+            throw new IllegalStateException("Instance not created. Call getInstance(RBTree<User>) first.");
+        }
+        return instance;
     }
 
     @Override

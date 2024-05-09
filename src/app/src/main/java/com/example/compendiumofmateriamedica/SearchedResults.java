@@ -46,7 +46,7 @@ public class SearchedResults extends AppCompatActivity {
             plantIDs = dataToShow;
             postIDs = new ArrayList<>();
             for (Integer id : plantIDs) {
-                ArrayList<RBTreeNode<Post>> temp = PostTreeManager.instance.search(PostTreeManager.PostInfoType.PLANT_ID, String.valueOf(id));
+                ArrayList<RBTreeNode<Post>> temp = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.PLANT_ID, String.valueOf(id));
                 for (RBTreeNode<Post> node : temp) {
                     postIDs.add(node.getValue().getPost_id());
                 }
@@ -55,7 +55,7 @@ public class SearchedResults extends AppCompatActivity {
             postIDs = dataToShow;
             Set<Integer> plantSets = new HashSet<>();
             for (Integer id : postIDs) {
-                ArrayList<RBTreeNode<Post>> temp = PostTreeManager.instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(id));
+                ArrayList<RBTreeNode<Post>> temp = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(id));
                 if (temp.size() != 0) plantSets.add(temp.get(0).getValue().getPlant_id());
             }
             plantIDs = new ArrayList<>();

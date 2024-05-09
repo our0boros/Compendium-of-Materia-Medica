@@ -126,7 +126,7 @@ public class CaptureFragment extends Fragment {
                 currentUser.getUsername()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
         userImage = binding.userHeader;
-        String userURL = UserTreeManager.instance.search(UserTreeManager.UserInfoType.ID, currentUser.getUser_id()).get(0).getValue().getAvatar_url();
+        String userURL = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, currentUser.getUser_id()).get(0).getValue().getAvatar_url();
         loadImageFromURL(getContext(), userURL, userImage, "Avatar");
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,7 +256,7 @@ public class CaptureFragment extends Fragment {
                                 int index = plantAttributes.indexOf(entry.getKey());
                                 // 如果没有匹配的则忽略
                                 if (index == -1) continue;
-                                temp = PlantTreeManager.instance.search(
+                                temp = PlantTreeManager.getInstance().search(
                                         PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
                                 // 添加搜索结果
                                 for (Object node : temp) {
@@ -271,7 +271,7 @@ public class CaptureFragment extends Fragment {
                                 Log.println(Log.ASSERT, "DEBUG", "[OnClick] index: " + index);
                                 // 如果没有匹配的则忽略
                                 if (index == -1) continue;
-                                temp = PostTreeManager.instance.search(
+                                temp = PostTreeManager.getInstance().search(
                                         PostTreeManager.PostInfoType.values()[index], entry.getValue());
                                 // 添加搜索结果
                                 for (Object node : temp) {
@@ -337,7 +337,7 @@ public class CaptureFragment extends Fragment {
                     // 搜索节点
                     ArrayList<Integer> plantIDList = new ArrayList<>();
                     if (!isPost) {
-                        ArrayList<RBTreeNode<Plant>> searchResult = PlantTreeManager.instance.search(
+                        ArrayList<RBTreeNode<Plant>> searchResult = PlantTreeManager.getInstance().search(
                                 PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                                 + " with: " + textView.getText().toString().trim());
@@ -346,7 +346,7 @@ public class CaptureFragment extends Fragment {
                             plantIDList.add(node.getKey());
                         }
                     } else {
-                        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.instance.search(
+                        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.getInstance().search(
                                 PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                                 + " with: " + textView.getText().toString().trim());
