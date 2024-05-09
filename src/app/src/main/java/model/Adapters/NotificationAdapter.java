@@ -25,6 +25,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     //这里放一个变量存储通知
     private List<NewEvent> notifications = new ArrayList<>();
     private Context context;
+    private static NotificationAdapter instance;
 
     // 为 RecyclerView 创建新的 ViewHolder
     public static class NotificationViewHolder extends RecyclerView.ViewHolder{
@@ -44,9 +45,21 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             userActivityTime = itemView.findViewById(R.id.message_user_activity_time);
         }
     }
-    public NotificationAdapter(Context context, List<NewEvent> notifications) {
+    private NotificationAdapter(Context context, List<NewEvent> notifications) {
         this.context = context;
         this.notifications = notifications;
+    }
+    public static synchronized NotificationAdapter getInstance(Context context, List<NewEvent> notifications) {
+        if (instance == null) {
+            instance = new NotificationAdapter(context, notifications);
+        }
+        return instance;
+    }
+    public static synchronized NotificationAdapter getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Instance not created. Call getInstance(Context, List<NewEvent>) first.");
+        }
+        return instance;
     }
     @NonNull
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType){

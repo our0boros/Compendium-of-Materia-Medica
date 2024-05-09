@@ -22,17 +22,19 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
+import model.Adapters.NotificationAdapter;
 import model.Datastructure.NewEvent;
 import model.Datastructure.NewEventHandler;
 
 public class MyApp extends Application {
     private NewEventHandler eventHandler;
+    private NotificationAdapter notificationAdapter;
     @Override
     public void onCreate(){
         super.onCreate();
 
         eventHandler = NewEventHandler.getInstance(new ArrayList<>());
-
+        notificationAdapter = NotificationAdapter.getInstance(getApplicationContext(), new ArrayList<>());
         // 注册 EventBus
         EventBus.getDefault().register(this);
 //        // 启动全局服务
@@ -53,6 +55,8 @@ public class MyApp extends Application {
         showNotification(event.getEventUser().getUsername() + " liked your post (Post id: " + event.getPostId() + ")");
         // 添加事件到 EventHandler 中
         eventHandler.addEvent(event);
+        notificationAdapter.getNotifications().add(event);
+        notificationAdapter.notifyDataSetChanged();
     }
     private void showNotification(String message) {
         // 在这里显示顶部弹出窗口,显示点赞通知

@@ -59,7 +59,7 @@ public class MessagesActivity extends AppCompatActivity {
         // 找到 RecyclerView
         notificationRecyclerView = findViewById(R.id.messages_recyclerView);
         // 创建适配器
-        notificationAdapter = new NotificationAdapter(this, notifications);
+        notificationAdapter = NotificationAdapter.getInstance();
         notificationRecyclerView.setAdapter(notificationAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         notificationRecyclerView.setLayoutManager(layoutManager);
