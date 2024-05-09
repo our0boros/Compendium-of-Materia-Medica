@@ -29,12 +29,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import model.Datastructure.Plant;
+import model.Datastructure.PlantTreeManager;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
+import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
 import model.Plant_Identification;
 
@@ -78,8 +82,83 @@ public class PostShareActivity extends AppCompatActivity {
             @Override
             public void run() {
                 String result = Plant_Identification.getPlantNetAPIResult(photoPath);
-//                String result = "{\"access_token\": \"VaoHnUbHUUTrlUq\", \"model_version\": \"plant_id:3.7.0\", \"custom_id\": null, \"input\": {\"latitude\": null, \"longitude\": null, \"images\": [\"https://plant.id/media/imgs/68e89f3331274854ae9eaab6cb9c3bab.jpg\"], \"datetime\": \"2024-05-09T12:51:06.506002+00:00\"}, \"result\": {\"is_plant\": {\"probability\": 0.005755537, \"threshold\": 0.5, \"binary\": false}, \"classification\": {\"suggestions\": [{\"id\": \"c4f244a57446113e\", \"name\": \"Kalanchoe\", \"probability\": 0.2058, \"details\": {\"language\": \"en\", \"entity_id\": \"c4f244a57446113e\"}}, {\"id\": \"052682b3b44e8310\", \"name\": \"Crassula ovata\", \"probability\": 0.1916, \"details\": {\"language\": \"en\", \"entity_id\": \"052682b3b44e8310\"}}, {\"id\": \"fb1f0f0b31562030\", \"name\": \"Dracaena trifasciata\", \"probability\": 0.1372, \"details\": {\"language\": \"en\", \"entity_id\": \"fb1f0f0b31562030\"}}, {\"id\": \"7201879bcfec317f\", \"name\": \"Albuca\", \"probability\": 0.122, \"details\": {\"language\": \"en\", \"entity_id\": \"7201879bcfec317f\"}}, {\"id\": \"62b9d1fe2846a316\", \"name\": \"Cucurbita pepo\", \"probability\": 0.1071, \"details\": {\"language\": \"en\", \"entity_id\": \"62b9d1fe2846a316\"}}, {\"id\": \"aa8668f208a31ae8\", \"name\": \"Curio\", \"probability\": 0.0965, \"details\": {\"language\": \"en\", \"entity_id\": \"aa8668f208a31ae8\"}}, {\"id\": \"9e6267a55d42384c\", \"name\": \"Ornithogalum\", \"probability\": 0.0555, \"details\": {\"language\": \"en\", \"entity_id\": \"9e6267a55d42384c\"}}, {\"id\": \"c1396f242d8786ff\", \"name\": \"Cucumis sativus\", \"probability\": 0.0441, \"details\": {\"language\": \"en\", \"entity_id\": \"c1396f242d8786ff\"}}, {\"id\": \"4ba05f1050481731\", \"name\": \"Aloe vera\", \"probability\": 0.0216, \"details\": {\"language\": \"en\", \"entity_id\": \"4ba05f1050481731\"}}, {\"id\": \"f3a94555ecc4cfde\", \"name\": \"Sedum \\u00d7 rubrotinctum\", \"probability\": 0.0186, \"details\": {\"language\": \"en\", \"entity_id\": \"f3a94555ecc4cfde\"}}]}}, \"status\": \"COMPLETED\", \"sla_compliant_client\": true, \"sla_compliant_system\": true, \"created\": 1715259066.506002, \"completed\": 1715259066.703937}";
-                Log.println(Log.ASSERT, "API RESULT", result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+//                    Log.println(Log.ASSERT, "API RESULT", result);
+                    Log.println(Log.ASSERT, "API RESULT", (String) jsonObject.get("bestMatch"));
+                    String sciName = (String) jsonObject.getJSONArray("results")
+                            .getJSONObject(0)
+                            .getJSONObject("species")
+                            .get("scientificNameWithoutAuthor");
+                    // 查找当前的plant库
+                    ArrayList<RBTreeNode<Plant>> plantTreeList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME, sciName);
+                    // 如果找到匹配的
+                    if (plantTreeList.size() > 0) {
+                        Plant currentPlant = plantTreeList.get(0).getValue();
+                        Log.println(Log.ASSERT, "API RESULT", "Found mapping result at: " + currentPlant.getId());
+                    } else {
+                        Log.println(Log.ASSERT, "API RESULT", "Do not found mapping result");
+                        /**
+                         * 当前结构
+                         * {
+                         *     "query": {
+                         *         "project": "all",
+                         *         "images": ["65b63bdc6ba82ad0ca40f8818baff7fd"],
+                         *         "organs": ["flower"],
+                         *         "includeRelatedImages": false,
+                         *         "noReject": false
+                         *     },
+                         *     "language": "en",
+                         *     "preferedReferential": "k-world-flora",
+                         *     "bestMatch": "Cucurbita pepo L.",
+                         *     "results": [
+                         *         {
+                         *             "score": 0.09999,
+                         *             "species": {
+                         *                 "scientificNameWithoutAuthor": "Cucurbita pepo",
+                         *                 "scientificNameAuthorship": "L.",
+                         *                 "genus": {
+                         *                     "scientificNameWithoutAuthor": "Cucurbita",
+                         *                     "scientificName": "Cucurbita"
+                         *                 },
+                         *                 "family": {
+                         *                     "scientificNameWithoutAuthor": "Cucurbitaceae",
+                         *                     "scientificName": "Cucurbitaceae"
+                         *                 },
+                         *                 "commonNames": ["Bitter bottle gourd", "Zucchini", "Pumpkin"],
+                         *                 "scientificName": "Cucurbita pepo L."
+                         *             },
+                         */
+                        // 如果不存在就塞进去
+                        Plant currentPlant = new Plant(
+                                jsonObject.get("bestMatch").hashCode(),
+                                (String) jsonObject.getJSONArray("results")
+                                        .getJSONObject(0)
+                                        .getJSONObject("species")
+                                        .getJSONArray("commonNames")
+                                        .get(0),
+                                "no slug",
+                                sciName,
+                                "no url",
+                                (String) jsonObject.getJSONArray("results")
+                                        .getJSONObject(0)
+                                        .getJSONObject("species")
+                                        .getJSONObject("genus")
+                                        .get("scientificNameWithoutAuthor"),
+                                (String) jsonObject.getJSONArray("results")
+                                        .getJSONObject(0)
+                                        .getJSONObject("species")
+                                        .getJSONObject("family")
+                                        .get("scientificNameWithoutAuthor"),
+                                "no description"
+                        );
+                        PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);
+
+                    }
+                }catch (JSONException err){
+                    Log.d("Error", err.toString());
+                }
+
             }
         });
         thread.start(); // 启动线程
