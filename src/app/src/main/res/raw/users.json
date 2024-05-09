@@ -349,4 +349,25 @@
         "password": "U)0Oq$p1wi",
         "avatar_url": "https://robohash.org/watkinsthomas"
     }
+        {
+        "user_id": 51,
+        "username": "comp6442@anu.edu.au",
+        "email": "comp6442@anu.edu.au",
+        "password": "comp6442",
+        "avatar_url": "https://robohash.org/comp6442"
+    },
+    {
+        "user_id": 52,
+        "username": "comp2100@anu.edu.au",
+        "email": "comp2100@anu.edu.au",
+        "password": "comp2100",
+        "avatar_url": "https://robohash.org/comp2100"
+    },
+    {
+        "user_id": 53,
+        "username": "TestUser1",
+        "email": "user1@test.com",
+        "password": "111111",
+        "avatar_url": "https://robohash.org/TestUser1"
+    }
 ]
