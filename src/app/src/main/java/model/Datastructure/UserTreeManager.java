@@ -87,7 +87,7 @@ public class UserTreeManager implements TreeManager<User> {
         search(node.getRight(), infoType, info, users);
     }
 
-    public Set<User> getAllUser() {
+    public List<User> getAllUser() {
         return this.userRBTree.getAllElements();
     }
 }

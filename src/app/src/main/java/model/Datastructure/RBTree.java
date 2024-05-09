@@ -2,7 +2,9 @@ package model.Datastructure;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -317,7 +319,7 @@ public class RBTree<V> {
     }
 
     // 添加用于遍历的方法
-    private void inorderTraversal(RBTreeNode<V> node, Set<V> set) {
+    private void inorderTraversal(RBTreeNode<V> node, List<V> set) {
         if (node != null) {
             inorderTraversal(node.getLeft(), set);
             set.add(node.getValue());
@@ -325,8 +327,8 @@ public class RBTree<V> {
         }
     }
     // for getAll
-    public Set<V> getAllElements() {
-        Set<V> resultSet = new HashSet<>();
+    public List<V> getAllElements() {
+        List<V> resultSet = new ArrayList<>();
         inorderTraversal(root, resultSet);
         return resultSet;
     }

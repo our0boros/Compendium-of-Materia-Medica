@@ -9,6 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +28,7 @@ public class NotificationService extends Service {
     private static final String TAG = "NotificationService";
     private Timer timer;
     private Random random;
+    private User currentUser;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -36,6 +38,12 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Notification service started.");
+        if(intent != null) {
+            currentUser = (User) intent.getSerializableExtra("User");
+            Log.d(TAG, "Get current user: " + currentUser.getUsername());
+        } else {
+            Log.d(TAG, "Get current user failed.");
+        }
         startTimer();
         return START_STICKY;
     }
@@ -57,7 +65,7 @@ public class NotificationService extends Service {
             public void run() {
                 simulateLikes();
             }
-        }, 0, 10000); // 每10秒执行一次
+        }, 0, 10000); // 每10秒执行一次，这里1000对应1秒
     }
 
     private void stopTimer() {
@@ -68,27 +76,27 @@ public class NotificationService extends Service {
     }
     // 模拟点赞行为的逻辑
     private void simulateLikes() {
-        Log.d(TAG, "Simulating likes...");
-        // TODO 这里只需要获取当前app用户的posts就可以了，甚至只获取他最新的post就可以了
-//        List<Post> posts = PostTreeManager.getInstance().getAllPosts();
-//        for (Post post : posts) {
-//            User author = UserTreeManager.getInstance().getUserById(post.getUser_id());
-//            if (author.getUnreadNotificationCount() < 5) {
-//                // 随机选择一个其他用户点赞
-//                User randomUser = getRandomUser();
-//                post.likedByUser(randomUser.getUser_id());
-//                author.incrementUnreadNotificationCount();
-//                Log.d(TAG, "User " + randomUser.getUser_id() + " liked post " + post.getPost_id());
-//                EventBus.getDefault().post(new NewLikeEvent(post.getPost_id(), randomUser.getUser_id()));
-//            }
-//        }
-    }
+        Post userNewestPost = MainActivity.getUserNewestPost(currentUser.getUser_id());
+        User author = currentUser;
+        // 如果post被点赞小于5次，即用户被通知小于5次
+        if (userNewestPost.getLikesRecord().size() < 6) {
+            // 随机选择一个其他用户点赞
+            User randomUser = getRandomUser();
+            userNewestPost.likedByUser(randomUser.getUser_id());
 
+            // TODO 此处通知用户被点赞了
+
+            Log.d(TAG, randomUser.getUsername() + " liked your post (Post id:" + userNewestPost.getPost_id() + ")");
+            EventBus.getDefault().post(new NewLikeEvent(userNewestPost.getPost_id(), randomUser));
+        }
+    }
+    // 获取除了uid之外的其他随机一个用户
     private User getRandomUser() {
-        // TODO 注意排除app用户自己
-//        List<User> users = UserTreeManager.getInstance().getAllUsers();
-//        int randomIndex = random.nextInt(users.size());
-//        return users.get(randomIndex);
-        return null;
+        List<User> users = UserTreeManager.getInstance().getAllUser();
+        int randomIndex;
+        do{
+            randomIndex = random.nextInt(users.size());
+        } while (users.get(randomIndex).getUser_id() == currentUser.getUser_id());
+        return users.get(randomIndex);
     }
 }
