@@ -1,5 +1,10 @@
 package model;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -159,34 +164,60 @@ public class Plant_Identification {
 		return response.toString();
 	}
 
+	private static Uri getFileUriFromMediaStore(Context context, String filePath) {
+		// 查询 MediaStore 获取文件的 Uri
+		Uri fileUri = null;
+		String[] projection = {MediaStore.Images.Media._ID};
+		String selection = MediaStore.Images.Media.DATA + "=?";
+		String[] selectionArgs = {filePath};
+		Cursor cursor = null;
+
+		try {
+			cursor = context.getContentResolver().query(
+					MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+					projection,
+					selection,
+					selectionArgs,
+					null
+			);
+
+			if (cursor != null && cursor.moveToFirst()) {
+				int columnIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+				long imageId = cursor.getLong(columnIndex);
+				fileUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Long.toString(imageId));
+			}
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+
+		return fileUri;
+	}
+
 	public static String getPlantNetAPIResultOKHttp(String imagePath) {
 
 		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // Your API_KEY here
 		String PROJECT = "all"; // try specific floras: "weurope", "canada"…
-		String API_ENDPOINT = String.format("https://my-api.plantnet.org/v2/identify/%s?api-key=%s",
-				PROJECT, API_KEY);
+		String API_ENDPOINT = "https://my-api.plantnet.org/v2/identify/" + PROJECT + "?api-key=" + API_KEY;
 		String responseBody = "";
 
-		File imageFile = new File(imagePath);
-
-		Map<String, String> data = new HashMap<>();
-		data.put("organs", "flower"); // leaf
-
+		File file = new File(imagePath);
+		// 检查文件是否存在
+		if (file.exists()) {
+			// 文件存在，进行相应操作
+			System.out.println("File exists!");
+		} else {
+			// 文件不存在，进行相应处理
+			System.out.println("File does not exist!");
+		}
 		OkHttpClient client = new OkHttpClient();
 
-		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder()
-				.setType(MultipartBody.FORM);
-
-		// Add data
-		for (Map.Entry<String, String> entry : data.entrySet()) {
-			requestBodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());
-		}
-
-		// Add image file
-		requestBodyBuilder.addFormDataPart("images", imageFile.getName(),
-				RequestBody.create(MediaType.parse("image/jpeg"), imageFile));
-
-		RequestBody requestBody = requestBodyBuilder.build();
+		RequestBody requestBody = new MultipartBody.Builder()
+				.setType(MultipartBody.FORM)
+				.addFormDataPart("organs", "flower")
+				.addFormDataPart("images", imagePath, RequestBody.create(MediaType.parse("image/jpeg"), new File(imagePath)))
+				.build();
 
 		Request request = new Request.Builder()
 				.url(API_ENDPOINT)
@@ -197,15 +228,17 @@ public class Plant_Identification {
 			Response response = client.newCall(request).execute();
 			if (response.isSuccessful()) {
 				responseBody = response.body().string();
-				System.out.println("Response: " + responseBody);
+				System.out.println("Response Code: " + response.code());
+				System.out.println("Response Body: " + response.body().string());
 			} else {
-				System.out.println("HTTP request failed with response code: " + response.code());
+				System.out.println("Request failed: " + response.code());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return responseBody;
 	}
+
 
 //	public static String getPlantNetAPIResultApache(String imagePath) {
 //

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
@@ -96,12 +97,9 @@ public class PostShareActivity extends AppCompatActivity {
         TextView plantDescription = findViewById(R.id.toPostDescription);
 
         Thread thread = new Thread(() -> {
+            Log.println(Log.ASSERT, "START THREAD", "=================================== START THREAD =================================== ");
             Log.println(Log.ASSERT, "API INPUT", photoPath);
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,"NO ACCESS_NETWORK_STATE PERMISSION", Toast.LENGTH_LONG).show();
-            }
-            String result = Plant_Identification.getPlantNetAPIResultOKHttp(photoPath);
+            String result = Plant_Identification.getPlantNetAPIResult(photoPath);
             try {
 
                 JSONObject jsonObject = new JSONObject(result);
