@@ -25,7 +25,6 @@ import android.Manifest;
 
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,7 +61,7 @@ public class PostShareActivity extends AppCompatActivity {
     //一个图片链接，用于测试发布post，实际的图片应当由调用这个Activity的
     private String photoPath;
 
-
+    Plant currentPlant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,87 +84,73 @@ public class PostShareActivity extends AppCompatActivity {
         // ======================================================================
         // 对接API
         // 创建网络请求线程
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String result = Plant_Identification.getPlantNetAPIResult(photoPath);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    String sciName = (String) jsonObject.getJSONArray("results")
-                            .getJSONObject(0)
-                            .getJSONObject("species")
-                            .get("scientificNameWithoutAuthor");
-                    Log.println(Log.ASSERT, "API RESULT", sciName);
-                    // 查找当前的plant库
-                    ArrayList<RBTreeNode<Plant>> plantTreeList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME, sciName);
-                    // 如果找到匹配的
-                    if (plantTreeList.size() > 0) {
-                        Plant currentPlant = plantTreeList.get(0).getValue();
-                        Log.println(Log.ASSERT, "API RESULT", "Found mapping result at: " + currentPlant.getId());
-                    } else {
-                        Log.println(Log.ASSERT, "API RESULT", "Do not found mapping result");
-                        /**
-                         * 当前结构
-                         * {
-                         *     "query": {
-                         *         "project": "all",
-                         *         "images": ["65b63bdc6ba82ad0ca40f8818baff7fd"],
-                         *         "organs": ["flower"],
-                         *         "includeRelatedImages": false,
-                         *         "noReject": false
-                         *     },
-                         *     "language": "en",
-                         *     "preferedReferential": "k-world-flora",
-                         *     "bestMatch": "Cucurbita pepo L.",
-                         *     "results": [
-                         *         {
-                         *             "score": 0.09999,
-                         *             "species": {
-                         *                 "scientificNameWithoutAuthor": "Cucurbita pepo",
-                         *                 "scientificNameAuthorship": "L.",
-                         *                 "genus": {
-                         *                     "scientificNameWithoutAuthor": "Cucurbita",
-                         *                     "scientificName": "Cucurbita"
-                         *                 },
-                         *                 "family": {
-                         *                     "scientificNameWithoutAuthor": "Cucurbitaceae",
-                         *                     "scientificName": "Cucurbitaceae"
-                         *                 },
-                         *                 "commonNames": ["Bitter bottle gourd", "Zucchini", "Pumpkin"],
-                         *                 "scientificName": "Cucurbita pepo L."
-                         *             },
-                         */
-                        // 如果不存在就塞进去
-                        Plant currentPlant = new Plant(
-                                jsonObject.get("bestMatch").hashCode(),
-                                (String) jsonObject.getJSONArray("results")
-                                        .getJSONObject(0)
-                                        .getJSONObject("species")
-                                        .getJSONArray("commonNames")
-                                        .get(0),
-                                "no slug",
-                                sciName,
-                                "no url",
-                                (String) jsonObject.getJSONArray("results")
-                                        .getJSONObject(0)
-                                        .getJSONObject("species")
-                                        .getJSONObject("genus")
-                                        .get("scientificNameWithoutAuthor"),
-                                (String) jsonObject.getJSONArray("results")
-                                        .getJSONObject(0)
-                                        .getJSONObject("species")
-                                        .getJSONObject("family")
-                                        .get("scientificNameWithoutAuthor"),
-                                "no description"
-                        );
-                        PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);
+        ImageView plantImage = findViewById(R.id.toPostPlantImage);
+        TextView plantCommonName = findViewById(R.id.toPostPlantCommonName);
+        TextView plantSciName = findViewById(R.id.toPostSciName);
+        TextView plantFamily = findViewById(R.id.toPostFamily);
+        TextView plantDescription = findViewById(R.id.toPostDescription);
 
-                    }
-                }catch (JSONException err){
-                    Log.d("Error", err.toString());
+        Thread thread = new Thread(() -> {
+            Log.println(Log.ASSERT, "API INPUT", photoPath);
+            String result = Plant_Identification.getPlantNetAPIResult(photoPath);
+            try {
+
+                JSONObject jsonObject = new JSONObject(result);
+                String sciName = (String) jsonObject.getJSONArray("results")
+                        .getJSONObject(0)
+                        .getJSONObject("species")
+                        .get("scientificNameWithoutAuthor");
+                Log.println(Log.ASSERT, "API RESULT", sciName);
+                // 查找当前的plant库
+                ArrayList<RBTreeNode<Plant>> plantTreeList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME, sciName);
+                // 如果找到匹配的
+                if (plantTreeList.size() > 0) {
+                    currentPlant = plantTreeList.get(0).getValue();
+                    Log.println(Log.ASSERT, "API RESULT", "Found mapping result at: " + currentPlant.getId());
+                } else {
+                    Log.println(Log.ASSERT, "API RESULT", "Do not found mapping result");
+                    // 如果不存在就塞进去
+                    currentPlant = new Plant(
+                            jsonObject.get("bestMatch").hashCode(),
+                            (String) jsonObject.getJSONArray("results")
+                                    .getJSONObject(0)
+                                    .getJSONObject("species")
+                                    .getJSONArray("commonNames")
+                                    .get(0),
+                            "no slug",
+                            sciName,
+                            "no url",
+                            (String) jsonObject.getJSONArray("results")
+                                    .getJSONObject(0)
+                                    .getJSONObject("species")
+                                    .getJSONObject("genus")
+                                    .get("scientificNameWithoutAuthor"),
+                            (String) jsonObject.getJSONArray("results")
+                                    .getJSONObject(0)
+                                    .getJSONObject("species")
+                                    .getJSONObject("family")
+                                    .get("scientificNameWithoutAuthor"),
+                            "no description"
+                    );
+                    PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);
+
                 }
-
+            } catch (JSONException e){
+                Log.d("Error", e.toString());
             }
+
+//                new AsyncLayoutInflater(getBaseContext()).inflate(R.layout.activity_main, null, new AsyncLayoutInflater.OnInflateFinishedListener() {
+//                    @Override
+//                    public void onInflateFinished(@NonNull View view, int resid, @Nullable ViewGroup parent) {
+//                        // 准备要展示的植物资料
+//                        MainActivity.loadImageFromURL(getBaseContext(), currentPlant.getImage(), plantImage, "Photo");
+//                        plantCommonName.setText(currentPlant.getCommonName());
+//                        plantSciName.setText(currentPlant.getScientificName());
+//                        plantFamily.setText(currentPlant.getFamily());
+//                        plantDescription.setText(currentPlant.getDescription());
+//                        setContentView(view);
+//                    }
+//                });
         });
         thread.start(); // 启动线程
 
