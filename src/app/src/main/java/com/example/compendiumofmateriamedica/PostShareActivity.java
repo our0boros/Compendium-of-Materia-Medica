@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.Manifest;
+import android.widget.Toast;
 
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
@@ -95,6 +97,10 @@ public class PostShareActivity extends AppCompatActivity {
 
         Thread thread = new Thread(() -> {
             Log.println(Log.ASSERT, "API INPUT", photoPath);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this,"NO ACCESS_NETWORK_STATE PERMISSION", Toast.LENGTH_LONG).show();
+            }
             String result = Plant_Identification.getPlantNetAPIResultOKHttp(photoPath);
             try {
 
