@@ -44,7 +44,11 @@ import java.util.Locale;
 import model.Datastructure.NewEventHandler;
 import model.Datastructure.User;
 
-
+/**
+ * @author: Tianhao Shan, Xing Chen
+ * @datetime: 2024/5
+ * @description:
+ */
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel mViewModel;

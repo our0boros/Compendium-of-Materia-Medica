@@ -15,7 +15,11 @@ import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.NotificationService;
 import com.example.compendiumofmateriamedica.R;
 
-
+/**
+ * @author: Tianhao Shan
+ * @datetime: 2024/5
+ * @description:
+ */
 public class Settings extends AppCompatActivity {
 
     private ImageView back;

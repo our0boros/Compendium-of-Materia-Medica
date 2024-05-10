@@ -7,7 +7,11 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import model.Datastructure.Post;
-
+/**
+ * @author: Tianhao Shan, Xing Chen
+ * @datetime: 2024/5
+ * @description:
+ */
 public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<String> user_name;
     private final MutableLiveData<String> user_location;

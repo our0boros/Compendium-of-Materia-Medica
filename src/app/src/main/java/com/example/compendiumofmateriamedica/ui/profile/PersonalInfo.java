@@ -14,7 +14,11 @@ import com.example.compendiumofmateriamedica.R;
 
 import model.Datastructure.User;
 
-
+/**
+ * @author: Tianhao Shan
+ * @datetime: 2024/5
+ * @description:
+ */
 public class PersonalInfo extends AppCompatActivity {
 
     private ImageView back;

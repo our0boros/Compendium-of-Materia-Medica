@@ -21,7 +21,11 @@ import java.util.List;
 import model.Adapters.NotificationAdapter;
 import model.Datastructure.NewEventHandler;
 import model.Datastructure.User;
-
+/**
+ * @author: Xing Chen
+ * @datetime: 2024/5/9
+ * @description: Show messages.
+ */
 public class MessagesActivity extends AppCompatActivity {
 
     private TextView page_name;

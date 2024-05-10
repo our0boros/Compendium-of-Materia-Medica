@@ -8,7 +8,11 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.compendiumofmateriamedica.R;
-
+/**
+ * @author: Tianhao Shan
+ * @datetime: 2024/5
+ * @description:
+ */
 public class MyPoints extends AppCompatActivity {
 
     private ImageView back;
