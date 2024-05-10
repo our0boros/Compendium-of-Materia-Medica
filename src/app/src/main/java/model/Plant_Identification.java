@@ -198,7 +198,7 @@ public class Plant_Identification {
 	public static String getPlantNetAPIResultOKHttp(String imagePath) {
 
 		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // Your API_KEY here
-		String PROJECT = "all"; // try specific floras: "weurope", "canada"…
+		String PROJECT = "canada"; // try specific floras: "weurope", "canada"…
 		String API_ENDPOINT = "https://my-api.plantnet.org/v2/identify/" + PROJECT + "?api-key=" + API_KEY;
 		String responseBody = "";
 
@@ -229,7 +229,7 @@ public class Plant_Identification {
 			if (response.isSuccessful()) {
 				responseBody = response.body().string();
 				System.out.println("Response Code: " + response.code());
-				System.out.println("Response Body: " + response.body().string());
+				System.out.println("Response Body: " + responseBody);
 			} else {
 				System.out.println("Request failed: " + response.code());
 			}

@@ -99,7 +99,7 @@ public class PostShareActivity extends AppCompatActivity {
         Thread thread = new Thread(() -> {
             Log.println(Log.ASSERT, "START THREAD", "=================================== START THREAD =================================== ");
             Log.println(Log.ASSERT, "API INPUT", photoPath);
-            String result = Plant_Identification.getPlantNetAPIResult(photoPath);
+            String result = Plant_Identification.getPlantNetAPIResultOKHttp(photoPath);
             try {
 
                 JSONObject jsonObject = new JSONObject(result);
@@ -126,7 +126,7 @@ public class PostShareActivity extends AppCompatActivity {
                                     .get(0),
                             "no slug",
                             sciName,
-                            "no url",
+                            "",
                             (String) jsonObject.getJSONArray("results")
                                     .getJSONObject(0)
                                     .getJSONObject("species")
@@ -147,8 +147,9 @@ public class PostShareActivity extends AppCompatActivity {
             }
 
             if (currentPlant != null) {
+                Log.println(Log.ASSERT, "THREAD", "Update UI");
                 // 准备要展示的植物资料
-                MainActivity.loadImageFromURL(getBaseContext(), currentPlant.getImage(), plantImage, "Photo");
+                MainActivity.loadImageFromURL(getApplicationContext(), currentPlant.getImage(), plantImage, "Photo");
                 plantCommonName.setText(currentPlant.getCommonName());
                 plantSciName.setText(currentPlant.getScientificName());
                 plantFamily.setText(currentPlant.getFamily());
