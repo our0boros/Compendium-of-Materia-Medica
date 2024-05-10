@@ -127,6 +127,15 @@ public class ProfileFragment extends Fragment {
             userPlantDiscovered.setText(String.valueOf(value));
         });
 
+        userPlantDiscovered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PlantDiscovered.class);
+                intent.putExtra("CurrentUser", currentUser); // Pass the current user object
+                startActivity(intent);
+            }
+        });
+
         // user post number
         TextView user_post=binding.profileUserPost;
 //        Log.d("ProfileFragment", "Current user's uid is " + currentUser.getUser_id());

@@ -20,6 +20,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
@@ -88,5 +89,10 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public void addData(List<Integer> data) {
+        this.data.addAll(data);
+        notifyDataSetChanged(); // Notify observers that the data set has changed
     }
 }
