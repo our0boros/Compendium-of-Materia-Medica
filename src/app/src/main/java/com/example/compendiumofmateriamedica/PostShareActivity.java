@@ -84,12 +84,11 @@ public class PostShareActivity extends AppCompatActivity {
                 String result = Plant_Identification.getPlantNetAPIResult(photoPath);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-//                    Log.println(Log.ASSERT, "API RESULT", result);
-                    Log.println(Log.ASSERT, "API RESULT", (String) jsonObject.get("bestMatch"));
                     String sciName = (String) jsonObject.getJSONArray("results")
                             .getJSONObject(0)
                             .getJSONObject("species")
                             .get("scientificNameWithoutAuthor");
+                    Log.println(Log.ASSERT, "API RESULT", sciName);
                     // 查找当前的plant库
                     ArrayList<RBTreeNode<Plant>> plantTreeList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME, sciName);
                     // 如果找到匹配的
