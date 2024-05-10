@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.HashMap;
@@ -111,7 +112,7 @@ public class Plant_Identification {
 	}
 
 	public static String getPlantNetAPIResult(String imagePath) {
-		StringBuffer response = new StringBuffer();
+		StringBuilder response = new StringBuilder();
 
 		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // Your API_KEY here
 		String PROJECT = "all"; // try specific floras: "weurope", "canada"…
@@ -134,7 +135,7 @@ public class Plant_Identification {
 			connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
 			OutputStream outputStream = connection.getOutputStream();
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
 
 			// Adding data
 			for (Map.Entry<String, Object> entry : data.entrySet()) {
@@ -170,7 +171,7 @@ public class Plant_Identification {
 			writer.close();
 
 			int responseCode = connection.getResponseCode();
-//			System.out.println("Response Code: " + responseCode);
+			System.out.println("Response Code: " + responseCode);
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
@@ -180,7 +181,7 @@ public class Plant_Identification {
 			}
 			in.close();
 
-//			System.out.println("Response: " + response.toString());
+			System.out.println("Response: " + response.toString());
 
 		} catch (IOException e) {
 			e.printStackTrace();
