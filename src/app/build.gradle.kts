@@ -7,6 +7,7 @@ plugins {
 android {
     namespace = "com.example.compendiumofmateriamedica"
     compileSdk = 34
+//    useLibrary("org.apache.http.legacy")
 
     defaultConfig {
         applicationId = "com.example.compendiumofmateriamedica"
@@ -28,12 +29,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding = true
     }
+//    packagingOptions {
+//        resources.excludes.add("META-INF/*")
+//    }
 }
 
 dependencies {
@@ -61,5 +65,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.greenrobot:eventbus:3.3.1")
 
+//    implementation("net.sourceforge.htmlunit:htmlunit-android:2.63.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+//    implementation("org.apache.httpcomponents:httpmime:4.5.6")
 
 }

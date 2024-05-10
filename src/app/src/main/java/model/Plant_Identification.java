@@ -18,6 +18,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import okhttp3.*;
+
+//import org.apache.http.HttpEntity;
+//import org.apache.http.HttpResponse;
+//import org.apache.http.client.HttpClient;
+//import org.apache.http.client.methods.HttpPost;
+//import org.apache.http.entity.mime.MultipartEntityBuilder;
+//import org.apache.http.entity.mime.content.FileBody;
+//import org.apache.http.impl.client.HttpClientBuilder;
+//import org.apache.http.util.EntityUtils;
+
 public class Plant_Identification {
 
 	public static String imageToBase64(String imagePath) throws IOException {
@@ -27,47 +38,6 @@ public class Plant_Identification {
 		fis.read(bytesArray);
 		fis.close();
 		return Base64.getEncoder().encodeToString(bytesArray);
-	}
-
-	public static void main(String[] args) throws IOException {
-		String imagePath = "potato.jpg"; // 替换为图像文件的路径
-		String base64Image = imageToBase64(imagePath);
-
-		String url = "https://plant.id/api/v3/identification";
-		String apiKey = "bGyxGZY0G38H9nbLMYq0FbqmLZEQZYSUn98DunmqkmNglnQXDO";
-
-		// 设置请求数据
-		String jsonData = "{\"images\": [\"data:image/jpg;base64," + base64Image + "\"]}";
-
-		// 发送 POST 请求
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-		// 设置请求头
-		con.setRequestMethod("POST");
-		con.setRequestProperty("Content-Type", "application/json");
-		con.setRequestProperty("Api-Key", apiKey);
-
-		// 向服务器发送数据
-		con.setDoOutput(true);
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(jsonData);
-		wr.flush();
-		wr.close();
-
-		// 读取服务器响应
-		int responseCode = con.getResponseCode();
-		System.out.println("Response Code: " + responseCode);
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuilder response = new StringBuilder();
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-
-		// 打印响应内容
-		System.out.println("Response: " + response.toString());
 	}
 
 	public static String getPlantIDAPIResult(String imagePath) throws IOException {
@@ -188,4 +158,80 @@ public class Plant_Identification {
 		}
 		return response.toString();
 	}
+
+	public static String getPlantNetAPIResultOKHttp(String imagePath) {
+
+		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // Your API_KEY here
+		String PROJECT = "all"; // try specific floras: "weurope", "canada"…
+		String API_ENDPOINT = String.format("https://my-api.plantnet.org/v2/identify/%s?api-key=%s",
+				PROJECT, API_KEY);
+		String responseBody = "";
+
+		File imageFile = new File(imagePath);
+
+		Map<String, String> data = new HashMap<>();
+		data.put("organs", "flower"); // leaf
+
+		OkHttpClient client = new OkHttpClient();
+
+		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder()
+				.setType(MultipartBody.FORM);
+
+		// Add data
+		for (Map.Entry<String, String> entry : data.entrySet()) {
+			requestBodyBuilder.addFormDataPart(entry.getKey(), entry.getValue());
+		}
+
+		// Add image file
+		requestBodyBuilder.addFormDataPart("images", imageFile.getName(),
+				RequestBody.create(MediaType.parse("image/jpeg"), imageFile));
+
+		RequestBody requestBody = requestBodyBuilder.build();
+
+		Request request = new Request.Builder()
+				.url(API_ENDPOINT)
+				.post(requestBody)
+				.build();
+
+		try {
+			Response response = client.newCall(request).execute();
+			if (response.isSuccessful()) {
+				responseBody = response.body().string();
+				System.out.println("Response: " + responseBody);
+			} else {
+				System.out.println("HTTP request failed with response code: " + response.code());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return responseBody;
+	}
+
+//	public static String getPlantNetAPIResultApache(String imagePath) {
+//
+//		final String PROJECT = "all"; // try specific floras: "weurope", "canada"…
+//		final String URL = "https://my-api.plantnet.org/v2/identify/" + PROJECT + "?api-key=2b10sgwYhB8pSqL6gMuqa3R";
+//
+//		File file = new File(imagePath);
+//
+//		HttpEntity entity = MultipartEntityBuilder.create()
+//				.addPart("images", new FileBody(file)).addTextBody("organs", "flower")
+//				.addPart("images", new FileBody(file)).addTextBody("organs", "leaf")
+//				.build();
+//
+//		HttpPost request = new HttpPost(URL);
+//		request.setEntity(entity);
+//
+//		HttpClient client = HttpClientBuilder.create().build();
+//		HttpResponse response;
+//		String jsonString = "";
+//		try {
+//			response = client.execute(request);
+//			jsonString = EntityUtils.toString(response.getEntity());
+//			System.out.println(jsonString);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		return jsonString;
+//	}
 }
