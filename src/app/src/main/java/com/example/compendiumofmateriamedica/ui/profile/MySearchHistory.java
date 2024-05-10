@@ -8,7 +8,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.compendiumofmateriamedica.R;
-
+/**
+ * @author: Tianhao Shan
+ * @datetime: 2024/5
+ * @description:
+ */
 public class MySearchHistory extends AppCompatActivity {
 
     private TextView page_name;

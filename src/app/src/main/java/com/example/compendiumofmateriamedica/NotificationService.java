@@ -78,19 +78,19 @@ public class NotificationService extends Service {
     private void simulateLikes() {
         Post userNewestPost = MainActivity.getUserNewestPost(currentUser.getUser_id());
         User author = currentUser;
-        // 如果post被点赞小于5次，即用户被通知小于5次
-        if (userNewestPost.getLikesRecord().size() < 6) {
-            // 随机选择一个其他用户点赞
-            User randomUser = getRandomUser();
-            userNewestPost.likedByUser(randomUser.getUser_id());
+        if(userNewestPost != null){
+            // 如果post被点赞小于5次，即用户被通知小于5次
+            if (userNewestPost.getLikesRecord().size() < 6) {
+                // 随机选择一个其他用户点赞
+                User randomUser = getRandomUser();
+                userNewestPost.likedByUser(randomUser.getUser_id());
 
-            //记录当前时间
-            Date now = new Date();
+                //记录当前时间
+                Date now = new Date();
 
-            // TODO 此处通知用户被点赞了
-
-            Log.d(TAG, randomUser.getUsername() + " liked your post (Post id:" + userNewestPost.getPost_id() + ")");
-            EventBus.getDefault().post(new NewEvent(userNewestPost.getPost_id(), randomUser, NewEvent.EventType.LIKE, now));
+                Log.d(TAG, randomUser.getUsername() + " liked your post (Post id:" + userNewestPost.getPost_id() + ")");
+                EventBus.getDefault().post(new NewEvent(userNewestPost.getPost_id(), randomUser, NewEvent.EventType.LIKE, now));
+            }
         }
     }
     // 获取除了uid之外的其他随机一个用户

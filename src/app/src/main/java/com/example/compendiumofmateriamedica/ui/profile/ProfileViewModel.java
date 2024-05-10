@@ -7,16 +7,22 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import model.Datastructure.Post;
-
+/**
+ * @author: Tianhao Shan, Xing Chen
+ * @datetime: 2024/5
+ * @description:
+ */
 public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<String> user_name;
     private final MutableLiveData<String> user_location;
     private final MutableLiveData<Integer> user_post;
+    private final MutableLiveData<Integer> user_plants_discovered;
 
     public ProfileViewModel() {
         user_name = new MutableLiveData<>();
         user_location = new MutableLiveData<>();
         user_post = new MutableLiveData<>();
+        user_plants_discovered = new MutableLiveData<>();
     }
 
     public LiveData<String> getUserName() {
@@ -27,12 +33,17 @@ public class ProfileViewModel extends ViewModel {
     }
     public MutableLiveData<Integer> getUserPost() { return user_post;}
 
+    public MutableLiveData<Integer> getUserPlantsDiscovered() {
+        return user_plants_discovered;
+    }
+
     public void updateUserName(String user_name){
         this.user_name.setValue(user_name);
     }
     public void updateUserLocation(String user_location){this.user_location.setValue(user_location);
     }
     public void updateUserPost(List<Post> user_post_data){ this.user_post.setValue(user_post_data.size());}
+    public void updateUserPlantDiscovered(int user_plants_discovered){ this.user_plants_discovered.setValue(user_plants_discovered);}
 
 }
 

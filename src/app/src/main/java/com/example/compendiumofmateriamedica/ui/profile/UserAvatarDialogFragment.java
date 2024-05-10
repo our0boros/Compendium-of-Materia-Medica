@@ -15,7 +15,11 @@ import com.example.compendiumofmateriamedica.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import model.Datastructure.User;
-
+/**
+ * @author: Tianhao Shan
+ * @datetime: 2024/5
+ * @description:
+ */
 public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
 
     private ImageView image_avatar;
