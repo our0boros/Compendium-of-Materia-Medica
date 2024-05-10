@@ -1,6 +1,9 @@
 package model.Datastructure;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * @author: Haochen Gong
@@ -93,6 +96,37 @@ public class PostTreeManager implements TreeManager<Post>{
         search(node.getLeft(), infoType, info, posts);
         // 继续在右子树中递归搜索
         search(node.getRight(), infoType, info, posts);
+    }
+
+    // 根据时间戳获取指定数量post
+    public ArrayList<Post> getNewestPosts(int numberOfPosts, String lastLoadedPostTimestamp) {
+        ArrayList<Post> beforePosts = new ArrayList<>();
+        getBeforePosts(this.postRBTree.root, lastLoadedPostTimestamp, beforePosts);  // 获取所有时间在指定时间之前的post
+        // 按时间戳降序排列
+        beforePosts.sort(new Comparator<Post>() {
+            @Override
+            public int compare(Post p1, Post p2) {
+                return LocalDateTime.parse(p2.getTimestamp()).compareTo(LocalDateTime.parse(p1.getTimestamp()));
+            }
+        });
+
+        // 不足需要的数量时，全部返回，足够时返回指定数量
+        if (beforePosts.size() <= numberOfPosts) {
+            return beforePosts;
+        } else {
+            return new ArrayList<Post>(beforePosts.subList(0, 5));
+        }
+    }
+
+    // 找到所有发布时间在输入时间之前的post
+    private void getBeforePosts(RBTreeNode<Post> node, String timeStamp, ArrayList<Post> posts) {
+        if (node != null) {
+            if (LocalDateTime.parse(node.getValue().getTimestamp()).isBefore(LocalDateTime.parse(timeStamp))) {
+                posts.add(node.getValue());  // 当前节点时间在输入时间之前时，添加到结果列表
+            }
+            getBeforePosts(node.getLeft(), timeStamp, posts);  // 访问左子树
+            getBeforePosts(node.getRight(), timeStamp, posts);  // 访问右子树
+        }
     }
 
     public int getTreeSize(){
