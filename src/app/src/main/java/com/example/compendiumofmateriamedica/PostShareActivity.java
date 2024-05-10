@@ -1,8 +1,10 @@
 package com.example.compendiumofmateriamedica;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.asynclayoutinflater.view.AsyncLayoutInflater;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +19,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -139,18 +142,14 @@ public class PostShareActivity extends AppCompatActivity {
                 Log.d("Error", e.toString());
             }
 
-//                new AsyncLayoutInflater(getBaseContext()).inflate(R.layout.activity_main, null, new AsyncLayoutInflater.OnInflateFinishedListener() {
-//                    @Override
-//                    public void onInflateFinished(@NonNull View view, int resid, @Nullable ViewGroup parent) {
-//                        // 准备要展示的植物资料
-//                        MainActivity.loadImageFromURL(getBaseContext(), currentPlant.getImage(), plantImage, "Photo");
-//                        plantCommonName.setText(currentPlant.getCommonName());
-//                        plantSciName.setText(currentPlant.getScientificName());
-//                        plantFamily.setText(currentPlant.getFamily());
-//                        plantDescription.setText(currentPlant.getDescription());
-//                        setContentView(view);
-//                    }
-//                });
+            if (currentPlant != null) {
+                // 准备要展示的植物资料
+                MainActivity.loadImageFromURL(getBaseContext(), currentPlant.getImage(), plantImage, "Photo");
+                plantCommonName.setText(currentPlant.getCommonName());
+                plantSciName.setText(currentPlant.getScientificName());
+                plantFamily.setText(currentPlant.getFamily());
+                plantDescription.setText(currentPlant.getDescription());
+            }
         });
         thread.start(); // 启动线程
 

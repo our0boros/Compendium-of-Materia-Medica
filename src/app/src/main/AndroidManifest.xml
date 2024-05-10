@@ -35,9 +35,6 @@
         <activity
             android:name=".ui.profile.PlantDiscovered"
             android:exported="false" />
-        <activity
-            android:name=".PostDetailShow"
-            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
