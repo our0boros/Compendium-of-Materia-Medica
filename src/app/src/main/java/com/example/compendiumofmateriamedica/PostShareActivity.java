@@ -140,24 +140,35 @@ public class PostShareActivity extends AppCompatActivity {
                             "no description"
                     );
                     PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);
-
                 }
+
+                // 在获取到植物信息后更新UI
+                runOnUiThread(() -> {
+                    if (currentPlant != null) {
+                        Log.println(Log.ASSERT, "THREAD", "Update UI: \n" + currentPlant);
+                        // 准备要展示的植物资料
+                        MainActivity.loadImageFromURL(this, currentPlant.getImage(), plantImage, "Photo");
+                        plantCommonName.setText(currentPlant.getCommonName());
+                        plantSciName.setText(currentPlant.getScientificName());
+                        plantFamily.setText(currentPlant.getFamily());
+                        plantDescription.setText(currentPlant.getDescription());
+                    }
+                });
             } catch (JSONException e){
                 Log.d("Error", e.toString());
             }
-
-            if (currentPlant != null) {
-                Log.println(Log.ASSERT, "THREAD", "Update UI");
-                // 准备要展示的植物资料
-                MainActivity.loadImageFromURL(getApplicationContext(), currentPlant.getImage(), plantImage, "Photo");
-                plantCommonName.setText(currentPlant.getCommonName());
-                plantSciName.setText(currentPlant.getScientificName());
-                plantFamily.setText(currentPlant.getFamily());
-                plantDescription.setText(currentPlant.getDescription());
-            }
         });
         thread.start(); // 启动线程
-
+//        if (currentPlant != null) {
+//
+//            Log.println(Log.ASSERT, "THREAD", "Update UI: \n" + currentPlant);
+//            // 准备要展示的植物资料
+//            MainActivity.loadImageFromURL(this, currentPlant.getImage(), plantImage, "Photo");
+//            plantCommonName.setText(currentPlant.getCommonName());
+//            plantSciName.setText(currentPlant.getScientificName());
+//            plantFamily.setText(currentPlant.getFamily());
+//            plantDescription.setText(currentPlant.getDescription());
+//        }
         // ======================================================================
         // post 内容
         EditText postContent = findViewById(R.id.editText_post_content);
