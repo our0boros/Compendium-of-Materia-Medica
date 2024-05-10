@@ -34,6 +34,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="cursive"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textSize="40sp"
@@ -60,10 +61,13 @@
             android:layout_marginTop="20dp"
             android:background="@color/white"
             android:ems="10"
+            android:hint="@string/hint_notation"
             android:inputType="text"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="@string/search_text" />
+            android:text="@string/search_text"
+            android:textAlignment="textStart"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout

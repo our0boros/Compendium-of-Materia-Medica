@@ -40,4 +40,5 @@
         dactylis-glomerata, Quercus, Asteraceae}\", it can be used to search for
         plant entries containing any of the aforementioned relationships.
     </string>
+    <string name="hint_notation">Check the Tip in the Upper Right</string>
 </resources>
