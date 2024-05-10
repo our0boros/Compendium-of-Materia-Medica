@@ -47,6 +47,7 @@ import java.util.Set;
 
 import model.Datastructure.NewEvent;
 import model.Datastructure.NewEventHandler;
+import model.Datastructure.Plant;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTreeNode;
@@ -366,6 +367,16 @@ public class MainActivity extends AppCompatActivity {
         Log.w("MainActivity", "Get posts by user id" + uid + " failed, there is no posts of this user");
         return new ArrayList<>(); // 防止出现null指针
     }
+    public static Set<Integer> getUserPlantDiscovered(int uid){
+        List<Post> posts = getPostsByUserId(uid);
+        Set<Integer> plantsDiscovered = new HashSet<>();
+        for (Post post : posts){
+            int plantId = post.getPlant_id();
+            plantsDiscovered.add(plantId);
+        }
+        return plantsDiscovered;
+    }
+
     // get the newest one post of given uid
     public static Post getUserNewestPost(int uid){
         List<Post> allUserPosts = getPostsByUserId(uid);
