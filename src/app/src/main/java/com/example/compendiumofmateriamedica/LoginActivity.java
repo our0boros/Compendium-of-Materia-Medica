@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                         User user = users.get(0).getValue();
                         intent.putExtra("User", user);
                     }
-
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     // Failed login
                     Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
@@ -139,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     // 处理用户数据，例如打印信息
                                                     Log.d("UserData", "User ID: " + user.getUsername() + ", Username: " + user.getUser_id());
                                                     intent.putExtra("User", user);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     startActivity(intent);
                                                 }
                                             } else {
