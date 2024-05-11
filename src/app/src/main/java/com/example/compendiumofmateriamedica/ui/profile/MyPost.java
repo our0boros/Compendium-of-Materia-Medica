@@ -57,12 +57,15 @@ public class MyPost extends AppCompatActivity {
         currentUser = (User) this.getIntent().getSerializableExtra("CurrentUser");
         postsRecyclerView = findViewById(R.id.messages_recyclerView);
         List<Post> myPosts = MainActivity.getPostsByUserId(currentUser.getUser_id());
-        postAdapter = new PostAdapter(this, myPosts, getSupportFragmentManager());
+        postAdapter = new PostAdapter(this, myPosts, getSupportFragmentManager(),false, currentUser);
         postsRecyclerView.setAdapter(postAdapter);
 
         // set layout of recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         postsRecyclerView.setLayoutManager(layoutManager);
 
+    }
+    public User getCurrentUser(){
+        return (User) getIntent().getSerializableExtra("CurrentUser");
     }
 }

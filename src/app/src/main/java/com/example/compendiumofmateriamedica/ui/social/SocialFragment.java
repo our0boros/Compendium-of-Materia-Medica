@@ -19,6 +19,7 @@ import com.example.compendiumofmateriamedica.databinding.FragmentSocialBinding;
 import java.util.ArrayList;
 
 import model.Adapters.PostAdapter;
+import model.Datastructure.User;
 
 /**
  * @author: Hongjun Xu, Xing Chen
@@ -32,6 +33,7 @@ public class SocialFragment extends Fragment {
 
     private RecyclerView postsRecyclerView;
     private PostAdapter postAdapter;
+    private User currentUser;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,11 +42,11 @@ public class SocialFragment extends Fragment {
 
         binding = FragmentSocialBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
         // configure RecyclerView
         postsRecyclerView = binding.postsRecyclerView;
         // ser adapter
-        postAdapter = new PostAdapter(getContext(), new ArrayList<>(), getParentFragmentManager());
+        postAdapter = new PostAdapter(getContext(), new ArrayList<>(), getParentFragmentManager(), true, currentUser);
         postsRecyclerView.setAdapter(postAdapter);
         // set layout of recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

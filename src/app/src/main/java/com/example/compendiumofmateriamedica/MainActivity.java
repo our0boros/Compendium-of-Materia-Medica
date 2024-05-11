@@ -431,5 +431,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return dateTime.format(formatter);
     }
+    public User getCurrentUser(){
+        return (User) getIntent().getSerializableExtra("User");
+    }
 
 }

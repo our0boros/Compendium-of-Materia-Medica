@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author: Haochen Gong
@@ -97,25 +98,55 @@ public class PostTreeManager implements TreeManager<Post>{
         // 继续在右子树中递归搜索
         search(node.getRight(), infoType, info, posts);
     }
-
+    public interface PostCallback {
+        void onCallback(List<Post> posts);
+    }
     // 根据时间戳获取指定数量post
-    public ArrayList<Post> getNewestPosts(int numberOfPosts, String lastLoadedPostTimestamp) {
-        ArrayList<Post> beforePosts = new ArrayList<>();
-        getBeforePosts(this.postRBTree.root, lastLoadedPostTimestamp, beforePosts);  // 获取所有时间在指定时间之前的post
-        // 按时间戳降序排列
-        beforePosts.sort(new Comparator<Post>() {
+    public void getNewestPosts(int numberOfPosts, String lastLoadedPostTimestamp, PostCallback callback) {
+        new Thread(new Runnable() {
             @Override
-            public int compare(Post p1, Post p2) {
-                return LocalDateTime.parse(p2.getTimestamp()).compareTo(LocalDateTime.parse(p1.getTimestamp()));
-            }
-        });
+            public void run() {
+                ArrayList<Post> beforePosts = new ArrayList<>();
 
-        // 不足需要的数量时，全部返回，足够时返回指定数量
-        if (beforePosts.size() <= numberOfPosts) {
-            return beforePosts;
-        } else {
-            return new ArrayList<Post>(beforePosts.subList(0, 5));
-        }
+                if (lastLoadedPostTimestamp == null) {
+                    // 如果没有提供时间戳,获取最新的帖子
+                    getLatestPostsFromRBTree(postRBTree.root, numberOfPosts, beforePosts);
+                } else {
+                    // 获取指定时间戳之前的帖子
+                    getBeforePosts(postRBTree.root, lastLoadedPostTimestamp, beforePosts);  // 获取所有时间在指定时间之前的post
+                    // 按时间戳降序排列
+                    beforePosts.sort(new Comparator<Post>() {
+                        @Override
+                        public int compare(Post p1, Post p2) {
+                            return LocalDateTime.parse(p2.getTimestamp()).compareTo(LocalDateTime.parse(p1.getTimestamp()));
+                        }
+                    });
+                }
+
+                // 不足需要的数量时,全部返回,足够时返回指定数量
+                if (beforePosts.size() <= numberOfPosts) {
+                    callback.onCallback(beforePosts);
+                } else {
+                    callback.onCallback(new ArrayList<>(beforePosts.subList(0, numberOfPosts)));
+                }
+            }
+        }).start();
+//        ArrayList<Post> beforePosts = new ArrayList<>();
+//        getBeforePosts(this.postRBTree.root, lastLoadedPostTimestamp, beforePosts);  // 获取所有时间在指定时间之前的post
+//        // 按时间戳降序排列
+//        beforePosts.sort(new Comparator<Post>() {
+//            @Override
+//            public int compare(Post p1, Post p2) {
+//                return LocalDateTime.parse(p2.getTimestamp()).compareTo(LocalDateTime.parse(p1.getTimestamp()));
+//            }
+//        });
+//
+//        // 不足需要的数量时，全部返回，足够时返回指定数量
+//        if (beforePosts.size() <= numberOfPosts) {
+//            return beforePosts;
+//        } else {
+//            return new ArrayList<Post>(beforePosts.subList(0, numberOfPosts));
+//        }
     }
 
     // 找到所有发布时间在输入时间之前的post
@@ -126,6 +157,15 @@ public class PostTreeManager implements TreeManager<Post>{
             }
             getBeforePosts(node.getLeft(), timeStamp, posts);  // 访问左子树
             getBeforePosts(node.getRight(), timeStamp, posts);  // 访问右子树
+        }
+    }
+    private void getLatestPostsFromRBTree(RBTreeNode<Post> node, int numberOfPosts, ArrayList<Post> latestPosts) {
+        if (node != null && latestPosts.size() < numberOfPosts) {
+            getLatestPostsFromRBTree(node.getRight(), numberOfPosts, latestPosts);
+            if (latestPosts.size() < numberOfPosts) {
+                latestPosts.add(node.getValue());
+                getLatestPostsFromRBTree(node.getLeft(), numberOfPosts, latestPosts);
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package model.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +32,17 @@ import model.Datastructure.User;
  */
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
+    private final String TAG = "PostAdapter";
     private Context context;
     // a list of posts
     private List<Post> postsList;
     private FragmentManager fragmentManager;
-    private boolean isLiked = false;
+    private boolean showLikeButton;
+    private boolean isLiked;
+    private User currentUser;
     // an inner class to hold and reuse the view
     public static class PostViewHolder extends RecyclerView.ViewHolder{
+
         public TextView username;
         public ImageView userAvatar;
         public TextView content;
@@ -56,10 +61,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
     }
 
-    public PostAdapter(Context context, List<Post> postsList, FragmentManager fragmentManager){
+    public PostAdapter(Context context, List<Post> postsList, FragmentManager fragmentManager, Boolean showLikeButton, User currentUser){
         this.context = context;
         this.postsList = postsList;
         this.fragmentManager = fragmentManager;
+        this.showLikeButton = showLikeButton;
+        this.currentUser = currentUser;
+        Log.d(TAG, "Initialize postAdapter successful, show_like_button=" + showLikeButton + ", current user=" + currentUser.getUser_id());
     }
 
     @NonNull
@@ -104,27 +112,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 photoDialogFragment.show(fragmentManager, "photo_dialog");
             });
 
-            // 设置点赞按钮事件
-            holder.buttonLike.setOnClickListener(new View.OnClickListener() {
+            // 设置点赞按钮装态
+            if(showLikeButton){
+//                isLiked = post.isLikedByUser(currentUser.getUser_id());
+//                // 设置点赞图标
+//                if(!isLiked){
+//                    holder.buttonLike.setImageResource(R.drawable.button_post_like);
+//                } else {
+//                    holder.buttonLike.setImageResource(R.drawable.button_post_unlike);
+//                }
+                holder.buttonLike.setImageResource(R.drawable.button_post_like);
+                // 设置点赞按钮事件
+                holder.buttonLike.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    if (!isLiked) {
-                        // 此次为点赞操作
-                        // UI逻辑
-                        holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
-                        isLiked = true;
-                        //后台逻辑
+                    @Override
+                    public void onClick(View v) {
+                        if (!isLiked) {
+                            // 此次为点赞操作
+                            // UI逻辑
+                            holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
+                            //后台逻辑
+//                            post.likedByUser(currentUser.getUser_id());
 
-                    } else {
-                        // 此次为取消点赞操作
-                        // UI逻辑
-                        holder.buttonLike.setImageResource(R.drawable.button_post_like);  // 默认图标
-                        isLiked = false;
-                        //后台逻辑
+
+                        } else {
+                            // 此次为取消点赞操作
+                            // UI逻辑
+                            holder.buttonLike.setImageResource(R.drawable.button_post_like);  // 默认图标
+                            //后台逻辑
+//                            post.likedByUser(currentUser.getUser_id());
+                        }
                     }
-                }
-            });
+                });
+            }
+
 
             // set the content of the viewHolder
             // load avatar image from url

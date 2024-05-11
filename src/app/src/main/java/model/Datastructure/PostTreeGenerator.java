@@ -1,5 +1,7 @@
 package model.Datastructure;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +60,12 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
 
                 // 创建并插入节点
                 Post post = new Post(postId,uid,plantId,photo,content,timestamp,likes,likesRecord,comments);
+                if(post.getLikes() == null
+                        || post.getLikesRecord() == null
+                        || post.getComments() == null)
+                    Log.w("TreeGenerator", "Post id:" + post.getPost_id() + " has null attributes");
+//                else
+//                    Log.d("TreeGenerator", "Post id:" + post.getPost_id() + " generated with full attributes");
                 // 设置post id 作key
                 postRBTree.insert(postId, post);
             } catch (JSONException e) {

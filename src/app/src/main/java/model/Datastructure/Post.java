@@ -1,11 +1,14 @@
 package model.Datastructure;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author: Haochen Gong
@@ -23,6 +26,8 @@ public class Post implements Comparable<Post>{
     private List<Integer> likes;
     private List<Integer> likesRecord;
     private Map<Integer, String> comments;
+
+    private final ReentrantLock lock = new ReentrantLock();
 
     public Post(){}
 
@@ -80,28 +85,50 @@ public class Post implements Comparable<Post>{
     public Map<Integer, String> getComments() { return comments; }
     // 判断Post现在是否被某用户点赞了
     public boolean isLikedByUser(int uid){
-        return this.likes.contains(uid);
+//        lock.lock();
+//        try{
+//            if(likes == null)
+//            {Log.w("Post", "Post id:" + this.post_id + "'s isLiked is null!");
+//                this.likes = new ArrayList<>();}
+            return this.likes.contains(uid);
+//        } finally {
+//            lock.unlock();
+//        }
     }
     // 判断Post以前是否被某用户点赞过
     public boolean wasLikedByUser(int uid){
-        return this.likesRecord.contains(uid);
+//        lock.lock();
+//        try{
+//            if(likes == null) {
+//                Log.w("Post", "Post id:" + this.post_id + " is null!");
+//                likes = new ArrayList<>();
+//            }
+            return this.likesRecord.contains(uid);
+//        } finally {
+//            lock.unlock();
+//        }
     }
     // 在Post被用户点赞的时候调用
     public void likedByUser(int uid){
-        if (isLikedByUser(uid)) {
-            // 如果现在已经被该用户点赞了
-            // 取消点赞
-            this.likes.remove(Integer.valueOf(uid)); //这里使用Integer.valueOf(uid)防止被认为是索引
-        } else {
-            // 现在没有被该用户点赞
-            // 点赞
-            this.likes.add(uid);
-            // 如果以前没有被他点赞过，则加入点赞用户记录
-            if(!wasLikedByUser(uid)){
-                likesRecord.add(uid);
+//        lock.lock();
+//        try{
+            if (isLikedByUser(uid)) {
+                // 如果现在已经被该用户点赞了
+                // 取消点赞
+                this.likes.remove(Integer.valueOf(uid)); //这里使用Integer.valueOf(uid)防止被认为是索引
+            } else {
+                // 现在没有被该用户点赞
+                // 点赞
+                this.likes.add(uid);
+                // 如果以前没有被他点赞过，则加入点赞用户记录
+                if(!wasLikedByUser(uid)){
+                    likesRecord.add(uid);
+                }
+                // 如果以前被他点赞过，说明他是取消了再点的,不用做处理
             }
-            // 如果以前被他点赞过，说明他是取消了再点的,不用做处理
-        }
+//        }finally {
+//            lock.unlock();
+//        }
     }
 
     @Override

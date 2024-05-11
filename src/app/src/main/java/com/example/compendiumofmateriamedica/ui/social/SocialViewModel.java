@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
 
 /**
  * @author: Hongjun Xu, Xing Chen
@@ -62,7 +63,23 @@ public class SocialViewModel extends ViewModel {
         Log.d("HomeViewModel", "Loading more posts after timestamp: " + lastTimestamp);
 
         String finalLastTimestamp = lastTimestamp;
-        MainActivity.getNewestPosts(number, lastTimestamp, new MainActivity.PostCallback() {
+//        MainActivity.getNewestPosts(number, lastTimestamp, new MainActivity.PostCallback() {
+//            @Override
+//            public void onCallback(List<Post> newPosts) {
+//                if (!newPosts.isEmpty() && newPosts.get(0).getTimestamp().equals(finalLastTimestamp)) {
+//                    newPosts.remove(0);  // Remove the first post if it is the same as the last one of the current posts
+//                }
+//                List<Post> currentPosts = postsLiveData.getValue();
+//                if (currentPosts == null) {
+//                    currentPosts = new ArrayList<>();
+//                }
+//                currentPosts.addAll(newPosts);
+//                postsLiveData.postValue(currentPosts); // 确保在主线程上更新 LiveData
+//                isLoading = false;
+//                Log.d("HomeViewModel", "Posts loaded, new count: " + currentPosts.size());
+//            }
+//        });
+        PostTreeManager.getInstance().getNewestPosts(number, lastTimestamp, new PostTreeManager.PostCallback() {
             @Override
             public void onCallback(List<Post> newPosts) {
                 if (!newPosts.isEmpty() && newPosts.get(0).getTimestamp().equals(finalLastTimestamp)) {
