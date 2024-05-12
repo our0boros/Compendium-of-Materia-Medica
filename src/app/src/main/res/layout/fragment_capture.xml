@@ -5,13 +5,14 @@
     android:id="@+id/fragment_capture"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.capture.CaptureFragment">
 
     <ImageView
         android:id="@+id/search_hint"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,7 +23,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/unknown_user" />
@@ -59,7 +60,7 @@
             android:layout_width="338dp"
             android:layout_height="64dp"
             android:layout_marginTop="20dp"
-            android:background="@color/white"
+            android:background="@color/milk_white"
             android:ems="10"
             android:hint="@string/hint_notation"
             android:inputType="text"

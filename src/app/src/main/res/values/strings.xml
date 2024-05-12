@@ -24,7 +24,7 @@
         <item>Time</item>
         <item>Content</item>
     </string-array>
-    <string name="no_result">(～￣▽￣)～          No results yet~</string>
+    <string name="no_result">(～￣▽￣)～ \n No results yet~</string>
     <string name="hint_message">
         This syntax logic is primarily divided into three sections: the tag column,
         the content column, and the search method column. \n\n
