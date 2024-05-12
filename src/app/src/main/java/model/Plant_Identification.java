@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
@@ -217,6 +220,8 @@ public class Plant_Identification {
 				.setType(MultipartBody.FORM)
 				.addFormDataPart("organs", "flower")
 				.addFormDataPart("images", imagePath, RequestBody.create(MediaType.parse("image/jpeg"), new File(imagePath)))
+				.addFormDataPart("organs", "leaf")
+				.addFormDataPart("images", imagePath, RequestBody.create(MediaType.parse("image/jpeg"), new File(imagePath)))
 				.build();
 
 		Request request = new Request.Builder()
@@ -267,4 +272,59 @@ public class Plant_Identification {
 //		}
 //		return jsonString;
 //	}
+
+	public static String getFromWiki(String sciName, String type) {
+		String requestUrl;
+		switch (type) {
+			case "image": {
+				requestUrl = "https://en.wikipedia.org/w/api.php?format=json&action=query&titles=" +
+						sciName.replace(" ", "%20") + "&prop=pageimages&pithumbsize=300";
+				break;
+			}
+			case "content": {
+				requestUrl = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=" +
+						sciName.replace(" ", "%20");
+				break;
+			}
+			default: {
+				requestUrl = "";
+				break;
+			}
+		}
+
+		OkHttpClient client = new OkHttpClient();
+		// 创建 Request 对象
+		Request request = new Request.Builder()
+				.url(requestUrl)
+				.build();
+		// 发送请求并获取响应
+		try {
+			Response response = client.newCall(request).execute();
+			// 判断请求是否成功
+			if (response.isSuccessful()) {
+				// 获取 JSON 数据
+				String jsonData = response.body().string();
+				System.out.println(jsonData);
+				JSONObject jsonObject = new JSONObject(jsonData);
+				JSONObject firstPageObject = jsonObject.getJSONObject("query")
+						.getJSONObject("pages")
+						.getJSONObject(
+								jsonObject.getJSONObject("query")
+								.getJSONObject("pages")
+								.keys()
+								.next());
+				System.out.println(jsonData);
+				switch (type) {
+					case "image": {
+						return (String) firstPageObject.getJSONObject("thumbnail").get("source");
+					}
+					case "content":
+						return (String) firstPageObject.get("extract");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 }

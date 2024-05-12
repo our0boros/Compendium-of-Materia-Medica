@@ -1,17 +1,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="163dp"
     android:orientation="horizontal"
     android:padding="16dp" >
 
-    <ImageView
-        android:id="@+id/rowLayoutPostImage"
+    <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:scaleType="centerCrop"
-        android:src="@drawable/load_image_fail" />
+        app:cardCornerRadius="20dp">
+
+        <ImageView
+            android:id="@+id/rowLayoutPostImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/load_image_fail" />
+    </androidx.cardview.widget.CardView>
 
     <View
         android:id="@+id/divider"
