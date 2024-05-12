@@ -126,7 +126,7 @@ public class PostShareActivity extends AppCompatActivity {
                                     .get(0),
                             "no slug",
                             sciName,
-                            "",
+                            Plant_Identification.getFromWiki(sciName, "image"),
                             (String) jsonObject.getJSONArray("results")
                                     .getJSONObject(0)
                                     .getJSONObject("species")
@@ -137,7 +137,7 @@ public class PostShareActivity extends AppCompatActivity {
                                     .getJSONObject("species")
                                     .getJSONObject("family")
                                     .get("scientificNameWithoutAuthor"),
-                            "no description"
+                            Plant_Identification.getFromWiki(sciName, "content")
                     );
                     Log.println(Log.ASSERT, "API RESULT", "Create new result: " + currentPlant);
                     PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);
