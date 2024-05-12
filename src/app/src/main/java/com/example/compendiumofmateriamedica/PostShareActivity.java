@@ -113,12 +113,12 @@ public class PostShareActivity extends AppCompatActivity {
                 // 如果找到匹配的
                 if (plantTreeList.size() > 0) {
                     currentPlant = plantTreeList.get(0).getValue();
-                    Log.println(Log.ASSERT, "API RESULT", "Found mapping result at: " + currentPlant.getId());
+                    Log.println(Log.ASSERT, "API RESULT", "Found mapping result: " + currentPlant);
                 } else {
                     Log.println(Log.ASSERT, "API RESULT", "Do not found mapping result");
                     // 如果不存在就塞进去
                     currentPlant = new Plant(
-                            jsonObject.get("bestMatch").hashCode(),
+                            sciName.hashCode(),
                             (String) jsonObject.getJSONArray("results")
                                     .getJSONObject(0)
                                     .getJSONObject("species")
@@ -139,6 +139,7 @@ public class PostShareActivity extends AppCompatActivity {
                                     .get("scientificNameWithoutAuthor"),
                             "no description"
                     );
+                    Log.println(Log.ASSERT, "API RESULT", "Create new result: " + currentPlant);
                     PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);
                 }
 
