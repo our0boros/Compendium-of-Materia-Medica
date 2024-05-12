@@ -37,12 +37,13 @@ Note that you should have removed ALL TEMPLATE/INSTRUCTION textes in your submis
 ## Team Members and Roles
 The key area(s) of responsibilities for each member
 
-| UID   |  Name  |   Role |
-|:------|:------:|-------:|
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
-| [uid] | [name] | [role] |
+| UID   |      Name      |                              Role |
+|:------|:--------------:|----------------------------------:|
+| [u7709429] | [Tianhao Shan] |                              [UI] |
+| [u7776634] | [Haochen Gong] |                  [Data structure] |
+| [u7755061] |  [Yusi Zhong]  | [Data prepare] |
+| [u7733037] |     [Hongjun Xu]     |                          [Search] |
+| [u7725171] |     [Xing Chen]     |                            [role] |
 
 
 ## Summary of Individual Contributions
@@ -62,7 +63,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 *Here is an example: (Note that you should remove the entire section (e.g. "others") if it is not applicable)*
 
-1. **UID1, Name1**  I have 30% contribution, as follows: <br>
+1. **u7709429, Tianhao Shan**  I have 20% contribution, as follows: <br>
   - **Code Contribution in the final App**
     - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
     - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
@@ -76,18 +77,70 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - [Report Writing?] [Slides preparation?]*
     - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
 
-2. **UID2, Name2**  I have xx% contribution, as follows: <br>
-  - ...
+2. **u7776634, Haochen Gong**  I have 20% contribution, as follows: <br>
+- **Code Contribution in the final App**
+    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
 
+- **Code and App Design**
+    - [What design patterns, data structures, did the involved member propose?]*
+    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
 
+- **Others**: (only if significant and significantly different from an "average contribution")
+    - [Report Writing?] [Slides preparation?]*
+    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
 
+3. **u7755061, Yusi Zhong**  I have 20% contribution, as follows: <br>
+- **Code Contribution in the final App**
+    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
+
+- **Code and App Design**
+    - [What design patterns, data structures, did the involved member propose?]*
+    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+
+- **Others**: (only if significant and significantly different from an "average contribution")
+    - [Report Writing?] [Slides preparation?]*
+    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
+
+4. **u7733037, Hongjun Xu**  I have 20% contribution, as follows: <br>
+- **Code Contribution in the final App**
+    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
+
+- **Code and App Design**
+    - [What design patterns, data structures, did the involved member propose?]*
+    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+
+- **Others**: (only if significant and significantly different from an "average contribution")
+    - [Report Writing?] [Slides preparation?]*
+    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
+
+5. **u7725171, Xing Chen**  I have 20% contribution, as follows: <br>
+- **Code Contribution in the final App**
+    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
+
+- **Code and App Design**
+    - [What design patterns, data structures, did the involved member propose?]*
+    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+
+- **Others**: (only if significant and significantly different from an "average contribution")
+    - [Report Writing?] [Slides preparation?]*
+    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
+
+    
 ## Application Description
 
-*[What is your application, what does it do? Include photos or diagrams if necessary]*
-
-*Here is a pet specific application example*
-
-*PetBook is a social media application specifically targetting pet owners... it provides... certified practitioners, such as veterians are indicated by a label next to their profile...*
+*XXX is a social application aimed at plant enthusiasts, providing detailed information about various plants, including image examples, common names, slugs, scientific names, genus, and family information, along with extensive textual descriptions. Users can obtain plant information by taking photos of plants they encounter or by searching directly using text. Additionally, users can post their own photos of plants on the social channel to share their discoveries and experiences with all users. 
+<br><br>Upon launching the application, users first enter a login screen where they authenticate themselves using an email and password. 
+<br><br>After logging in, the first page displayed is the social channel page, where all user-shared content is displayed in reverse chronological order, including plant photos and text. 
+<br><br>By clicking the camera button on the navigation bar at the bottom of the page, users can access the application's core search page. 
+<br><br>还没写完——————————————————————*
 
 ### Application Use Cases and or Examples
 
