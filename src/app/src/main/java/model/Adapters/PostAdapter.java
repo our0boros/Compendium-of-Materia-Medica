@@ -114,14 +114,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             // 设置点赞按钮装态
             if(showLikeButton){
-//                isLiked = post.isLikedByUser(currentUser.getUser_id());
-//                // 设置点赞图标
-//                if(!isLiked){
-//                    holder.buttonLike.setImageResource(R.drawable.button_post_like);
-//                } else {
-//                    holder.buttonLike.setImageResource(R.drawable.button_post_unlike);
-//                }
-                holder.buttonLike.setImageResource(R.drawable.button_post_like);
+                isLiked = post.isLikedByUser(currentUser.getUser_id());
+                // 设置点赞图标
+                if(!isLiked){
+                    holder.buttonLike.setImageResource(R.drawable.button_post_like);
+                } else {
+                    holder.buttonLike.setImageResource(R.drawable.button_post_unlike);
+                }
                 // 设置点赞按钮事件
                 holder.buttonLike.setOnClickListener(new View.OnClickListener() {
 
@@ -132,7 +131,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             // UI逻辑
                             holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
                             //后台逻辑
-//                            post.likedByUser(currentUser.getUser_id());
+                            post.likedByUser(currentUser.getUser_id());
 
 
                         } else {

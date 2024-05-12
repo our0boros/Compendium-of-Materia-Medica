@@ -108,7 +108,7 @@ public class Post implements Comparable<Post>{
 //            lock.unlock();
 //        }
     }
-    // 在Post被用户点赞的时候调用
+    // 在用户按点赞按钮的时候调用
     public void likedByUser(int uid){
 //        lock.lock();
 //        try{

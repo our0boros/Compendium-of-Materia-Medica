@@ -59,13 +59,17 @@ public class NotificationService extends Service {
     }
     // 定时模拟点赞行为
     private void startTimer() {
+        if (timer != null) {
+            timer.cancel();  // 取消当前运行的定时器任务
+            timer = null;    // 将定时器设置为null，确保垃圾回收
+        }
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 simulateLikes();
             }
-        }, 0, 10000); // 每10秒执行一次，这里1000对应1秒
+        }, 0, 20000); // 每10秒执行一次，这里1000对应1秒
     }
 
     private void stopTimer() {

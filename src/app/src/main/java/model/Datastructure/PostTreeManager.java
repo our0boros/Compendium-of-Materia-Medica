@@ -131,22 +131,6 @@ public class PostTreeManager implements TreeManager<Post>{
                 }
             }
         }).start();
-//        ArrayList<Post> beforePosts = new ArrayList<>();
-//        getBeforePosts(this.postRBTree.root, lastLoadedPostTimestamp, beforePosts);  // 获取所有时间在指定时间之前的post
-//        // 按时间戳降序排列
-//        beforePosts.sort(new Comparator<Post>() {
-//            @Override
-//            public int compare(Post p1, Post p2) {
-//                return LocalDateTime.parse(p2.getTimestamp()).compareTo(LocalDateTime.parse(p1.getTimestamp()));
-//            }
-//        });
-//
-//        // 不足需要的数量时，全部返回，足够时返回指定数量
-//        if (beforePosts.size() <= numberOfPosts) {
-//            return beforePosts;
-//        } else {
-//            return new ArrayList<Post>(beforePosts.subList(0, numberOfPosts));
-//        }
     }
 
     // 找到所有发布时间在输入时间之前的post
