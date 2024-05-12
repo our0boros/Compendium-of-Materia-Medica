@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,8 +29,8 @@ public class SocialViewModel extends ViewModel {
     // 点赞相关
     private MutableLiveData<Set<Integer>> _likedPosts = new MutableLiveData<>();
     public LiveData<Set<Integer>> likedPosts = _likedPosts;
-    public boolean isLoading = false;
-    
+    ArrayList<Post> currentPost = null;
+
     public SocialViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is Class Social.");
@@ -39,62 +41,22 @@ public class SocialViewModel extends ViewModel {
     public LiveData<List<Post>> getPosts() {
         return postsLiveData;
     }
-    public LiveData<String> getText(){
+
+    public LiveData<String> getText() {
         return mText;
     }
+
     // load more post into current posts
     public void loadMorePosts(int number) {
-/*        List<Post> currentPosts = postsLiveData.getValue();
-        List<Post> newPosts = MainActivity.getRandomPosts(number);
-        currentPosts.addAll(newPosts);
-        postsLiveData.setValue(currentPosts); 我先注释了试NewestPost 看着用*/
-
-        if (isLoading) {
-            return;  // 如果已经在加载，则不进行新的加载
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        String currentTimestamp = now.format(formatter);
+        if (currentPost == null) {
+            currentPost = PostTreeManager.getInstance().getNewestPosts(number, currentTimestamp);
+        } else {
+            String nextTimestamp = currentPost.get(currentPost.size()-1).getTimestamp();
+            currentPost.addAll(PostTreeManager.getInstance().getNewestPosts(number, nextTimestamp));
         }
-        isLoading = true;  // 标记正在加载
-
-        List<Post> currentPosts = postsLiveData.getValue();
-        String lastTimestamp = null;
-        if (currentPosts != null && !currentPosts.isEmpty()) {
-            lastTimestamp = currentPosts.get(currentPosts.size() - 1).getTimestamp();
-        }
-
-        Log.d("HomeViewModel", "Loading more posts after timestamp: " + lastTimestamp);
-
-        String finalLastTimestamp = lastTimestamp;
-//        MainActivity.getNewestPosts(number, lastTimestamp, new MainActivity.PostCallback() {
-//            @Override
-//            public void onCallback(List<Post> newPosts) {
-//                if (!newPosts.isEmpty() && newPosts.get(0).getTimestamp().equals(finalLastTimestamp)) {
-//                    newPosts.remove(0);  // Remove the first post if it is the same as the last one of the current posts
-//                }
-//                List<Post> currentPosts = postsLiveData.getValue();
-//                if (currentPosts == null) {
-//                    currentPosts = new ArrayList<>();
-//                }
-//                currentPosts.addAll(newPosts);
-//                postsLiveData.postValue(currentPosts); // 确保在主线程上更新 LiveData
-//                isLoading = false;
-//                Log.d("HomeViewModel", "Posts loaded, new count: " + currentPosts.size());
-//            }
-//        });
-        PostTreeManager.getInstance().getNewestPosts(number, lastTimestamp, new PostTreeManager.PostCallback() {
-            @Override
-            public void onCallback(List<Post> newPosts) {
-                if (!newPosts.isEmpty() && newPosts.get(0).getTimestamp().equals(finalLastTimestamp)) {
-                    newPosts.remove(0);  // Remove the first post if it is the same as the last one of the current posts
-                }
-                List<Post> currentPosts = postsLiveData.getValue();
-                if (currentPosts == null) {
-                    currentPosts = new ArrayList<>();
-                }
-                currentPosts.addAll(newPosts);
-                postsLiveData.postValue(currentPosts); // 确保在主线程上更新 LiveData
-                isLoading = false;
-                Log.d("HomeViewModel", "Posts loaded, new count: " + currentPosts.size());
-            }
-        });
+        postsLiveData.postValue(currentPost);
     }
-
 }

@@ -74,8 +74,9 @@ public class SocialFragment extends Fragment {
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
                 // 判断是否滚动到了底部
                 if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                        && firstVisibleItemPosition >= 0 && !homeViewModel.isLoading) {
+                        && firstVisibleItemPosition >= 0 ) {
                     // 如果滚动到了底部，调用 ViewModel 的 loadMorePosts 方法加载更多帖子
+
                     homeViewModel.loadMorePosts(5);
                     Log.d("HomeFragment", "Bottom of list reached, attempting to load more posts.");
                     Toast.makeText(getContext(), "Loaded more posts", Toast.LENGTH_SHORT).show();
