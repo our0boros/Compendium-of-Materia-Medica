@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
+import com.example.compendiumofmateriamedica.ui.profile.ProfileFragment;
 import com.example.compendiumofmateriamedica.ui.profile.ProfilePage;
+import com.example.compendiumofmateriamedica.ui.profile.ProfileViewModel;
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
 import java.util.List;
@@ -53,6 +55,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public ImageView photo;
         public ImageButton buttonLike;
         public TextView timestamp;
+        public ImageView userLevel;
 
         public PostViewHolder(View itemView){
             super(itemView);
@@ -62,6 +65,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             photo = itemView.findViewById(R.id.post_photo);
             buttonLike = itemView.findViewById(R.id.button_post_like);
             timestamp = itemView.findViewById(R.id.post_timestamp);
+            userLevel = itemView.findViewById(R.id.post_user_level);
         }
     }
 
@@ -170,6 +174,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.content.setText(postContent);
             // 处理时间戳
             holder.timestamp.setText(MainActivity.formatTimestamp(postTimestamp));
+            // user level
+            ProfileFragment.setUserLevelImage(holder.userLevel, MainActivity.getUserPlantDiscovered(uid).size());
             // load photo from post
             MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
         } else {
