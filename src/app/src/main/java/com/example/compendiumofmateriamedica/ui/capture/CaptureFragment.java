@@ -399,7 +399,7 @@ public class CaptureFragment extends Fragment {
             }
         });
 
-        // ===================== Xing Chen: 测试用，如果点击拍照按钮，会直接跳转至post share页面，并传入当前用户
+        // ===================== Xing Chen: 如果点击拍照按钮，会发起相机界面申请，跳转至相机界面拍照确认完毕后，进入post share页面，并传入当前用户
         captureButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 Log.d("CaptureFragment", "Capture button clicked");
@@ -427,7 +427,7 @@ public class CaptureFragment extends Fragment {
         binding = null;
         currentArrayAdapter = null;
     }
-    // ===================== Xing Chen: 测试用，点击拍照会进入拍照界面
+    // ===================== Xing Chen: 点击拍照会进入拍照界面
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {

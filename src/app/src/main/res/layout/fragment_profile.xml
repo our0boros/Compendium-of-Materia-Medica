@@ -170,32 +170,37 @@
                 android:text="Personal Information"
                 android:paddingLeft="20dp"/>
         </LinearLayout>
+
         <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="25dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="25dp">
+
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_notifications_black_24dp"/>
+                android:src="@drawable/ic_notifications_black_24dp" />
+
             <TextView
                 android:id="@+id/messages"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="Messages"/>
+                android:text="Messages"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/messagesCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="#2CB731"
-                android:textStyle="bold" />
+                android:paddingLeft="10dp"
+                android:textColor="#F40000"
+                android:textStyle="bold"
+                tools:text="1" />
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"

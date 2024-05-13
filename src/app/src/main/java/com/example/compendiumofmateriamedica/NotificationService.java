@@ -29,6 +29,8 @@ public class NotificationService extends Service {
     private Timer timer;
     private Random random;
     private User currentUser;
+    private final int NOTIFICATION_PERIOD = 10000; // 每10秒执行一次，这里1000对应1秒
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -69,7 +71,7 @@ public class NotificationService extends Service {
             public void run() {
                 simulateLikes();
             }
-        }, 0, 20000); // 每10秒执行一次，这里1000对应1秒
+        }, 0, NOTIFICATION_PERIOD);
     }
 
     private void stopTimer() {

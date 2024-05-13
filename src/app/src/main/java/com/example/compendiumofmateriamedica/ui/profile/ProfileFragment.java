@@ -49,7 +49,7 @@ import model.Datastructure.User;
  * @datetime: 2024/5
  * @description:
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements NewEventHandler.EventObserver{
 
     private ProfileViewModel mViewModel;
     private FragmentProfileBinding binding;
@@ -154,15 +154,17 @@ public class ProfileFragment extends Fragment {
         TextView messages=binding.messages;
         // 找到显示通知数量的 TextView
         notificationCountTextView = binding.messagesCount;
+        // 初始化值
+        notificationCountTextView.setText(String.valueOf(eventHandler.getUnreadNotifications()));
         // 创建 Handler 和 Runnable,用于定期更新通知数量
-        handler = new Handler(Looper.getMainLooper());
-        notificationUpdateRunnable = new Runnable() {
-            @Override
-            public void run() {
-                updateNotificationCount();
-                handler.postDelayed(this, NOTIFICATION_UPDATE_INTERVAL);
-            }
-        };
+//        handler = new Handler(Looper.getMainLooper());
+//        notificationUpdateRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                updateNotificationCount();
+//                handler.postDelayed(this, NOTIFICATION_UPDATE_INTERVAL);
+//            }
+//        };
 
         // other features in profile
         TextView personal_information=binding.personalInformation;
@@ -244,6 +246,7 @@ public class ProfileFragment extends Fragment {
         messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                eventHandler.markAllEventsAsRead();
                 Intent intent = new Intent(getActivity(), MessagesActivity.class);
                 intent.putExtra("CurrentUser", currentUser); // Pass the current user object
                 startActivity(intent);
@@ -267,7 +270,8 @@ public class ProfileFragment extends Fragment {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
         // 开始定期更新通知数量
-        handler.post(notificationUpdateRunnable);
+        eventHandler.addObserver(this);
+//        handler.post(notificationUpdateRunnable);
     }
     // when fragment is paused, close update
     @Override
@@ -275,7 +279,8 @@ public class ProfileFragment extends Fragment {
         super.onPause();
         locationManager.removeUpdates(locationListener);
         // 停止定期更新通知数量
-        handler.removeCallbacks(notificationUpdateRunnable);
+        eventHandler.removeObserver(this);
+//        handler.removeCallbacks(notificationUpdateRunnable);
     }
     @Override
     public void onDestroyView() {
@@ -285,7 +290,7 @@ public class ProfileFragment extends Fragment {
 
     private void updateNotificationCount() {
         // 获取当前用户的未读通知数量,并更新界面
-//        notificationCountTextView.setText(eventHandler.getEventList().size());
+        notificationCountTextView.setText(String.valueOf(eventHandler.getUnreadNotifications()));
     }
     public static void setUserLevelImage(ImageView image, int plantDiscovered) {
         if (plantDiscovered == 0) {
@@ -322,6 +327,12 @@ public class ProfileFragment extends Fragment {
             return 100; // 假设金树是最高级别，设定一个目标，比如100种植物
         }
     }
+
+    @Override
+    public void onEventChanged() {
+        updateNotificationCount();
+    }
+
 
 
 

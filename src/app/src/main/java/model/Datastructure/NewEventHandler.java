@@ -1,13 +1,16 @@
 package model.Datastructure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewEventHandler {
     private List<NewEvent> eventList;
-
+    private List<EventObserver> observers = new ArrayList<>();
+    private int unreadNotifications;
     private static NewEventHandler instance;
     private NewEventHandler(List<NewEvent> eventList){
         this.eventList = eventList;
+        this.unreadNotifications = eventList.size();
     }
     public static synchronized NewEventHandler getInstance(List<NewEvent> eventList){
         if(instance == null){
@@ -24,6 +27,15 @@ public class NewEventHandler {
 
     public void addEvent(NewEvent event){
         this.eventList.add(event);
+        this.unreadNotifications++;
+        notifyObservers();
+    }
+    public void removeEvent(NewEvent event) {
+        this.eventList.remove(event);
+        if (this.unreadNotifications > 0) {
+            this.unreadNotifications--;
+        }
+        notifyObservers();
     }
 
     public List<NewEvent> getEventList() {
@@ -32,5 +44,28 @@ public class NewEventHandler {
 
     public void setEventList(List<NewEvent> eventList) {
         this.eventList = eventList;
+    }
+    public interface EventObserver {
+        void onEventChanged();
+    }
+    public void addObserver(EventObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(EventObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (EventObserver observer : observers) {
+            observer.onEventChanged();
+        }
+    }
+    public void markAllEventsAsRead() {
+        this.unreadNotifications = 0;
+        notifyObservers();
+    }
+    public int getUnreadNotifications() {
+        return unreadNotifications;
     }
 }
