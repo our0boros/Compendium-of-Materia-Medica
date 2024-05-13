@@ -33,7 +33,7 @@ public class SocialViewModel extends ViewModel {
 
     public SocialViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is Class Social.");
+        mText.setValue("Scroll down to see more.");
         postsLiveData = new MutableLiveData<>(new ArrayList<>());
         loadMorePosts(10);
     }

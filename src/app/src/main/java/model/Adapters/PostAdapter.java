@@ -114,6 +114,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             // 设置点赞按钮装态
             if(showLikeButton){
+                // 加载点赞状态
                 isLiked = post.isLikedByUser(currentUser.getUser_id());
                 // 设置点赞图标
                 if(!isLiked){
@@ -128,6 +129,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     public void onClick(View v) {
                         if (!isLiked) {
                             // 此次为点赞操作
+                            isLiked = !isLiked;
                             // UI逻辑
                             holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
                             //后台逻辑
@@ -136,6 +138,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
                         } else {
                             // 此次为取消点赞操作
+                            isLiked = !isLiked;
                             // UI逻辑
                             holder.buttonLike.setImageResource(R.drawable.button_post_like);  // 默认图标
                             //后台逻辑
