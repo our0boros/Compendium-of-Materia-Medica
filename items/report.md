@@ -144,32 +144,18 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ### Application Use Cases and or Examples
 
-*[Provide use cases and examples of people using your application. Who are the target users of your application? How do the users use your application?]*
+*Targets Users:  People who are interested in plants or want to learn about them*
 
-*Here is a pet training application example*
+* *Users can take pictures of unknown plants encountered in life through the application, and the application will return the relevant information of the plant; At the same time, the user can choose to upload the photo of the plant to the social channel to share with other users, if the plant is discovered by the user for the first time, the user will increase the energy value of plant exploration after sharing, and at the same time store the plant information in the discovery book.*
+* *Users can search for a specific plant by entering information about the plant (such as common name, etc.) to get detailed information about the plant, and the app will also provide posts posted by other users related to the plant.*
+* *Users can like their favorite posts on social channels, and the users who are liked will receive a message reminder.*
+* *Users can view their own relevant information in the profile interface, such as published posts, plant collection guides, and plant exploration energy values.*
+<br>
 
-*Molly wants to inquiry about her cat, McPurr's recent troublesome behaviour*
-1. *Molly notices that McPurr has been hostile since...*
-2. *She makes a post about... with the tag...*
-3. *Lachlan, a vet, writes a reply to Molly's post...*
-4. ...
-5. *Molly gives Lachlan's reply a 'tick' response*
+*Use Case Diagram:*
+<br>
 
-*Here is a map navigation application example*
-
-*Targets Users: Drivers*
-
-* *Users can use it to navigate in order to reach the destinations.*
-* *Users can learn the traffic conditions*
-* ...
-
-*Target Users: Those who want to find some good restaurants*
-
-* *Users can find nearby restaurants and the application can give recommendations*
-* ...
-
-*List all the use cases in text descriptions or create use case diagrams. Please refer to https://www.visual-paradigm.com/guide/uml-unified-modeling-language/what-is-use-case-diagram/ for use case diagram.*
-
+![ClassDiagramExample](media/_examples/Use Case Diagram.png)
 <hr> 
 
 ### Application UML
@@ -181,29 +167,17 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ## Code Design and Decisions
 
-This is an important section of your report and should include all technical decisions made. Well-written justifications will increase your marks for both the report as well as for the relevant parts (e.g., data structure). This includes, for example,
-
-- Details about the parser (describe the formal grammar and language used)
-
-- Decisions made (e.g., explain why you chose one or another data structure, why you used a specific data model, etc.)
-
-- Details about the design patterns used (where in the code, justification of the choice, etc)
-
-*Please give clear and concise descriptions for each subsections of this part. It would be better to list all the concrete items for each subsection and give no more than `5` concise, crucial reasons of your design.
-
 <hr>
 
 ### Data Structures
 
 *[What data structures did your team utilise? Where and why?]*
 
-Here is a partial (short) example for the subsection `Data Structures`:*
-
 *I used the following data structures in my project:*
 
-1. *LinkedList*
-   * *Objective: used for storing xxxx for xxx feature.*
-   * *Code Locations: defined in [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
+1. *Arraylist*
+   * *Objective: used for storing JSONObject data read from a json file for [Data-Formats] feature.*
+   * *Code Locations: defined in [Class JsonReader, methods readJsonFromFile](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and [class AnotherClass, lines l1-l2](url); processed using [dataStructureHandlerMethod](url) and ...
    * *Reasons:*
       * *It is more efficient than Arraylist for insertion with a time complexity O(1)*
       * *We don't need to access the item by index for xxx feature because...*

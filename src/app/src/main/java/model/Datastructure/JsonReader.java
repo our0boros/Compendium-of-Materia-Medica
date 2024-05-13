@@ -26,7 +26,7 @@ public class JsonReader {
 
     public ArrayList<JSONObject> readJsonFromFile(int resourceId) throws IOException, JSONException {
 
-        ArrayList<JSONObject> arrayList = new ArrayList<>();
+        ArrayList<JSONObject> data = new ArrayList<>();
 
         // 打开res/raw中的资源文件作为InputStream
         InputStream is = context.getResources().openRawResource(resourceId);
@@ -45,13 +45,13 @@ public class JsonReader {
 
         // 遍历JSONArray，将每个元素添加到ArrayList中
         for (int i = 0; i < jsonArray.length(); i++) {
-            arrayList.add(jsonArray.getJSONObject(i));
+            data.add(jsonArray.getJSONObject(i));
         }
 
         // 关闭BufferedReader和InputStream
         br.close();
         is.close();
 
-        return arrayList;
+        return data;
     }
 }
