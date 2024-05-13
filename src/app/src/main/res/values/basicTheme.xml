@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--BasicTheme: hide action bar-->
+    <style name="BasicTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize theme -->
+    </style>
+</resources>
