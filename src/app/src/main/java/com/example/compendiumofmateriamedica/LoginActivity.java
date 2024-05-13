@@ -45,51 +45,27 @@ import model.GeneratorFactory;
  */
 
 public class LoginActivity extends AppCompatActivity {
-
+    // UI element
     private EditText editTextEmail, editTextPassword;
     private Button buttonLogin;
 
-
-
-    private RBTree<User> userTree;
-    private RBTree<Plant> plantTree;
-    private RBTree<Post> postTree;
-    // 开发用的，这行可删
+    // TreeManager based on Singleton Pattern, global access throughout the app
     private UserTreeManager userTreeManager;
     private PostTreeManager postTreeManager;
     private PlantTreeManager plantTreeManager;
 
-
+    // User logged in
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // 运行加载数据的函数
-        try {
-            DataInitial();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        // 创建user，post和plant的管理类的全局单例
-        userTreeManager = UserTreeManager.getInstance(userTree);
-        postTreeManager = PostTreeManager.getInstance(postTree);
-        plantTreeManager = PlantTreeManager.getInstance(plantTree);
-
         // Initialize UI elements
         editTextEmail = findViewById(R.id.editTextEmailAddress);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
-
-        // 检查通道是否已创建
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // 请求通知权限
-            Toast.makeText(this, "Please grant notification permission in settings", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 200);
-        }
 
         // Set a click listener for the login button
         buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -98,30 +74,23 @@ public class LoginActivity extends AppCompatActivity {
                 // Retrieve entered email and password
                 String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
-                // 添加一个全空白时直接跳转
-                if (email == null || password == null ||
-                    email.isEmpty() || password.isEmpty()) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
-                    // 这段可删，XingChen:这里开发的时候默认是一个指定用户登录的吧，传入后面的界面，后面搞好了可以改
-                    ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.ID, 5);
-                    if(!users.isEmpty()){
-                        User user = users.get(0).getValue();
-                        intent.putExtra("User", user);
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                // Check that the username or password cannot be empty
+                if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
                     // Failed login
                     Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    // TODO: EMPTY FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    startMainActivity();
+                    finish();
                 } else {
-
                     // Implement authentication logic here
                     // email:user1@test.com password:111111
                     FirebaseAuth firebaseAuth = FirebaseAuthManager.getInstance().getmAuth();
                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startMainActivity();
+                            finish();
+
                             // TODO: 创建一个用户虚拟类class User, 将这个类的putExtra 到 Main 下面，后续会用到
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference usersRef = database.getReference("users");
@@ -138,9 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                                                     User user = snapshot.getValue(User.class);
                                                     // 处理用户数据，例如打印信息
                                                     Log.d("UserData", "User ID: " + user.getUsername() + ", Username: " + user.getUser_id());
-                                                    intent.putExtra("User", user);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    startActivity(intent);
+                                                    startMainActivity();
+                                                    finish();
                                                 }
                                             } else {
                                                 Log.d("UserData", "No user found with email " + emailToSearch);
@@ -152,10 +120,6 @@ public class LoginActivity extends AppCompatActivity {
                                             Log.w("UserData", "loadUser:onCancelled", databaseError.toException());
                                         }
                                     });
-                            /*
-                            ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.EMAIL, email);
-                            User user = users.get(0).getValue();*/
-
                         } else {
                             // Failed login
                             Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
@@ -166,13 +130,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    /*
-     * @author: Haochen Gong
-     * 加载数据
-     */
-    private void DataInitial() throws JSONException, IOException {
-        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+    private void startMainActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        // Pass user object as extra to MainActivity
+        intent.putExtra("User", user);
+        // Set flags to clear task and create new task
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        // Finish LoginActivity
+        finish();
     }
+
 }
