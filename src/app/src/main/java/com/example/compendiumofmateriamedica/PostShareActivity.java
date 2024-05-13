@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -19,6 +21,11 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,14 +156,59 @@ public class PostShareActivity extends AppCompatActivity {
                         Log.println(Log.ASSERT, "THREAD", "Update UI: \n" + currentPlant);
                         // 准备要展示的植物资料
                         MainActivity.loadImageFromURL(this, currentPlant.getImage(), plantImage, "Photo");
-                        plantCommonName.setText(currentPlant.getCommonName());
-                        plantSciName.setText(currentPlant.getScientificName());
-                        plantFamily.setText(currentPlant.getFamily());
-                        plantDescription.setText(currentPlant.getDescription());
+                        plantImage.setOnClickListener(v -> {
+                            PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentPlant.getImage());
+                            photoDialogFragment.show(getSupportFragmentManager(), "photo_dialog");
+                        });
+
+                        setTextViewContent(plantCommonName, "Common Name:", currentPlant.getCommonName());
+                        setTextViewContent(plantSciName, "Scientific Name:", currentPlant.getScientificName());
+                        setTextViewContent(plantFamily, "Family Name:", currentPlant.getFamily());
+                        setTextViewContent(plantDescription, "Description:", currentPlant.getDescription());
+                        // Common name
+                        // 创建一个SpannableString对象
+//                        String label = "Common Name:";
+//                        String content = currentPlant.getCommonName();
+//                        String text = label + "\n" + content;
+//                        SpannableString spannableString = new SpannableString(text);
+//                        // 为“Common Name:”设置一个大号字体样式
+//                        spannableString.setSpan(new RelativeSizeSpan(1.f), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 加粗
+//                        // 为内容设置一个小号字体样式
+//                        int startIndexOfContent = text.indexOf(content);
+//                        spannableString.setSpan(new RelativeSizeSpan(1.f), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        spannableString.setSpan(new ForegroundColorSpan(Color.BLUE), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 蓝色字体
+//                        // 应用这个SpannableString到TextView
+//                        plantCommonName.setText(spannableString);
+
+//                        plantSciName.setText("Scientific Name:\n" + currentPlant.getScientificName());
+                        // 创建一个SpannableString对象
+//                        label = "Scientific Name:";
+//                        content = currentPlant.getScientificName();
+//                        text = label + "\n" + content;
+//                        spannableString = new SpannableString(text);
+//                        // 为“Common Name:”设置一个大号字体样式
+//                        spannableString.setSpan(new RelativeSizeSpan(1.f), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 加粗
+//                        // 为内容设置一个小号字体样式
+//                        startIndexOfContent = text.indexOf(content);
+//                        spannableString.setSpan(new RelativeSizeSpan(1.f), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        spannableString.setSpan(new ForegroundColorSpan(Color.BLUE), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 蓝色字体
+//                        // 应用这个SpannableString到TextView
+//                        plantSciName.setText(spannableString);
+
+//                        plantFamily.setText("Family Name:\n" + currentPlant.getFamily());
+
+//                        plantDescription.setText("Description:\n" + currentPlant.getDescription());
                     }
                 });
             } catch (JSONException e){
                 Log.d("Error", e.toString());
+                runOnUiThread(() -> {
+                    Toast.makeText(getBaseContext(),getResources().getString(R.string.no_result_from_api), Toast.LENGTH_LONG).show();
+                    finish();
+                });
+
             }
         });
         thread.start(); // 启动线程
@@ -297,5 +349,19 @@ public class PostShareActivity extends AppCompatActivity {
         Post post = new Post(postId, uid, plantId, photo, content, timestamp);
         PostTreeManager.getInstance().insert(post.getPost_id(), post);
         Log.d("SharePost", "Post added to the postTree in MainActivity");
+    }
+    private void setTextViewContent(TextView textView, String label, String content){
+        // 创建一个SpannableString对象
+        String text = label + "\n" + content;
+        SpannableString spannableString = new SpannableString(text);
+        // 为“Common Name:”设置一个大号字体样式
+        spannableString.setSpan(new RelativeSizeSpan(1.f), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 加粗
+        // 为内容设置一个小号字体样式
+        int startIndexOfContent = text.indexOf(content);
+        spannableString.setSpan(new RelativeSizeSpan(0.8f), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // 应用这个SpannableString到TextView
+        textView.setText(spannableString);
     }
 }

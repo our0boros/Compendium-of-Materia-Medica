@@ -39,8 +39,10 @@ public class MyPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
+        currentUser = (User) this.getIntent().getSerializableExtra("CurrentUser");
+
         page_name=findViewById(R.id.page_name);
-        page_name.setText("My Posts");
+        page_name.setText(currentUser.getUsername());
 
         // back button
         back=findViewById(R.id.back_btn);
@@ -54,7 +56,6 @@ public class MyPost extends AppCompatActivity {
         });
 
         // my posts
-        currentUser = (User) this.getIntent().getSerializableExtra("CurrentUser");
         postsRecyclerView = findViewById(R.id.messages_recyclerView);
         List<Post> myPosts = MainActivity.getPostsByUserId(currentUser.getUser_id());
         postAdapter = new PostAdapter(this, myPosts, getSupportFragmentManager(),false, currentUser);
