@@ -1,18 +1,31 @@
 package com.example.compendiumofmateriamedica;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,10 +67,11 @@ import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NewEventHandler.EventObserver{
 
     private ActivityMainBinding binding;
     private NewEventHandler eventHandler;
+    private TextView profileNotificationCountTextView;
 
     // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
 //    public RBTree<User> userTree;
@@ -96,6 +110,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        // 创建未读消息数的 TextView
+        profileNotificationCountTextView = new TextView(this);
+        profileNotificationCountTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.notification_count_background));
+        profileNotificationCountTextView.setTextColor(Color.WHITE);
+        profileNotificationCountTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        profileNotificationCountTextView.setGravity(Gravity.CENTER);
+        profileNotificationCountTextView.setPadding(dpToPx(4), dpToPx(2), dpToPx(4), dpToPx(2));
+        profileNotificationCountTextView.setVisibility(View.GONE);
+
+        // 找到 navigation_profile 菜单项并添加 TextView
+        @SuppressLint("RestrictedApi") BottomNavigationMenuView menuView = (BottomNavigationMenuView) navView.getChildAt(0);
+        @SuppressLint("RestrictedApi") BottomNavigationItemView profileView = (BottomNavigationItemView) menuView.getChildAt(2);  // 假设 profile 菜单项的位置是 2
+        // 创建一个新的 FrameLayout 作为 TextView 的容器
+        FrameLayout notificationContainer = new FrameLayout(this);
+        FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        containerParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+        containerParams.setMargins(60, 16, 0, 0);  // 调整这个值可以改变 TextView 相对于图标的垂直位置
+        notificationContainer.setLayoutParams(containerParams);
+
+        // 将 TextView 添加到容器中
+        notificationContainer.addView(profileNotificationCountTextView);
+
+        // 将容器添加到 profileView 中
+        profileView.addView(notificationContainer);
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 //        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -107,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
 
         // 隐藏顶部那个活动栏目
         this.getSupportActionBar().hide();
+        // 观察通知数量变化
+        eventHandler.addObserver(this);
     }
     @Override
     protected void onStart() {
@@ -437,5 +479,24 @@ public class MainActivity extends AppCompatActivity {
     public User getCurrentUser(){
         return (User) getIntent().getSerializableExtra("User");
     }
+    @Override
+    public void onEventChanged() {
+        updateProfileNotificationCount();
+    }
+    // 显示未读消息数
+    private void updateProfileNotificationCount() {
+        int unreadCount = eventHandler.getUnreadNotifications();
+        if (unreadCount > 0) {
+            profileNotificationCountTextView.setText(String.valueOf(unreadCount));
+            profileNotificationCountTextView.setVisibility(View.VISIBLE);
+        } else {
+            profileNotificationCountTextView.setVisibility(View.GONE);
+        }
+    }
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
+    }
+
+
 
 }
