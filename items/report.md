@@ -171,8 +171,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ### Data Structures
 
-*[What data structures did your team utilise? Where and why?]*
-
 *I used the following data structures in my project:*
 
 1. *Arraylist*
