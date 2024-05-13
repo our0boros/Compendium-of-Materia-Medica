@@ -224,6 +224,17 @@ Here is a partial (short) example for the subsection `Data Structures`:*
    * *Reasons:*
       * ...
 
+2. *Singleton Pattern*
+   * *Objective: used for ensuring all components interacts with the same set of data, maintaining consistent operations such as insertions, deletions, and searches across activities.*
+   * *Code Locations: defined in 
+     * [Class PostTreeManager, methods getInstance](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L18-35)
+     * [Class PlantTreeManager, methods getInstance](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L21-32) 
+     * [Class UserTreeManager, methods getInstance](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L21-32) 
+   * *Reasons:*
+     * Controlled Initialization: Guarantees managers are properly initialized with an RBTree<T> before use, preventing errors from premature use.
+     * Resource Efficiency: Saves memory and processing power by preventing the creation of multiple instances of data management objects.
+     * Thread Safety: The synchronized getInstance method ensures each manager is created once, protecting against data corruption in multi-thread environments.
+     * Consistency and Integrity: Ensures all parts of the app work with the same data instance, maintaining data integrity and avoiding discrepancies.
 <hr>
 
 ### Parser
