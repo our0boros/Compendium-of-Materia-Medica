@@ -60,6 +60,9 @@
             android:name=".ui.profile.MyPost"
             android:exported="false" />
         <activity
+            android:name=".ui.profile.ProfilePage"
+            android:exported="false" />
+        <activity
             android:name=".ui.profile.MySearchHistory"
             android:exported="false" />
         <activity

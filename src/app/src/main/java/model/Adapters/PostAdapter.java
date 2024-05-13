@@ -1,6 +1,9 @@
 package model.Adapters;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
+import com.example.compendiumofmateriamedica.ui.profile.ProfilePage;
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
 import java.util.List;
@@ -105,6 +109,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.userAvatar.setOnClickListener(v -> {
                 PhotoDialogFragment avatarDialogFragment = PhotoDialogFragment.newInstance(postUserAvatarURL);
                 avatarDialogFragment.show(fragmentManager, "avatar_dialog");
+            });
+            // 设置用户名点击事件，点击后会进入个人主页
+            holder.username.setOnClickListener(v -> {
+                if(postUser.getUser_id() != currentUser.getUser_id()) {
+                    // 跳转被点击用户的个人主页
+                    Intent intent = new Intent(context, ProfilePage.class);
+                    intent.putExtra("AppUser", currentUser);
+                    intent.putExtra("ProfileUser", postUser);
+                    context.startActivity(intent);
+                }
             });
             // 设置照片点击事件
             holder.photo.setOnClickListener(v -> {
