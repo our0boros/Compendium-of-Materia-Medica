@@ -204,6 +204,11 @@ public class PostShareActivity extends AppCompatActivity {
                 });
             } catch (JSONException e){
                 Log.d("Error", e.toString());
+                runOnUiThread(() -> {
+                    Toast.makeText(getBaseContext(),getResources().getString(R.string.no_result_from_api), Toast.LENGTH_LONG).show();
+                    finish();
+                });
+
             }
         });
         thread.start(); // 启动线程
