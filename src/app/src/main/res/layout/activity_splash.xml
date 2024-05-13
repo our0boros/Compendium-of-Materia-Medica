@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashActivity">
+
+    <TextView
+        android:id="@+id/welcome_title1"
+        android:layout_marginTop="130dp"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="85px"
+        android:text="Compendium \nMateria Medica"
+        android:fontFamily="@font/vergilia"
+        android:textColor="#36282b"/>
+
+    <TextView
+        android:id="@+id/welcome_title2"
+        android:layout_marginTop="110dp"
+        android:layout_marginLeft="-55dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="300px"
+        android:text="of"
+        android:fontFamily="@font/rooster"
+        android:textColor="#513c20" />
+
+    <ImageView
+        android:id="@+id/start_btn"
+        android:layout_width="400px"
+        android:layout_height="400px"
+        android:layout_marginLeft="-170dp"
+        android:layout_marginTop="350dp"
+        android:rotation="5"
+        android:src="@drawable/splash_leaf"/>
+
+</LinearLayout>
