@@ -71,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Initialize tree managers here
+                userTreeManager=UserTreeManager.getInstance();
                 // Retrieve entered email and password
                 String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
@@ -78,19 +80,20 @@ public class LoginActivity extends AppCompatActivity {
                 if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
                     // Failed login
                     Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    // TODO: EMPTY FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    startMainActivity();
-                    finish();
+                    // TODO: (EMPTY INPUT) USER ID 5 FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.ID, 5);
+                    if(!users.isEmpty()){
+                        user = users.get(0).getValue();
+                    }
+                    startMainActivity(user);
+                    // TODO: FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 } else {
                     // Implement authentication logic here
                     // email:user1@test.com password:111111
                     FirebaseAuth firebaseAuth = FirebaseAuthManager.getInstance().getmAuth();
                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            startMainActivity();
-                            finish();
-
+                            Toast.makeText(LoginActivity.this, "Firebase Login successful", Toast.LENGTH_SHORT).show();
                             // TODO: 创建一个用户虚拟类class User, 将这个类的putExtra 到 Main 下面，后续会用到
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference usersRef = database.getReference("users");
@@ -107,7 +110,8 @@ public class LoginActivity extends AppCompatActivity {
                                                     User user = snapshot.getValue(User.class);
                                                     // 处理用户数据，例如打印信息
                                                     Log.d("UserData", "User ID: " + user.getUsername() + ", Username: " + user.getUser_id());
-                                                    startMainActivity();
+                                                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                                    startMainActivity(user);
                                                     finish();
                                                 }
                                             } else {
@@ -130,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void startMainActivity() {
+    private void startMainActivity(User user) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         // Pass user object as extra to MainActivity
         intent.putExtra("User", user);

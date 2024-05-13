@@ -145,8 +145,6 @@ public class MainActivity extends AppCompatActivity implements NewEventHandler.E
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // 隐藏顶部那个活动栏目
-        this.getSupportActionBar().hide();
         // 观察通知数量变化
         eventHandler.addObserver(this);
     }
