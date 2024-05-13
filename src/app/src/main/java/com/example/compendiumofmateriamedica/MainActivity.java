@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NewEventHandler.E
         profileNotificationCountTextView.setTextColor(Color.WHITE);
         profileNotificationCountTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         profileNotificationCountTextView.setGravity(Gravity.CENTER);
-        profileNotificationCountTextView.setPadding(dpToPx(4), dpToPx(2), dpToPx(4), dpToPx(2));
+        profileNotificationCountTextView.setPadding(dpToPx(4), dpToPx(1), dpToPx(4), dpToPx(1));
         profileNotificationCountTextView.setVisibility(View.GONE);
 
         // 找到 navigation_profile 菜单项并添加 TextView
@@ -486,6 +486,8 @@ public class MainActivity extends AppCompatActivity implements NewEventHandler.E
     // 显示未读消息数
     private void updateProfileNotificationCount() {
         int unreadCount = eventHandler.getUnreadNotifications();
+        Log.d("MainActivity", "Unread Noti :" + unreadCount);
+        Log.d("MainActivity", "Event List size :" + eventHandler.getEventList().size());
         if (unreadCount > 0) {
             profileNotificationCountTextView.setText(String.valueOf(unreadCount));
             profileNotificationCountTextView.setVisibility(View.VISIBLE);

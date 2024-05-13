@@ -63,6 +63,7 @@ public class NewEventHandler {
     }
     public void markAllEventsAsRead() {
         this.unreadNotifications = 0;
+        this.eventList.clear();
         notifyObservers();
     }
     public int getUnreadNotifications() {

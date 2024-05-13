@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -51,12 +52,15 @@ public class MyApp extends Application {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNewLikeEvent(NewEvent event) {
-        // 显示点赞通知
-        showNotification(event.getEventUser().getUsername() + " liked your post (Post id: " + event.getPostId() + ")");
         // 添加事件到 EventHandler 中
         eventHandler.addEvent(event);
         notificationAdapter.getNotifications().add(event);
         notificationAdapter.notifyDataSetChanged();
+        // 当通知大于3时，系统推送点赞通知
+        Log.d("MyApp", "Unread Noti :" + eventHandler.getUnreadNotifications());
+        Log.d("MyApp", "Event List size :" + eventHandler.getEventList().size());
+        if(eventHandler.getUnreadNotifications() > 3)
+            showNotification("You have " + eventHandler.getUnreadNotifications()  + " unread messages.");
     }
     private void showNotification(String message) {
         // 在这里显示顶部弹出窗口,显示点赞通知

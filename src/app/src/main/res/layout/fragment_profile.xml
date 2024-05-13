@@ -194,11 +194,21 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="10dp" />
+
+            <TextView
                 android:id="@+id/messagesCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:textColor="#F40000"
+                android:background="@drawable/notification_count_background"
+                android:gravity="center"
+                android:minWidth="20dp"
+                android:minHeight="20dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textStyle="bold"
                 tools:text="1" />
         </LinearLayout>

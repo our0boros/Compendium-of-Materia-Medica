@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +18,11 @@ import com.example.compendiumofmateriamedica.R;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import model.Adapters.NotificationAdapter;
 import model.Datastructure.NewEventHandler;
@@ -56,6 +62,10 @@ public class MessagesActivity extends AppCompatActivity {
             // simply come back to original fragment by kill the current activity
             @Override
             public void onClick(View view) {
+                // 清空事件列表
+                eventHandler.markAllEventsAsRead();
+                // 清空通知列表
+                notificationAdapter.setNotifications(new ArrayList<>());
                 finish();
             }
         });

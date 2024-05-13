@@ -29,7 +29,7 @@ public class NotificationService extends Service {
     private Timer timer;
     private Random random;
     private User currentUser;
-    private final int NOTIFICATION_PERIOD = 10000; // 每10秒执行一次，这里1000对应1秒
+    private final int NOTIFICATION_PERIOD = 5000; // 每10秒执行一次，这里1000对应1秒
 
     @Override
     public void onCreate() {
