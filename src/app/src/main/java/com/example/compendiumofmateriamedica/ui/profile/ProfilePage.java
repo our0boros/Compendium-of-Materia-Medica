@@ -2,6 +2,7 @@ package com.example.compendiumofmateriamedica.ui.profile;
 
 import static com.example.compendiumofmateriamedica.MainActivity.getPostsByUserId;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -55,10 +56,26 @@ public class ProfilePage extends AppCompatActivity {
         // plants discovered
         plants_discovered_number = findViewById(R.id.profile_page_plants_number);
         plants_discovered_number.setText(String.valueOf(plantDiscovered));
+        plants_discovered_number.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfilePage.this, PlantDiscovered.class);
+                intent.putExtra("CurrentUser", profileUser); // Pass the current user object
+                startActivity(intent);
+            }
+        });
 
         // post number
         posts_number = findViewById(R.id.profile_page_posts_number);
         posts_number.setText(String.valueOf(MainActivity.getPostsByUserId(uid).size()));
+        posts_number.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfilePage.this, MyPost.class);
+                intent.putExtra("CurrentUser", profileUser); // Pass the current user object
+                startActivity(intent);
+            }
+        });
 
         // back button
         back = findViewById(R.id.back_btn);
