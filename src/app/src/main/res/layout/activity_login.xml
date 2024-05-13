@@ -2,34 +2,80 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Email EditText -->
+    <!--App icon-->
+    <ImageView
+        android:id="@+id/app_icon"
+        android:layout_width="400px"
+        android:layout_height="400px"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/app_icon"/>
 
-    <EditText
-        android:id="@+id/editTextEmailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
+    <!--App name-->
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="50px"
+        android:text="Compendium of Materia Medica"
+        android:fontFamily="@font/vergilia"
+        android:textColor="#36282b"/>
 
-    <!-- Password EditText -->
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:hint="Password"
-        android:inputType="textPassword" />
+    <!--App slogan-->
+    <TextView
+        android:id="@+id/app_slogan"
+        android:layout_marginBottom="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold|italic"
+        android:textSize="90px"
+        android:text="Find More  Save More"
+        android:fontFamily="@font/aver"
+        android:textColor="#36282b"/>
 
-    <!-- Login Button -->
-    <Button
-        android:id="@+id/buttonLogin"
+    <!-- Email TextInputLayout -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:layout_marginTop="16dp"
+        android:gravity="center">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextEmailAddress"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Password TextInputLayout -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Login Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Login"/>
 
 
 </LinearLayout>
