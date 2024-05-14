@@ -108,7 +108,8 @@ public class PostShareActivity extends AppCompatActivity {
         Thread thread = new Thread(() -> {
             Log.println(Log.ASSERT, "START THREAD", "=================================== START THREAD =================================== ");
             Log.println(Log.ASSERT, "API INPUT", photoPath);
-            String result = Plant_Identification.getPlantNetAPIResultOKHttp(photoPath);
+            String result = Plant_Identification.getPlantNetAPIResult(photoPath);
+            Log.println(Log.ASSERT, "API RESULT", result);
             try {
 
                 JSONObject jsonObject = new JSONObject(result);
