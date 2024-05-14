@@ -1,8 +1,5 @@
 package model.Adapters;
 
-//import android.app.Notification;
-import static model.UtilsApp.loadImageFromURL;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,30 +10,54 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import model.Datastructure.NewEvent;
 import com.example.compendiumofmateriamedica.R;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import model.Datastructure.NewEvent;
 import model.Datastructure.User;
+import static model.UtilsApp.loadImageFromURL;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
-    //这里放一个变量存储通知
+
     private List<NewEvent> notifications = new ArrayList<>();
     private Context context;
+
+    // Constructor is private to enforce singleton pattern
+    private NotificationAdapter(Context context, List<NewEvent> notifications) {
+        this.context = context;
+        this.notifications = notifications;
+    }
+
+    // Singleton instance creation with lazy initialization
     private static NotificationAdapter instance;
 
-    // 为 RecyclerView 创建新的 ViewHolder
+    public static synchronized NotificationAdapter getInstance(Context context, List<NewEvent> notifications) {
+        if (instance == null) {
+            instance = new NotificationAdapter(context, notifications);
+        }
+        return instance;
+    }
+
+    public static synchronized NotificationAdapter getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Instance not created. Call getInstance(Context, List<NewEvent>) first.");
+        }
+        return instance;
+    }
+
+    // ViewHolder for the RecyclerView
     public static class NotificationViewHolder extends RecyclerView.ViewHolder{
         public TextView username;
         public ImageView userAvatar;
         public TextView userActivity;
         public ImageView userActivityIcon;
         public TextView userActivityTime;
+        public View divider;
 
-        // 绑定一下ui元素和变量
+        // Constructor to bind UI elements
         public NotificationViewHolder(View itemView){
             super(itemView);
             username = itemView.findViewById(R.id.message_username);
@@ -44,73 +65,62 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             userActivity = itemView.findViewById(R.id.message_user_activity);
             userActivityIcon = itemView.findViewById(R.id.message_ic_like);
             userActivityTime = itemView.findViewById(R.id.message_user_activity_time);
+            divider=itemView.findViewById(R.id.divider);;
         }
     }
-    private NotificationAdapter(Context context, List<NewEvent> notifications) {
-        this.context = context;
-        this.notifications = notifications;
-    }
-    public static synchronized NotificationAdapter getInstance(Context context, List<NewEvent> notifications) {
-        if (instance == null) {
-            instance = new NotificationAdapter(context, notifications);
-        }
-        return instance;
-    }
-    public static synchronized NotificationAdapter getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("Instance not created. Call getInstance(Context, List<NewEvent>) first.");
-        }
-        return instance;
-    }
+
+    // Inflate the item layout and return a ViewHolder
     @NonNull
     public NotificationViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
-        return new NotificationAdapter.NotificationViewHolder(v);
+        return new NotificationViewHolder(v);
     }
-    // 将数据绑定到 ViewHolder 上
+
+    // Bind data to ViewHolder
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         NewEvent event = notifications.get(position);
         User user = event.getEventUser();
 
-        // 设置用户名
+        // Set username
         holder.username.setText(user.getUsername());
-        // 设置用户头像
+        // Load user avatar from URL
         loadImageFromURL(context, user.getAvatar_url(), holder.userAvatar, "Avatar");
 
-        // 设置用户行为
+        // Set user activity and corresponding icon
         if (event.getEventType() == NewEvent.EventType.LIKE) {
             holder.userActivity.setText("liked your post");
-            // 设置与行为对应的图标图片
             holder.userActivityIcon.setImageResource(R.drawable.post_like_btn);
         } else if (event.getEventType() == NewEvent.EventType.COMMENT) {
             holder.userActivity.setText("commented your post");
-            // 设置与行为对应的图标图片
             holder.userActivityIcon.setImageResource(R.drawable.ic_comment);
         }
 
-        // 设置行为时间
+        // Set activity time
         holder.userActivityTime.setText(formatTime(event.getEventTime()));
 
+        // Show divider if the current item is not the last item
+        holder.divider.setVisibility(position == notifications.size() - 1 ? View.GONE : View.VISIBLE);;
     }
 
-    // 获取通知的数量
+    // Get total number of notifications
     @Override
     public int getItemCount() {
         return notifications.size();
     }
 
-    // 更新通知列表,并通知适配器刷新数据
+    // Update notifications list and notify adapter to refresh data
     public void setNotifications(List<NewEvent> notifications) {
         this.notifications = notifications;
         notifyDataSetChanged();
     }
 
+    // Format time method (Can be improved based on date formatting needs)
     private String formatTime(Date time) {
-        // 这里你可以根据需要格式化时间,例如使用 SimpleDateFormat
-        // 这里只是一个简单的示例
         return time.toString();
     }
+
+    // Getter for notifications list
     public List<NewEvent> getNotifications(){
         return this.notifications;
     }
