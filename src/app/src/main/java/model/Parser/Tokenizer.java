@@ -1,5 +1,8 @@
 package model.Parser;
 
+import com.example.compendiumofmateriamedica.GeneralFunctions;
+import com.example.compendiumofmateriamedica.MyApp;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +23,7 @@ public class Tokenizer {
 
     // define Type.STR
     public static boolean isLetterDigitOrChinese(String str) {
-        String regex = "^[_a-z0-9A-Z\u4e00-\u9fa5-.]+$";
+        String regex = "^[_a-z0-9A-Z\u4e00-\u9fa5-.*！？“”]+$";
         return str.matches(regex);
     }
 
@@ -48,7 +51,11 @@ public class Tokenizer {
             do {
                 count++;
             } while (count < buffer.length() && isLetterDigitOrChinese(String.valueOf(buffer.charAt(count))));
-            currentToken = new Token(buffer.substring(0, count), Token.Type.STR);
+            String newToken = buffer.substring(0, count);
+            if (GeneralFunctions.getInstance().isSensitiveWord(newToken)) {
+                newToken = "*".repeat(newToken.length());
+            }
+            currentToken = new Token(newToken, Token.Type.STR);
         }
         else throw new Token.IllegalTokenException("Unexpected token:" + firstChar);
 

@@ -36,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
     private UserTreeManager userTreeManager;
     private PostTreeManager postTreeManager;
     private PlantTreeManager plantTreeManager;
+    private GeneralFunctions generalFunctions;
 
     // Set the delay time in milliseconds
     private static final long SPLASH_DELAY = 3000; // 3 seconds
@@ -46,6 +47,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        generalFunctions = GeneralFunctions.getInstance(getBaseContext());
         // load data from files to trees
         try {
             userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
@@ -60,7 +62,6 @@ public class SplashActivity extends AppCompatActivity {
         userTreeManager = UserTreeManager.getInstance(userTree);
         postTreeManager = PostTreeManager.getInstance(postTree);
         plantTreeManager = PlantTreeManager.getInstance(plantTree);
-
         // check permission 'POST_NOTIFICATIONS'
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // request permission 'POST_NOTIFICATIONS' if do not have permission
