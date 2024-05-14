@@ -22,31 +22,32 @@ import model.Datastructure.PostTreeManager;
  * @datetime: 2024/5/2
  * @description: A ViewModel to control the datastream.
  */
-public class SocialViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+// Use ViewModel to manage and prepare data for UI components,
+// survive configuration changes (like screen rotations),
+// and handle communication between the UI and the underlying data sources.
+public class SocialViewModel extends ViewModel {
+    // Hold data that can be observed for changes
     private final MutableLiveData<List<Post>> postsLiveData;
-    // 点赞相关
+
+    // Hold data that can be observed for 'like' changes
     private MutableLiveData<Set<Integer>> _likedPosts = new MutableLiveData<>();
     public LiveData<Set<Integer>> likedPosts = _likedPosts;
+
     ArrayList<Post> currentPost = null;
 
+    // Constructor
     public SocialViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("Scroll down to see more.");
         postsLiveData = new MutableLiveData<>(new ArrayList<>());
         loadMorePosts(10);
     }
 
+    // Getter for postsLiveData
     public LiveData<List<Post>> getPosts() {
         return postsLiveData;
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
-
-    // load more post into current posts
+    // Load more post into current posts
     public void loadMorePosts(int number) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
