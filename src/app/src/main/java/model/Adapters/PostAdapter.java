@@ -5,6 +5,7 @@ import static model.UtilsApp.loadImageFromURL;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.ui.profile.ProfileFragment;
 import com.example.compendiumofmateriamedica.ui.profile.ProfilePage;
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
+import com.example.compendiumofmateriamedica.ui.social.SocialFragment;
+import com.example.compendiumofmateriamedica.ui.social.SocialViewModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,8 +73,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         PostTreeManager postTreeManager = PostTreeManager.getInstance();
 
         Post post = postsList.get(position);
-        int uid = post.getUser_id();
-        User postUser = userTreeManager.findUserById(uid);
+        int post_uid = post.getUser_id();
+        User postUser = userTreeManager.findUserById(post_uid);
 
         if (postUser != null) {
             // Extracting post details
@@ -117,13 +122,37 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 });
             }
 
+            // Set delete button behavior if enabled
+            if (post_uid == currentUser.getUser_id()){
+                // 删除按钮可见
+                holder.buttonDelete.setVisibility(View.VISIBLE);
+                holder.buttonDelete.setImageResource(R.drawable.icon_delete);
+                holder.buttonDelete.setOnClickListener(v -> {
+                    Log.d("Delete clicked", "They are same? " + (post_uid == currentUser.getUser_id()));
+                    Log.d("Delete clicked", "Current post id is " + post.getPost_id() + ", username is " + postUser.getUsername());
+                    Log.d("Delete clicked", "App user id  is " + currentUser.getUser_id() + ", username is " + currentUser.getUsername());
+                    // delete post from tree
+                    postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id()));
+                    postTreeManager.delete(post.getPost_id());
+                    postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id()));
+                    // TODO still have bugs, post will appear again when come back
+                    // update ui
+                    postsList.remove(post);
+                    notifyDataSetChanged();
+
+                });
+            } else{
+                holder.buttonDelete.setVisibility(View.GONE);
+            }
+
+
             // Load user avatar and post photo from URLs
             loadImageFromURL(context, postUserAvatarURL, holder.userAvatar, "Avatar");
             holder.username.setText(postUserUsername);
             holder.content.setText(postContent.stream().map(Token::getToken).collect(Collectors.joining(" ")));
             holder.timestamp.setText(formatTimestamp(postTimestamp));
             // Set user level image based on the number of plants discovered
-            ProfileFragment.setUserLevelImage(holder.userLevel, postTreeManager.getUserPlantDiscovered(uid).size());
+            ProfileFragment.setUserLevelImage(holder.userLevel, postTreeManager.getUserPlantDiscovered(post_uid).size());
             loadImageFromURL(context, postPhotoURL, holder.photo, "Photo");
 
         } else {
@@ -162,6 +191,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public final ImageButton buttonLike;
         public final TextView timestamp;
         public final ImageView userLevel;
+        public final ImageButton buttonDelete;
         public final View divider;
 
         // Constructor to initialize the views
@@ -175,6 +205,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             timestamp = itemView.findViewById(R.id.post_timestamp);
             userLevel = itemView.findViewById(R.id.post_user_level);
             divider=itemView.findViewById(R.id.divider);;
+            buttonDelete = itemView.findViewById(R.id.button_post_delete);
         }
     }
 }
