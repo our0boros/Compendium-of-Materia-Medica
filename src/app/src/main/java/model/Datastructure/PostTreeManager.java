@@ -100,7 +100,7 @@ public class PostTreeManager implements TreeManager<Post> {
             case CONTENT:
                 List<Token> content = node.getValue().getContent(); // 转换成小写字母
                 for (Token token : content) {
-                    if (token.getToken().toLowerCase().contains((CharSequence) info)) {
+                    if (token.getToken().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                         posts.add(node);
                         break;
                     }
