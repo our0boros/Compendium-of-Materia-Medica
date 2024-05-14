@@ -45,8 +45,9 @@ public class ParserEventHandler {
                         if (!guessValue.equals("")) {
                             temp = PlantTreeManager.getInstance().search(
                                     PlantTreeManager.getInstance().getTypeByString(entry.getKey()), guessValue);
+                            GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
                         }
-                        GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
+
                     }
                     for (Object node : temp) {
                         Integer nodeValueIndex = null;
@@ -62,8 +63,9 @@ public class ParserEventHandler {
                         if (!guessValue.equals("")) {
                             temp = PostTreeManager.getInstance().search(
                                     PostTreeManager.getInstance().getTypeByString(entry.getKey()), guessValue);
+                            GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
                         }
-                        GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
+
                     }
                     for (Object node : temp) {
                         Integer nodeValueIndex = null;
@@ -82,34 +84,45 @@ public class ParserEventHandler {
         return searchResult;
     }
 
-    private static String getSearchedResultsFromBlurParameter(PlantTreeManager.PlantInfoType plantInfoType, String value) {
+    public static String getSearchedResultsFromBlurParameter(PlantTreeManager.PlantInfoType plantInfoType, String value) {
         System.out.println("=== [getSearchedResultsFromBlurParameter] ===");
         // get all plant list
         double bestSimilarity = 0.5;
         String guessValue = "";
+        if (!(plantInfoType == PlantTreeManager.PlantInfoType.COMMON_NAME ||
+        plantInfoType == PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME ||
+        plantInfoType == PlantTreeManager.PlantInfoType.FAMILY)) {
+            return guessValue;
+        }
+
         ArrayList<Plant> plantArrayList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.COMMON_NAME, "");
         System.out.println(plantArrayList.size());
         for (Plant plant : plantArrayList) {
             double similarity = calculateStringSimilarity((String) plant.getByType(plantInfoType), value);
             if (similarity > bestSimilarity) {
+                System.out.println("[getSearchedResultsFromBlurParameter] find similar string");
                 bestSimilarity = similarity;
                 guessValue = (String) plant.getByType(plantInfoType);
             }
         }
         return guessValue;
     }
-    private static String getSearchedResultsFromBlurParameter(PostTreeManager.PostInfoType plantInfoType, String value) {
+    public static String getSearchedResultsFromBlurParameter(PostTreeManager.PostInfoType postInfoType, String value) {
         System.out.println("=== [getSearchedResultsFromBlurParameter] ===");
         // get all plant list
         double bestSimilarity = 0.5;
         String guessValue = "";
+        if (!(postInfoType == PostTreeManager.PostInfoType.CONTENT)) {
+            return guessValue;
+        }
         ArrayList<Post> postArrayList = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.CONTENT, "");
         System.out.println(postArrayList.size());
         for (Post post : postArrayList) {
-            double similarity = calculateStringSimilarity((String) post.getByType(plantInfoType), value);
+            double similarity = calculateStringSimilarity((String) post.getByType(postInfoType), value);
             if (similarity > bestSimilarity) {
+                System.out.println("[getSearchedResultsFromBlurParameter] find similar string");
                 bestSimilarity = similarity;
-                guessValue = (String) post.getByType(plantInfoType);
+                guessValue = (String) post.getByType(postInfoType);
             }
         }
         return guessValue;

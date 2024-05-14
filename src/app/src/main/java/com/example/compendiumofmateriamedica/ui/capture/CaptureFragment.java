@@ -38,6 +38,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.compendiumofmateriamedica.GeneralFunctions;
 import com.example.compendiumofmateriamedica.PostShareActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.SearchedResults;
@@ -284,7 +285,18 @@ public class CaptureFragment extends Fragment {
                         ArrayList<Plant> searchResult = PlantTreeManager.getInstance().search(
                                 PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1],
                                 textView.getText().toString().trim());
-
+                        // try blur search
+                        if (searchResult.size() == 0) {
+                            String guessValue = ParserEventHandler.getSearchedResultsFromBlurParameter(
+                                    PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1],
+                                    textView.getText().toString().trim());
+                            if (!guessValue.equals("")) {
+                                searchResult = PlantTreeManager.getInstance().search(
+                                        PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1],
+                                        guessValue);
+                                GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
+                            }
+                        }
                         for (Plant node : searchResult) {
                             IDList.add(node.getId());
                         }
@@ -292,7 +304,18 @@ public class CaptureFragment extends Fragment {
                         ArrayList<Post> searchResult = PostTreeManager.getInstance().search(
                                 PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1],
                                 textView.getText().toString().trim());
-
+                        // try blur search
+                        if (searchResult.size() == 0) {
+                            String guessValue = ParserEventHandler.getSearchedResultsFromBlurParameter(
+                                    PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1],
+                                    textView.getText().toString().trim());
+                            if (!guessValue.equals("")) {
+                                searchResult = PostTreeManager.getInstance().search(
+                                        PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1],
+                                        guessValue);
+                                GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
+                            }
+                        }
                         for (Post node : searchResult) {
                             IDList.add(node.getPost_id());
                         }

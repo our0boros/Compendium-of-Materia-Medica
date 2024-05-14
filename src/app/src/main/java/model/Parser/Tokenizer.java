@@ -23,7 +23,7 @@ public class Tokenizer {
 
     // define Type.STR
     public static boolean isLetterDigitOrChinese(String str) {
-        String regex = "^[_a-z0-9A-Z\u4e00-\u9fa5-.*！？“”]+$";
+        String regex = "^[_a-z0-9A-Z\u4e00-\u9fa5-.* ！？“”]+$";
         return str.matches(regex);
     }
 
