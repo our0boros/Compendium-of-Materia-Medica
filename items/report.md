@@ -366,6 +366,12 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
   - Thus, we apply singleton design pattern on all of this TreeManagers and use getInstance() to get the unique instance.
   - By doing this, our app requires less memory and the code is more neat and readable.
 
+2. [Refactored the return value of all search methods in all treeManager class]
+  - When checking the code, we noticed that the search method in the TreeManager class returns a list of tree nodes. This requires an extra step to call the `getValue` method on the tree nodes to obtain the actual instances, indicating incomplete encapsulation.
+  - So we'll perform the operation of getting the node value earlier in the search method, thus changing the return value of all search methods from a list of nodes to a list of instances.
+  - By doing this, we make it easier for the backend to make calls to the search method, increasing the readability and ease of use of the code.
+
+
 - If implemented, explain how your solution addresses the task (any detail requirements will be released with the surprise feature specifications).
 - State that "Suprised feature is not implemented" otherwise.
 
