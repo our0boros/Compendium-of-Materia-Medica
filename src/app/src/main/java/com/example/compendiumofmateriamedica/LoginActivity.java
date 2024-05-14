@@ -70,9 +70,9 @@ public class LoginActivity extends AppCompatActivity {
                     // Failed login
                     Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                     // TODO: (EMPTY INPUT) USER ID 5 FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.ID, 5);
+                    ArrayList<User> users = userTreeManager.search(UserTreeManager.UserInfoType.ID, 5);
                     if (!users.isEmpty()) {
-                        user = users.get(0).getValue();
+                        user = users.get(0);
                     }
                     startMainActivity(user);
                     // TODO: FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -84,8 +84,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void onChanged(FirebaseUser firebaseUser) {
                             if (firebaseUser != null) {
                                 Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                ArrayList<RBTreeNode<User>> users = userTreeManager.search(UserTreeManager.UserInfoType.EMAIL, firebaseUser.getEmail());
-                                user = users.get(0).getValue();
+                                ArrayList<User> users = userTreeManager.search(UserTreeManager.UserInfoType.EMAIL, firebaseUser.getEmail());
+                                user = users.get(0);
                                 startMainActivity(user);
                             } else {
                                 Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();

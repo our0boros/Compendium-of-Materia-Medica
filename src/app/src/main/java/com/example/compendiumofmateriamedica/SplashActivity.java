@@ -16,6 +16,7 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import model.Datastructure.DataType;
+import model.Datastructure.GeneratorFactory;
 import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
 import model.Datastructure.Post;
@@ -23,7 +24,7 @@ import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTree;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
-import model.GeneratorFactory;
+
 
 public class SplashActivity extends AppCompatActivity {
     // RBTrees to save data

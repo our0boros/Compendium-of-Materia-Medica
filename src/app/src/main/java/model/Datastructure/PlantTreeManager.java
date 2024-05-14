@@ -41,14 +41,14 @@ public class PlantTreeManager implements TreeManager<Plant>{
     }
 
     // 对外的搜索接口，调用这个方法来开始搜索
-    public <T> ArrayList<RBTreeNode<Plant>> search (PlantInfoType infoType, T info) {
+    public <T> ArrayList<Plant> search (PlantInfoType infoType, T info) {
 
-        ArrayList<RBTreeNode<Plant>> plants = new ArrayList<>();
+        ArrayList<Plant> plants = new ArrayList<>();
 
         if (infoType == PlantInfoType.ID) {
             RBTreeNode<Plant> plant = plantRBTree.search(Integer.parseInt((String) info));
             if (plant != null) {
-                plants.add(plant);
+                plants.add(plant.getValue());
             }
         } else {
             search(plantRBTree.root, infoType, info, plants);
@@ -58,7 +58,7 @@ public class PlantTreeManager implements TreeManager<Plant>{
     }
 
     // 实际的递归搜索方法
-    private  <T> void search(RBTreeNode<Plant> node, PlantInfoType infoType, T info, ArrayList<RBTreeNode<Plant>> plants) {
+    private  <T> void search(RBTreeNode<Plant> node, PlantInfoType infoType, T info, ArrayList<Plant> plants) {
         // 如果当前节点是null，说明已经到达了叶子节点的子节点，直接返回
         if (node == null) {
             return;
@@ -68,23 +68,23 @@ public class PlantTreeManager implements TreeManager<Plant>{
         switch (infoType) {
             case COMMON_NAME:
                 if (node.getValue().getCommonName().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
-                    plants.add(node);
+                    plants.add(node.getValue());
                 }
             case SLUG:
                 if (node.getValue().getSlug().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
-                    plants.add(node);
+                    plants.add(node.getValue());
                 }
             case SCIENTIFIC_NAME:
                 if (node.getValue().getScientificName().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
-                    plants.add(node);
+                    plants.add(node.getValue());
                 }
             case GENUS:
                 if (node.getValue().getGenus().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
-                    plants.add(node);
+                    plants.add(node.getValue());
                 }
             case FAMILY:
                 if (node.getValue().getFamily().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
-                    plants.add(node);
+                    plants.add(node.getValue());
                 }
         }
 

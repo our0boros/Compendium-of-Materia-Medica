@@ -40,7 +40,7 @@ public class ParserEventHandler {
                             PlantTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
                     for (Object node : temp) {
                         Integer nodeValueIndex = null;
-                        nodeValueIndex = ((RBTreeNode<Plant>) node).getValue().getId();
+                        nodeValueIndex = ((Plant) node).getId();
                         searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 1) + 1);
                     }
                 }else if (dataType == DataType.POST) {
@@ -48,7 +48,7 @@ public class ParserEventHandler {
                             PostTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
                     for (Object node : temp) {
                         Integer nodeValueIndex = null;
-                        nodeValueIndex = ((RBTreeNode<Post>) node).getValue().getPost_id();
+                        nodeValueIndex = ((Post) node).getPost_id();
                         searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 1) + 1);
                     }
                 }

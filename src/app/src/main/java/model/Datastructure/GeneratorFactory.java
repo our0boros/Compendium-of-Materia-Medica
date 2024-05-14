@@ -1,4 +1,4 @@
-package model;
+package model.Datastructure;
 
 import android.content.Context;
 
@@ -7,12 +7,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import model.Datastructure.DataType;
-import model.Datastructure.PlantTreeGenerator;
-import model.Datastructure.PostTreeGenerator;
-import model.Datastructure.RBTree;
-import model.Datastructure.UserTreeGenerator;
 
 /**
  * @author: Haochen Gong

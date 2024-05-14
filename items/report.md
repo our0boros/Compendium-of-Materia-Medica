@@ -345,7 +345,15 @@ Production Rules:
     * Code to the Data File [users_interaction.json](link-to-file), [search-queries.xml](link-to-file), ...
     * Link to the Firebase repo: ...
 
-3. ...
+3. [LoadShowData]. Implemented a page that shows information about a single plant instance.
+    * Code: class PlantDetailShow: [PlantDetailShow.java](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PlantDetailShow.java)
+    * The page will search for the plant in the generated plantTree based on the plant id passed in, and add the relevant attributes of the plant instance to the textView of the page.
+
+4. [DataStream]. After a user logs in, a background service periodically generates events where random users like the current app user's post. The user can see notifications of new events and handle them.
+    * Code: NotificationService.java
+    * The service will generate a new event representing other user's like action periodically.
+    * If the app user's newest post has less than 6 likes, it will be liked by a random user.
+    * User will get notification both as system notification and UI updates.
    <br>
 
 ### Custom Features
@@ -365,9 +373,59 @@ Feature Category: Firebase Integration <br>
     * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
     * Description of your implementation: ... <br>
 
+Feature Category: User Interactivity <br>
+4. [Interact-Micro] User can like other users' posts by clicking the like button
+    * Code: class PostAdapter
+    * If the post is already liked by user, clicking like button will unlike it.
+
+5. [Interact-Share] User can share post after taking photo of plants
+    * Code: class PostShareActivity, CaptureFragment
+    * Click the camera icon in Capture page, the app will call camera of the cellphone.
+    * After taking a photo of plant, user can post this photo with some content and share it with other user in Social page.
+
+6. [Interact-Noti] User can get notifications when user's post is liked.
+    * Code: class NotificationService
+    * If user's newest post has less than 6 likes, the backstage service will simulate other user liking this post.
+    * User can see how many unread messages he has now. After checking the messages, the number will be reset to 0.
+    * If the unread notifications are more than 3, user will get system notification.
+
+Feature Category: Greater Data Usage, Handling and Sophistication <br>
+7. [Data-Profile] Profile page has a user level icon.
+    * Code: class ProfileFragment, ProfilePage, PostAdapter
+    * Based on how many plants user has discovered, the profile page will display different level icon.
+    * There is a process bar showing how many plants left to level up.
+    * User level will also be shown in his posts.
+
+8. [Data-Formats] We read JSON and xxx file from local files.
+    * Code: class JsonReader 还有哪里读了文件？？图片？？
+    * Read from JSON: We read local JSON files(all data of our app) from the `res/raw` directory in our Android app, then we use the `JsonReader` class to open the resource file as an `InputStream`, read its contents with a `BufferedReader`, and parse the data into an `ArrayList` of `JSONObject`s.
+    * Read picture from url?: 待完成
+
+9. [Data-GPS] Users can get information about their current location
+    * Code: class PostShareActivity    profile是怎么获取的？？
+    * When a user shares a post, the user's current gps location is automatically obtained
+    * The user's profile page also displays the current gps location.
+   
+10. [Data-Deletion] Users can delete their own posts.
+    * Code: class PostTreeManager 还需要具体实现删除post的代码
+    * Users can delete their own post, the specific logic for the red-black tree node deletion operations.
+
+
 <hr>
 
 ### Surprise Features
+
+1. [Using singleton Design Pattern]
+  - We found that because we instantiate trees and TreeManagers in  several activities and in fact we are using the same one.
+  - This requires more memory and is hard for activities to synchronize data.
+  - Thus, we apply singleton design pattern on all of this TreeManagers and use getInstance() to get the unique instance.
+  - By doing this, our app requires less memory and the code is more neat and readable.
+
+2. [Refactored the return value of all search methods in all treeManager class]
+  - When checking the code, we noticed that the search method in the TreeManager class returns a list of tree nodes. This requires an extra step to call the `getValue` method on the tree nodes to obtain the actual instances, indicating incomplete encapsulation.
+  - So we'll perform the operation of getting the node value earlier in the search method, thus changing the return value of all search methods from a list of nodes to a list of instances.
+  - By doing this, we make it easier for the backend to make calls to the search method, increasing the readability and ease of use of the code.
+
 
 - If implemented, explain how your solution addresses the task (any detail requirements will be released with the surprise feature specifications).
 - State that "Suprised feature is not implemented" otherwise.
@@ -418,12 +476,10 @@ Feature Category: Firebase Integration <br>
   (each commited within 2 days aftre the meeting)
 * Your meetings should also have a reasonable date spanning across Week 6 to 11.*
 
-
-- *[Team Meeting 1](meeting-template.md)*
-- ...
-- ...
-- [Team Meeting 4](link_to_md_file.md)
-- ... (Add any descriptions if needed) ...
+- *[Team Meeting 1](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/items/meeting-1.md)*
+- *[Team Meeting 2](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/items/meeting-2.md)*
+- *[Team Meeting 3](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/items/meeting-3.md)*
+- *[Team Meeting 4](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/items/meeting-4.md)*
 
 <hr>
 

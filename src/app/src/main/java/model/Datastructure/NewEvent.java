@@ -2,8 +2,6 @@ package model.Datastructure;
 
 import java.util.Date;
 
-import model.Datastructure.User;
-
 public class NewEvent {
     private int postId;
     private User eventUser;

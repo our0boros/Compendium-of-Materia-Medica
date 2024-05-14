@@ -121,10 +121,10 @@ public class PostShareActivity extends AppCompatActivity {
                         .get("scientificNameWithoutAuthor");
                 Log.println(Log.ASSERT, "API RESULT", sciName);
                 // 查找当前的plant库
-                ArrayList<RBTreeNode<Plant>> plantTreeList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME, sciName);
+                ArrayList<Plant> plantTreeList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME, sciName);
                 // 如果找到匹配的
                 if (plantTreeList.size() > 0) {
-                    currentPlant = plantTreeList.get(0).getValue();
+                    currentPlant = plantTreeList.get(0);
                     Log.println(Log.ASSERT, "API RESULT", "Found mapping result: " + currentPlant);
                 } else {
                     Log.println(Log.ASSERT, "API RESULT", "Do not found mapping result");

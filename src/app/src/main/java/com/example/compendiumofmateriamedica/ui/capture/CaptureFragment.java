@@ -127,7 +127,7 @@ public class CaptureFragment extends Fragment {
                 currentUser.getUsername()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
         userImage = binding.userHeader;
-        String userURL = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, currentUser.getUser_id()).get(0).getValue().getAvatar_url();
+        String userURL = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, currentUser.getUser_id()).get(0).getAvatar_url();
         loadImageFromURL(getContext(), userURL, userImage, "Avatar");
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,20 +281,20 @@ public class CaptureFragment extends Fragment {
                     // 搜索节点
                     ArrayList<Integer> IDList = new ArrayList<>();
                     if (!isPost) {
-                        ArrayList<RBTreeNode<Plant>> searchResult = PlantTreeManager.getInstance().search(
+                        ArrayList<Plant> searchResult = PlantTreeManager.getInstance().search(
                                 PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1],
                                 textView.getText().toString().trim());
 
-                        for (RBTreeNode<Plant> node : searchResult) {
-                            IDList.add(node.getKey());
+                        for (Plant node : searchResult) {
+                            IDList.add(node.getId());
                         }
                     } else {
-                        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.getInstance().search(
+                        ArrayList<Post> searchResult = PostTreeManager.getInstance().search(
                                 PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1],
                                 textView.getText().toString().trim());
 
-                        for (RBTreeNode<Post> node : searchResult) {
-                            IDList.add(node.getKey());
+                        for (Post node : searchResult) {
+                            IDList.add(node.getPost_id());
                         }
                     }
                     // 跳转界面

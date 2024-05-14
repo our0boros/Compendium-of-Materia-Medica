@@ -56,14 +56,14 @@ public class PostTreeManager implements TreeManager<Post> {
     }
 
     // 对外的搜索接口，调用这个方法来开始搜索
-    public <T> ArrayList<RBTreeNode<Post>> search(PostInfoType infoType, T info) {
+    public <T> ArrayList<Post> search(PostInfoType infoType, T info) {
 
-        ArrayList<RBTreeNode<Post>> posts = new ArrayList<>();
+        ArrayList<Post> posts = new ArrayList<>();
 
         if (infoType == PostInfoType.POST_ID) {
             RBTreeNode<Post> post = this.postRBTree.search(Integer.parseInt((String) info));
             if (post != null) {
-                posts.add(post);
+                posts.add(post.getValue());
             }
         } else {
             search(this.postRBTree.root, infoType, info, posts);
@@ -73,7 +73,7 @@ public class PostTreeManager implements TreeManager<Post> {
     }
 
     // 实际的递归搜索方法
-    private <T> void search(RBTreeNode<Post> node, PostInfoType infoType, T info, ArrayList<RBTreeNode<Post>> posts) {
+    private <T> void search(RBTreeNode<Post> node, PostInfoType infoType, T info, ArrayList<Post> posts) {
         // 如果当前节点是null，说明已经到达了叶子节点的子节点，直接返回
         if (node == null) {
             return;
@@ -82,26 +82,26 @@ public class PostTreeManager implements TreeManager<Post> {
         switch (infoType) {
             case UID:
                 if (node.getValue().getUser_id() == Integer.parseInt((String) info)) {
-                    posts.add(node);
+                    posts.add(node.getValue());
                 }
                 break;
             case PLANT_ID:
                 if (node.getValue().getPlant_id() == Integer.parseInt((String) info)) {
-                    posts.add(node);
+                    posts.add(node.getValue());
                 }
                 break;
             // 需要提前封装timestamp的处理（这里只是简单的判断了post对象储存的时间戳是否完全一致）
             case TIME:
                 if (node.getValue().getTimestamp().contains((CharSequence) info)) {
-                    posts.add(node);
+                    posts.add(node.getValue());
                 }
                 break;
             // 查找内容里是否含有某字符
             case CONTENT:
                 List<Token> content = node.getValue().getContent(); // 转换成小写字母
                 for (Token token : content) {
-                    if (token.getToken().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
-                        posts.add(node);
+                    if (token.getToken().toLowerCase().contains((CharSequence) info)) {
+                        posts.add(node.getValue());
                         break;
                     }
                 }
@@ -158,10 +158,10 @@ public class PostTreeManager implements TreeManager<Post> {
             return null;
         }
         // Search post with given postId
-        ArrayList<RBTreeNode<Post>> searchResult = instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
+        ArrayList<Post> searchResult = instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
         // Check user validation, uid is unique
         if (!searchResult.isEmpty()) {
-            return searchResult.get(0).getValue();
+            return searchResult.get(0);
         }
         return null;
     }
@@ -173,12 +173,12 @@ public class PostTreeManager implements TreeManager<Post> {
             return null;
         }
         // Search post with given uID
-        ArrayList<RBTreeNode<Post>> user_post_data = instance.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+        ArrayList<Post> user_post_data = instance.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
 //        Log.w("PostTree root",""+instance.postRBTree);
         List<Post> user_post_data_list = new ArrayList<>();
         if (!user_post_data.isEmpty()) {
-            for (RBTreeNode<Post> node : user_post_data) {
-                user_post_data_list.add(node.getValue());
+            for (Post post : user_post_data) {
+                user_post_data_list.add(post);
             }
             return user_post_data_list;
         } else {

@@ -43,9 +43,9 @@ public class PlantDetailShow extends AppCompatActivity {
 
         // Xing Chen: 这里假设要putExtra一个植物的id，key为"PlantId"
         plantId = (int) this.getIntent().getSerializableExtra("PlantId");
-        ArrayList<RBTreeNode<Plant>> plants = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(plantId));
-        RBTreeNode<Plant> node = plants.get(0);
-        Plant plant = node.getValue();
+        ArrayList<Plant> plants = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(plantId));
+        Plant plant = plants.get(0);
+
 
         commonName.setText(plant.getCommonName());
         slug.setText(plant.getSlug());
