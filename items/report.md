@@ -290,7 +290,11 @@ Production Rules:
     * Code to the Data File [users_interaction.json](link-to-file), [search-queries.xml](link-to-file), ...
     * Link to the Firebase repo: ...
 
-3. ...
+3. [DataStream]. After a user logs in, a background service periodically generates events where random users like the current app user's post. The user can see notifications of new events and handle them.
+    * Code: NotificationService.class
+    * The service will generate a new event representing other user's like action periodically.
+    * If the app user's newest post has less than 6 likes, it will be liked by a random user.
+    * User will get notification both as system notification and UI updates.
    <br>
 
 ### Custom Features
@@ -310,9 +314,39 @@ Feature Category: Firebase Integration <br>
     * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
     * Description of your implementation: ... <br>
 
+Feature Category: User Interactivity <br>
+4. [Interact-Micro] User can like other users' posts by clicking the like button
+    * Code: class PostAdapter
+    * If the post is already liked by user, clicking like button will unlike it.
+
+5. [Interact-Share] User can share post after taking photo of plants
+    * Code: class PostShareActivity, CaptureFragment
+    * Click the camera icon in Capture page, the app will call camera of the cellphone.
+    * After taking a photo of plant, user can post this photo with some content and share it with other user in Social page.
+
+6. [Interact-Noti] User can get notifications when user's post is liked.
+    * Code: class NotificationService
+    * If user's newest post has less than 6 likes, the backstage service will simulate other user liking this post.
+    * User can see how many unread messages he has now. After checking the messages, the number will be reset to 0.
+    * If the unread notifications are more than 3, user will get system notification.
+
+Feature Category: User Interactivity <br>
+7. [Data-Profile] Profile page has a user level icon.
+    * Code: class ProfileFragment, ProfilePage, PostAdapter
+    * Based on how many plants user has discovered, the profile page will display different level icon.
+    * There is a process bar showing how many plants left to level up.
+    * User level will also be shown in his posts.
+
+
 <hr>
 
 ### Surprise Features
+
+1. [Using singleton Design Pattern]
+  - We found that because we instantiate trees and TreeManagers in  several activities and in fact we are using the same one.
+  - This requires more memory and is hard for activities to synchronize data.
+  - Thus, we apply singleton design pattern on all of this TreeManagers and use getInstance() to get the unique instance.
+  - By doing this, our app requires less memory and the code is more neat and readable.
 
 - If implemented, explain how your solution addresses the task (any detail requirements will be released with the surprise feature specifications).
 - State that "Suprised feature is not implemented" otherwise.
