@@ -90,7 +90,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 - **Code and App Design**
     - *The process of data reading and tree generation is divided into different classes, thus decoupling the logic of data reading and tree generation and making the code more modular and flexible.*
     - *The tree generation process is carried out using the factory pattern, and the implemented factory methods centralize the control process of data reading and tree generation, simplifying the main logic. The caller only needs to call the tree method and pass in the corresponding parameters to get the corresponding red-black tree without caring about the specific details of the generation.*
-    - *All tree-specific operation methods are encapsulated into the corresponding TreeManager class , making the code structure more clear , the caller can find all tree operation methods in one place , easy to manage and maintain .*
+    - *All tree-specific operation methods are encapsulated into the corresponding TreeManager class , making the code structure more clear , the caller can find all tree operation methods in one place , easy to manage and maintain.*
     - <br><br>
 
 - **Others**:
