@@ -85,6 +85,17 @@ public class Post implements Comparable<Post>{
     public List<Integer> getLikesRecord() { return likesRecord; }
 
     public Map<Integer, String> getComments() { return comments; }
+
+    public Object getByType(PostTreeManager.PostInfoType type) {
+        switch (type) {
+            case POST_ID: return getPost_id();
+            case UID: return getUser_id();
+            case PLANT_ID: return getPlant_id();
+            case TIME: return getTimestamp();
+            case CONTENT: return getContent();
+            default: return null;
+        }
+    }
     // 判断Post现在是否被某用户点赞了
     public boolean isLikedByUser(int uid){
 //        lock.lock();

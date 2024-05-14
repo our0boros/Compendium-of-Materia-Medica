@@ -3,6 +3,7 @@ package com.example.compendiumofmateriamedica;
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,5 +52,9 @@ public class GeneralFunctions {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void makeToast(String text) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 }
