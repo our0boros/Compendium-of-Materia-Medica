@@ -1,12 +1,8 @@
 package com.example.compendiumofmateriamedica.ui.social;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.compendiumofmateriamedica.MainActivity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -59,5 +55,12 @@ public class SocialViewModel extends ViewModel {
             currentPost.addAll(PostTreeManager.getInstance().getNewestPosts(number, nextTimestamp));
         }
         postsLiveData.postValue(currentPost);
+    }
+    public void removePost(Post post) {
+        List<Post> currentPosts = postsLiveData.getValue();
+        if (currentPosts != null) {
+            currentPosts.remove(post);
+            postsLiveData.postValue(currentPosts);
+        }
     }
 }

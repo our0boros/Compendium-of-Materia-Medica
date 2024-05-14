@@ -35,11 +35,13 @@ public class MyPost extends AppCompatActivity {
     private PostAdapter postAdapter;
     private RecyclerView postsRecyclerView;
     private User currentUser;
+    private User appUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
+        appUser = (User) this.getIntent().getSerializableExtra("AppUser");
         currentUser = (User) this.getIntent().getSerializableExtra("CurrentUser");
 
         page_name=findViewById(R.id.page_name);

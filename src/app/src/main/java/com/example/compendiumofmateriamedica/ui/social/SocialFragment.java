@@ -26,11 +26,12 @@ public class SocialFragment extends Fragment {
     private RecyclerView postsRecyclerView;
     private PostAdapter postAdapter;
     private User currentUser;
+    private SocialViewModel socialViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Instantiate the SocialViewModel
-        SocialViewModel socialViewModel = new ViewModelProvider(this).get(SocialViewModel.class);
+        socialViewModel = new ViewModelProvider(this).get(SocialViewModel.class);
         binding = FragmentSocialBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         // Get the current user from the intent

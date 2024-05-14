@@ -120,8 +120,8 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - =
     - =
     - =
-    - Feature [Search] - class [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads), class [SearchGrammarParser](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java?ref_type=heads), class [Token](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Token.java?ref_type=heads), class [Tokenizer](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java?ref_type=heads)
-    - feature [Search-Invalid] - class 
+    - Feature [Search] - class [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads), class [SearchGrammarParser](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java?ref_type=heads), class [Token](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Token.java?ref_type=heads), class [Tokenizer](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java?ref_type=heads), class ParserEventHandler
+    - Feature [Search-Invalid] - class ParserEventHandler: getSearchedResultsFromParameters(), 
     
 - **Code and App Design**
     - [What design patterns, data structures, did the involved member propose?]*
@@ -287,6 +287,36 @@ Production Rules:
 
 综上，当前的语法具有一定的兼容性、可扩展性与易读性。
 
+---
+
+
+
+Since our Parser is mainly used for the syntax of data searching, and the main purpose of the search syntax is to allow users to obtain more accurate or more generic search results, the syntax mainly considers the compatibility of the overall syntax and its scalability. More specifically, when searching for plants in the search project, users can accurately search for plants within a certain range based on information such as the plant's family, scientific name, or content with similar descriptions. Similarly, when users search for plant-related posts, they can also find related posts more accurately based on information about the relevant plants and attributes such as time range.
+
+In addition, considering that various attributes of the data will gradually enrich as the content of the database expands, we need to enhance the compatibility of the syntax to some extent so that when new attributes appear, they can be matched with search content through the syntax one by one.
+
+Therefore, after careful consideration, the current search syntax can be mainly divided into three parts: tag columns, parameter columns, and search method columns, each represented by an identifier followed by a content box. The identifiers are as follows:
+
+|            | Column Identifier |
+| ---------- | ----------------- |
+| Tag Column | #:                |
+| Param Column | $:                |
+| Search Method Column | *:                |
+
+Regarding the search method column, according to the current needs of the app, it is temporarily defined as two search logics, AND and OR, representing more accurate search and broader search respectively. The content of each identifier is separated by commas and can be freely assigned. This design allows the tag content to correspond one-to-one with the parameter content and is easy for users to remember. The expression of the search syntax is in the format of `[]: {}`, stacked in this format.
+
+Production Rules:
+
+     <Exp>        := <TagColumn>, <TextColumn>, <METHOD> | <TextColumn>, <TagColumn>, <METHOD>
+     <TagColumn>  := #: { <Content> },
+     <TextColumn> := $: { <Content> },
+     <Method>     := *: {&} | *: {|}
+     <Content>    := STR | STR, <Content>
+
+In summary, the current syntax has a certain level of compatibility, scalability, and readability.
+
+
+
 ### <u>Tokenizers and Parsers</u>
 
 *[Where do you use tokenisers and parsers? How are they built? What are the advantages of the designs?]*
@@ -322,7 +352,45 @@ Production Rules:
   13. 返回存储了所有 Token 的 Token List。
 ```
 
+接下来对于搜索语法的算法，我们可以参照前文 `Grammar(s)` 中提到的详细描述将语法的识别拆分为多个子逻辑块逐一处理，从最表层的`ExpParser` 到最底层的`ContentParser`，分别进行语义的识别。由于在最初的语法设计时就考虑到了语法的复杂性问题，每一个字逻辑快的处理都非常的简单，通常我们只需要确认子字串的开头和结尾有没有出现预期字符即可，这大大的提高了语法处理的效率。而程序后端在处理时会将标签栏目和参数栏目的所有子字串一一对应集成为一个HashMap 回传到前端，同时回传当前的搜索方法。接下来我们就可以通过得到的搜索语法参数和搜索方法调用红黑树的search() 进行后续的进一步处理，直到我们得到满足用户语法的所有植物/Post ID列表为止。
 
+而当用户输入错误的Token或者语法时，我们同样可以隔离当前Token搜索栏对应的内容并检索后续的部分，而不需要像单一的字符串一样，当遇到错误时直接跳出整个语法处理逻辑。
+
+此外当用户发布帖子时，我们同样会对其输入的文字进行分词处理。这样做可以快速定位用户输入的关键词，使我们能够快速实现敏感词汇的过滤功能，有效屏蔽不当内容。为了方便其他用户高效地搜索帖子内容，我们会对帖子进行分词处理，并逐个检索关键词。这样的处理方式可以使搜索方法更加高效快速。
+
+---
+
+
+
+To address the input issues in human-computer interaction, our tokenizer is currently mainly used in two scenarios: the syntax of searches and the textual content of posted threads.
+
+Firstly, concerning the syntax of searches, in order to enhance the efficiency of the parser and tokenize the lexemes, we first convert the user's syntax input into a list of tokens before proceeding with subsequent syntax processing. This approach ensures that the syntax symbols input by the user meet expectations (no illegal characters or garbled code) before entering the parser, thereby improving the efficiency of syntax logic processing.
+
+Since the logic of natural language understanding is generally unidirectional, our tokenizer logic sequentially examines the input stream to extract the current character if it matches a key character, placing it into the token list, and continues stacking the current character until the next corresponding character group is found.
+
+The algorithmic expression is detailed as follows:
+
+```
+1. Initialize an empty Token List object to store all tokens.
+2. Enter a loop while there are still unprocessed tokens.
+   3. Add the current token to the Token List in the loop.
+      4. Trim the whitespace from the current buffer.
+      5. If the buffer is empty, set the current token to null to indicate no remaining tokens and then end the method.
+      6. Get the first character in the buffer and identify the token type based on different character types.
+      7. Generate the corresponding Token object based on the first character and set it as the current token.
+      8. If the first character satisfies the character requirements, enter a loop and read consecutive characters until encountering a character that does not meet the requirements.
+         9. Treat this part of characters as a token string, generate a Token object, and set it as the current token.
+      10. If the first character does not match any of the above cases, throw an exception indicating an unexpected token.
+      11. Remove the current token from the buffer.
+   12. Repeat step 3 until there are no remaining tokens.
+13. Return the Token List storing all tokens.
+```
+
+Next, for the algorithm of search syntax, we can split the recognition of syntax into multiple sub-logic blocks, as described in the previous section on `Grammar(s)`, processing from the top-level `ExpParser` to the bottom-level `ContentParser` to identify semantics. Since the complexity of syntax was considered during initial syntax design, the processing of each logic block is relatively simple. Usually, we only need to confirm whether the substring has the expected characters at the beginning and end, greatly enhancing the efficiency of syntax processing. When handling the backend, all substrings of tag columns and parameter columns are integrated into a HashMap and transmitted back to the frontend, along with the current search method. Then, further processing can be performed by calling the search() method of a red-black tree based on the obtained search syntax parameters and methods until obtaining a list of all plant/Post IDs satisfying the user's syntax.
+
+When users input incorrect tokens or syntax, we can also isolate the content corresponding to the current token search column and search the subsequent part, without needing to exit the entire syntax processing logic, as with a single string.
+
+Additionally, when users post threads, we similarly tokenize their textual inputs. This enables quick identification of user-entered keywords, allowing us to rapidly implement a sensitive word filtering function to effectively block inappropriate content. To facilitate other users' efficient search for thread content, we tokenize threads and search for keywords one by one. This processing approach makes search methods more efficient and faster.
 
 ### Others
 

@@ -201,6 +201,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MyPost.class);
+                intent.putExtra("AppUser", currentUser);
                 intent.putExtra("CurrentUser", currentUser); // Pass the current user object
                 startActivity(intent);
             }

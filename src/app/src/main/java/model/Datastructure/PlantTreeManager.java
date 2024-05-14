@@ -46,9 +46,13 @@ public class PlantTreeManager implements TreeManager<Plant>{
         ArrayList<Plant> plants = new ArrayList<>();
 
         if (infoType == PlantInfoType.ID) {
-            RBTreeNode<Plant> plant = plantRBTree.search(Integer.parseInt((String) info));
-            if (plant != null) {
-                plants.add(plant.getValue());
+            try {
+                RBTreeNode<Plant> plant = plantRBTree.search(Integer.parseInt((String) info));
+                if (plant != null) {
+                    plants.add(plant.getValue());
+                }
+            } catch (NumberFormatException e) {
+                return plants;
             }
         } else {
             search(plantRBTree.root, infoType, info, plants);
