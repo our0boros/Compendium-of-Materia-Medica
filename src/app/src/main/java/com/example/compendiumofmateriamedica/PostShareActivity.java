@@ -324,7 +324,7 @@ public class PostShareActivity extends AppCompatActivity {
         // 为生成post设置变量
         int postId = PostTreeManager.getInstance().getTreeSize() + 1;
         int uid = currentUser.getUser_id();
-        int plantId = 5; // 这里随便给个plantid，实际拍到照片识别后再传进来就有了
+        int plantId = currentPlant.getId(); // 这里随便给个plantid，实际拍到照片识别后再传进来就有了
         String photo = photoURL;
         String content = postContent.getText().toString();
         // 获取当前时间
