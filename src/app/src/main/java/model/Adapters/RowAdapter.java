@@ -47,20 +47,20 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RowViewHolder holder, int position) {
-        ArrayList<RBTreeNode<Post>> nodes = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(data.get(position)));
-        Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: nodes size " + nodes.size());
+        ArrayList<Post> posts = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(data.get(position)));
+        Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: posts size " + posts.size());
         // 加载Post图片
-        String postURL = nodes.get(0).getValue().getPhoto_url();
+        String postURL = posts.get(0).getPhoto_url();
         loadImageFromURL(this.context, postURL, holder.postImage, "Photo");
         // 加载用户图片
-        RBTreeNode<User> user = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, nodes.get(0).getValue().getUser_id()).get(0);
-        String userURL = user.getValue().getAvatar_url();
+        User user = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, posts.get(0).getUser_id()).get(0);
+        String userURL = user.getAvatar_url();
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: user avatar: " + userURL);
         loadImageFromURL(this.context, userURL, holder.userImage, "Avatar");
         // 加载用户名字
-        holder.userName.setText(user.getValue().getUsername());
+        holder.userName.setText(user.getUsername());
 
-        List<Token> postContent = nodes.get(0).getValue().getContent();
+        List<Token> postContent = posts.get(0).getContent();
         holder.postContent.setText(postContent.stream().map(Token::getToken).collect(Collectors.joining(" ")));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

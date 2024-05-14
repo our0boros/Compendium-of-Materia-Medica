@@ -125,7 +125,7 @@ public class CaptureFragment extends Fragment {
                 currentUser.getUsername()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
         userImage = binding.userHeader;
-        String userURL = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, currentUser.getUser_id()).get(0).getValue().getAvatar_url();
+        String userURL = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, currentUser.getUser_id()).get(0).getAvatar_url();
         loadImageFromURL(getContext(), userURL, userImage, "Avatar");
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -358,22 +358,22 @@ public class CaptureFragment extends Fragment {
                     // 搜索节点
                     ArrayList<Integer> plantIDList = new ArrayList<>();
                     if (!isPost) {
-                        ArrayList<RBTreeNode<Plant>> searchResult = PlantTreeManager.getInstance().search(
+                        ArrayList<Plant> searchResult = PlantTreeManager.getInstance().search(
                                 PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                                 + " with: " + textView.getText().toString().trim());
 
-                        for (RBTreeNode<Plant> node : searchResult) {
-                            plantIDList.add(node.getKey());
+                        for (Plant plant : searchResult) {
+                            plantIDList.add(plant.getId());
                         }
                     } else {
-                        ArrayList<RBTreeNode<Post>> searchResult = PostTreeManager.getInstance().search(
+                        ArrayList<Post> searchResult = PostTreeManager.getInstance().search(
                                 PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
                         Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                                 + " with: " + textView.getText().toString().trim());
 
-                        for (RBTreeNode<Post> node : searchResult) {
-                            plantIDList.add(node.getKey());
+                        for (Post post : searchResult) {
+                            plantIDList.add(post.getPost_id());
                         }
                     }
 

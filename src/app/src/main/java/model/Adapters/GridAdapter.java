@@ -49,12 +49,12 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
-        ArrayList<RBTreeNode<Plant>> nodes = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position)));
-        Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: nodes size " + nodes.size());
-        String plantURL = nodes.get(0).getValue().getImage();
+        ArrayList<Plant> plants = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position)));
+        Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: plants size " + plants.size());
+        String plantURL = plants.get(0).getImage();
         loadImageFromURL(this.context, plantURL, holder.plantImage, "Photo");
-        String plantName = nodes.get(0).getValue().getCommonName();
-        String plantFamily = nodes.get(0).getValue().getFamily();
+        String plantName = plants.get(0).getCommonName();
+        String plantFamily = plants.get(0).getFamily();
         holder.postContent.setText(plantName);
         holder.plantSubheading.setText(plantFamily);
 
@@ -62,7 +62,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PlantDetailShow.class);
-                intent.putExtra("PlantId",  nodes.get(0).getValue().getId());
+                intent.putExtra("PlantId",  plants.get(0).getId());
                 context.startActivity(intent);
             }
         });
