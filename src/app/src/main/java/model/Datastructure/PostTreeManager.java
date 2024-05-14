@@ -51,8 +51,8 @@ public class PostTreeManager implements TreeManager<Post> {
     }
 
     @Override
-    public void delete(int plantId) {
-        this.postRBTree.delete(plantId);
+    public void delete(int postId) {
+        this.postRBTree.delete(postId);
     }
 
     // 对外的搜索接口，调用这个方法来开始搜索
