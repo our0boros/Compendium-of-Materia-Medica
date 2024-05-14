@@ -108,7 +108,8 @@ public class PostShareActivity extends AppCompatActivity {
         Thread thread = new Thread(() -> {
             Log.println(Log.ASSERT, "START THREAD", "=================================== START THREAD =================================== ");
             Log.println(Log.ASSERT, "API INPUT", photoPath);
-            String result = Plant_Identification.getPlantNetAPIResultOKHttp(photoPath);
+            String result = Plant_Identification.getPlantNetAPIResult(photoPath);
+            Log.println(Log.ASSERT, "API RESULT", result);
             try {
 
                 JSONObject jsonObject = new JSONObject(result);
@@ -167,41 +168,6 @@ public class PostShareActivity extends AppCompatActivity {
                         setTextViewContent(plantSciName, "Scientific Name:", currentPlant.getScientificName());
                         setTextViewContent(plantFamily, "Family Name:", currentPlant.getFamily());
                         setTextViewContent(plantDescription, "Description:", currentPlant.getDescription());
-                        // Common name
-                        // 创建一个SpannableString对象
-//                        String label = "Common Name:";
-//                        String content = currentPlant.getCommonName();
-//                        String text = label + "\n" + content;
-//                        SpannableString spannableString = new SpannableString(text);
-//                        // 为“Common Name:”设置一个大号字体样式
-//                        spannableString.setSpan(new RelativeSizeSpan(1.f), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 加粗
-//                        // 为内容设置一个小号字体样式
-//                        int startIndexOfContent = text.indexOf(content);
-//                        spannableString.setSpan(new RelativeSizeSpan(1.f), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                        spannableString.setSpan(new ForegroundColorSpan(Color.BLUE), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 蓝色字体
-//                        // 应用这个SpannableString到TextView
-//                        plantCommonName.setText(spannableString);
-
-//                        plantSciName.setText("Scientific Name:\n" + currentPlant.getScientificName());
-                        // 创建一个SpannableString对象
-//                        label = "Scientific Name:";
-//                        content = currentPlant.getScientificName();
-//                        text = label + "\n" + content;
-//                        spannableString = new SpannableString(text);
-//                        // 为“Common Name:”设置一个大号字体样式
-//                        spannableString.setSpan(new RelativeSizeSpan(1.f), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 加粗
-//                        // 为内容设置一个小号字体样式
-//                        startIndexOfContent = text.indexOf(content);
-//                        spannableString.setSpan(new RelativeSizeSpan(1.f), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                        spannableString.setSpan(new ForegroundColorSpan(Color.BLUE), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 蓝色字体
-//                        // 应用这个SpannableString到TextView
-//                        plantSciName.setText(spannableString);
-
-//                        plantFamily.setText("Family Name:\n" + currentPlant.getFamily());
-
-//                        plantDescription.setText("Description:\n" + currentPlant.getDescription());
                     }
                 });
             } catch (JSONException e){
@@ -243,17 +209,23 @@ public class PostShareActivity extends AppCompatActivity {
         Button buttonPost = findViewById(R.id.button_post_share_post);
         buttonPost.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // share post
-                sharePost(postContent, photoPath);
-                // go back to MainActivity
-                Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
-                // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                // 指定返回MainActivity中的SocialFragment
-                intent.putExtra("navigate_fragment_id", R.id.navigation_social);
-                intent.putExtra("User", currentUser);
-                startActivity(intent);
-                // TODO 这里回到mainactivity之后social的post列表应该刷新一遍,以最新发布时间显示，从而展示用户刚刚发布的post
+                // 如果当前植物还没有从API回传
+                if(currentPlant == null){
+                    // 暂时不能post
+                    showCannotPostDialog();
+                    // 显示一个对话框提示一下
+                } else{
+                    // share post
+                    sharePost(postContent, photoPath);
+                    // go back to MainActivity
+                    Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
+                    // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    // 指定返回MainActivity中的SocialFragment
+                    intent.putExtra("navigate_fragment_id", R.id.navigation_social);
+                    intent.putExtra("User", currentUser);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -334,12 +306,25 @@ public class PostShareActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
+    private void showCannotPostDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("-_- Cannot post now.");
+        builder.setMessage("We are still figuring out what this plant is.\nAPI time out due to internet issue.");
+        builder.setNegativeButton("Got it", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 用户选择留在当前页面，对话框消失，不进行任何操作
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
     private void sharePost(EditText postContent, String photoURL){
         Log.d("SharePost", "Share post......");
         // 为生成post设置变量
         int postId = PostTreeManager.getInstance().getTreeSize() + 1;
         int uid = currentUser.getUser_id();
-        int plantId = 5; // 这里随便给个plantid，实际拍到照片识别后再传进来就有了
+        int plantId = currentPlant.getId(); // 这里随便给个plantid，实际拍到照片识别后再传进来就有了
         String photo = photoURL;
         String content = postContent.getText().toString();
         // 获取当前时间
