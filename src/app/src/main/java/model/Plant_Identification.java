@@ -93,7 +93,7 @@ public class Plant_Identification {
 		StringBuilder response = new StringBuilder();
 
 		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // Your API_KEY here
-		String PROJECT = "all"; // try specific floras: "weurope", "canada"…
+		String PROJECT = "canada"; // try specific floras: "weurope", "canada"…
 		String api_endpoint = String.format("https://my-api.plantnet.org/v2/identify/%s?api-key=%s",
 				PROJECT, API_KEY);
 

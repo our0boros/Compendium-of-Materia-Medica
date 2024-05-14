@@ -7,44 +7,57 @@ Note that you should have removed ALL TEMPLATE/INSTRUCTION textes in your submis
 *Here are some tips to write a good report:*
 
 * `Bullet points` are allowed and strongly encouraged for this report. Try to summarise and list the highlights of your project (rather than give long paragraphs).*
-
 * *Try to create `diagrams` for parts that could greatly benefit from it.*
-
 * *Try to make your report `well structured`, which is easier for the reviewers to capture the necessary information.*
 
 *We give instructions enclosed in square brackets [...] and examples for each sections to demonstrate what are expected for your project report. Note that they only provide part of the skeleton and your description should be more content-rich. Quick references about markdown by [CommonMark](https://commonmark.org/help/)*
 
 ## Table of Contents
 
-1. [Team Members and Roles](#team-members-and-roles)
-2. [Summary of Individual Contributions](#summary-of-individual-contributions)
-3. [Application Description](#application-description)
-4. [Application UML](#application-uml)
-5. [Application Design and Decisions](#application-design-and-decisions)
-6. [Summary of Known Errors and Bugs](#summary-of-known-errors-and-bugs)
-7. [Testing Summary](#testing-summary)
-8. [Implemented Features](#implemented-features)
-9. [Team Meetings](#team-meetings)
-10. [Conflict Resolution Protocol](#conflict-resolution-protocol)
+- [\[G0 - Team Name\] Report](#g0---team-name-report)
+  - [Table of Contents](#table-of-contents)
+  - [Administrative](#administrative)
+  - [Team Members and Roles](#team-members-and-roles)
+  - [Summary of Individual Contributions](#summary-of-individual-contributions)
+  - [Application Description](#application-description)
+    - [Application Use Cases and or Examples](#application-use-cases-and-or-examples)
+    - [Application UML](#application-uml)
+  - [Code Design and Decisions](#code-design-and-decisions)
+    - [Data Structures](#data-structures)
+    - [Design Patterns](#design-patterns)
+    - [Parser](#parser)
+    - [`<u>`Grammar(s)`</u>`](#ugrammarsu)
+    - [`<u>`Tokenizers and Parsers`</u>`](#utokenizers-and-parsersu)
+    - [Others](#others)
+  - [Implemented Features](#implemented-features)
+    - [Basic Features](#basic-features)
+    - [Custom Features](#custom-features)
+    - [Surprise Features](#surprise-features)
+  - [Summary of Known Errors and Bugs](#summary-of-known-errors-and-bugs)
+  - [Testing Summary](#testing-summary)
+  - [Team Management](#team-management)
+    - [Meetings Records](#meetings-records)
+    - [Conflict Resolution Protocol](#conflict-resolution-protocol)
 
 ## Administrative
-- Firebase Repository Link: <insert-link-to-firebase-repository>
-   - Confirm: I have already added comp21006442@gmail.com as a Developer to the Firebase project prior to due date.
+
+- Firebase Repository Link: `<insert-link-to-firebase-repository>`
+  - Confirm: I have already added comp21006442@gmail.com as a Developer to the Firebase project prior to due date.
 - Two user accounts for markers' access are usable on the app's APK (do not change the username and password unless there are exceptional circumstances. Note that they are not real e-mail addresses in use):
-   - Username: comp2100@anu.edu.au	Password: comp2100
-   - Username: comp6442@anu.edu.au	Password: comp6442
+  - Username: comp2100@anu.edu.au	Password: comp2100
+  - Username: comp6442@anu.edu.au	Password: comp6442
 
 ## Team Members and Roles
+
 The key area(s) of responsibilities for each member
 
-| UID   |      Name      |                              Role |
-|:------|:--------------:|----------------------------------:|
-| [u7709429] | [Tianhao Shan] |                              [UI] |
-| [u7776634] | [Haochen Gong] |                  [Data structure] |
-| [u7755061] |  [Yusi Zhong]  | [Data prepare] |
-| [u7733037] |     [Hongjun Xu]     |                          [Search] |
-| [u7725171] |     [Xing Chen]     |                            [role] |
-
+| UID        |      Name      |             Role |
+| :--------- | :------------: | ---------------: |
+| [u7709429] | [Tianhao Shan] |             [UI] |
+| [u7776634] | [Haochen Gong] | [Data structure] |
+| [u7755061] |  [Yusi Zhong]  |   [Data prepare] |
+| [u7733037] |  [Hongjun Xu]  |         [Search] |
+| [u7725171] |  [Xing Chen]  |           [role] |
 
 ## Summary of Individual Contributions
 
@@ -63,21 +76,24 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 *Here is an example: (Note that you should remove the entire section (e.g. "others") if it is not applicable)*
 
-1. **u7709429, Tianhao Shan**  I have 20% contribution, as follows: <br>
-  - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
+1. **u7709429, Tianhao Shan**  I have 20% contribution, as follows: `<br>`
 
-  - **Code and App Design** 
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+- **Code Contribution in the final App**
 
-  - **Others**: (only if significant and significantly different from an "average contribution") 
-    - [Report Writing?] [Slides preparation?]*
-    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
+  - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+  - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+  - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... `<br><br>`
+- **Code and App Design**
 
-2. **u7776634, Haochen Gong**  I have 20% contribution, as follows: <br>
+  - [What design patterns, data structures, did the involved member propose?]*
+  - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* `<br><br>`
+- **Others**: (only if significant and significantly different from an "average contribution")
+
+  - [Report Writing?] [Slides preparation?]*
+  - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* `<br><br>`
+
+2. **u7776634, Haochen Gong**  I have 20% contribution, as follows: `<br>`
+
 - **Code Contribution in the final App**
     - Feature [Data-Formats] - class JsonReader: [JsonReader.java](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/JsonReader.java)
     - Feature [Data-GPS] - class PostShareActivity (GPS part): [PostShareActivity.java](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads#L234-280)
@@ -90,54 +106,60 @@ Note that the core criteria of contribution is based on `code contribution` (the
 - **Code and App Design**
     - *The process of data reading and tree generation is divided into different classes, thus decoupling the logic of data reading and tree generation and making the code more modular and flexible.*
     - *The tree generation process is carried out using the factory pattern, and the implemented factory methods centralize the control process of data reading and tree generation, simplifying the main logic. The caller only needs to call the tree method and pass in the corresponding parameters to get the corresponding red-black tree without caring about the specific details of the generation.*
-    - *All tree-specific operation methods are encapsulated into the corresponding TreeManager class , making the code structure more clear , the caller can find all tree operation methods in one place , easy to manage and maintain.*
+    - *All tree-specific operation methods are encapsulated into the corresponding TreeManager class , making the code structure more clear , the caller can find all tree operation methods in one place , easy to manage and maintain .*
     - <br><br>
 
 - **Others**:
     - Report writing: *
     <br><br>
 
-3. **u7755061, Yusi Zhong**  I have 20% contribution, as follows: <br>
+3. **u7755061, Yusi Zhong**  I have 20% contribution, as follows: `<br>`
+
 - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
 
+  - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+  - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+  - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... `<br><br>`
 - **Code and App Design**
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
 
+  - [What design patterns, data structures, did the involved member propose?]*
+  - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* `<br><br>`
 - **Others**: (only if significant and significantly different from an "average contribution")
-    - [Report Writing?] [Slides preparation?]*
-    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
 
-4. **u7733037, Hongjun Xu**  I have 20% contribution, as follows: <br>
+  - [Report Writing?] [Slides preparation?]*
+  - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* `<br><br>`
+
+4. **u7733037, Hongjun Xu**  I have 20% contribution, as follows: `<br>`
+
 - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
 
+  - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+  - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+  - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... `<br><br>`
 - **Code and App Design**
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
 
+  - [What design patterns, data structures, did the involved member propose?]*
+  - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* `<br><br>`
 - **Others**: (only if significant and significantly different from an "average contribution")
-    - [Report Writing?] [Slides preparation?]*
-    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
 
-5. **u7725171, Xing Chen**  I have 20% contribution, as follows: <br>
+  - [Report Writing?] [Slides preparation?]*
+  - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* `<br><br>`
+
+5. **u7725171, Xing Chen**  I have 20% contribution, as follows: `<br>`
+
 - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
 
+  - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
+  - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
+  - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... `<br><br>`
 - **Code and App Design**
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
 
+  - [What design patterns, data structures, did the involved member propose?]*
+  - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* `<br><br>`
 - **Others**: (only if significant and significantly different from an "average contribution")
-    - [Report Writing?] [Slides preparation?]*
-    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
+
+  - [Report Writing?] [Slides preparation?]*
+  - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* `<br><br>`
 
     
 ## Application Description

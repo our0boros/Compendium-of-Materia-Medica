@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
+import model.Parser.Token;
+
 /**
  * @author: Haochen Gong
  * @description: Post类
@@ -20,7 +22,7 @@ public class Post implements Comparable<Post>{
     private int user_id;
     private int plant_id;
     private String photo_url;
-    private String content;
+    private List<Token> content;
     private String timestamp;
     // user id who liked this post
     private List<Integer> likes;
@@ -31,7 +33,7 @@ public class Post implements Comparable<Post>{
 
     public Post(){}
 
-    public Post(int postId, int uid, int plantId, String photo, String content, String timestamp){
+    public Post(int postId, int uid, int plantId, String photo, List<Token> content, String timestamp){
         this.post_id = postId;
         this.user_id = uid;
         this.plant_id = plantId;
@@ -42,7 +44,7 @@ public class Post implements Comparable<Post>{
         this.likesRecord = new ArrayList<>();
         this.comments = new LinkedHashMap<>();
     }
-    public Post(int postId, int uid, int plantId, String photo, String content, String timestamp, List<Integer> likes, List<Integer> likesRecord, Map<Integer, String> comments){
+    public Post(int postId, int uid, int plantId, String photo, List<Token> content, String timestamp, List<Integer> likes, List<Integer> likesRecord, Map<Integer, String> comments){
         this.post_id = postId;
         this.user_id = uid;
         this.plant_id = plantId;
@@ -70,7 +72,7 @@ public class Post implements Comparable<Post>{
         return photo_url;
     }
 
-    public String getContent() {
+    public List<Token> getContent() {
         return content;
     }
 

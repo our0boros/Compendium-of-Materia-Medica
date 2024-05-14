@@ -1,14 +1,11 @@
 package model.Adapters;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
-
 import static model.UtilsApp.formatTimestamp;
 import static model.UtilsApp.loadImageFromURL;
 
+import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,50 +18,155 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.ui.profile.ProfileFragment;
 import com.example.compendiumofmateriamedica.ui.profile.ProfilePage;
-import com.example.compendiumofmateriamedica.ui.profile.ProfileViewModel;
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
-import model.UtilsApp;
+import model.Parser.Token;
 
 /**
- * @author: Xing Chen
- * @datetime: 2024/5/2
- * @description: A post adapter for showing posts
- * the posts will be shown in separate view holders
- * each post is arranged using post_item.xml
+ * A post adapter for displaying posts.
+ * Each post is shown in a separate view holder arranged using post_item.xml.
  */
-
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
-    private final String TAG = "PostAdapter";
-    private Context context;
-    // a list of posts
-    private List<Post> postsList;
-    private FragmentManager fragmentManager;
-    private boolean showLikeButton;
-    private boolean isLiked;
-    private User currentUser;
-    // an inner class to hold and reuse the view
-    public static class PostViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView username;
-        public ImageView userAvatar;
-        public TextView content;
-        public ImageView photo;
-        public ImageButton buttonLike;
-        public TextView timestamp;
-        public ImageView userLevel;
+    private final Context context;
+    private final List<Post> postsList;
+    private final FragmentManager fragmentManager;
+    private final boolean showLikeButton;
+    private final User currentUser;
 
-        public PostViewHolder(View itemView){
+    // Constructor to initialize the adapter with necessary data
+    public PostAdapter(Context context, List<Post> postsList, FragmentManager fragmentManager, Boolean showLikeButton, User currentUser) {
+        this.context = context;
+        this.postsList = postsList;
+        this.fragmentManager = fragmentManager;
+        this.showLikeButton = showLikeButton;
+        this.currentUser = currentUser;
+    }
+
+    // Inflate the post_item layout and creates a new instance of PostViewHolder
+    @NonNull
+    @Override
+    public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+        return new PostViewHolder(v);
+    }
+
+    // Binds data to the views inside each post item
+    @Override
+    public void onBindViewHolder(PostViewHolder holder, int position) {
+        // initialize treeManagers
+        UserTreeManager userTreeManager = UserTreeManager.getInstance();
+        PostTreeManager postTreeManager = PostTreeManager.getInstance();
+
+        Post post = postsList.get(position);
+        int uid = post.getUser_id();
+        User postUser = userTreeManager.findUserById(uid);
+
+        if (postUser != null) {
+            // Extracting post details
+            String postUserUsername = postUser.getUsername();
+            String postUserAvatarURL = postUser.getAvatar_url();
+            String postPhotoURL = post.getPhoto_url();
+            List<Token> postContent = post.getContent();
+            String postTimestamp = post.getTimestamp();
+
+            // Set click listeners for user avatar and username
+            holder.userAvatar.setOnClickListener(v -> {
+                PhotoDialogFragment avatarDialogFragment = PhotoDialogFragment.newInstance(postUserAvatarURL);
+                avatarDialogFragment.show(fragmentManager, "avatar_dialog");
+            });
+
+            holder.username.setOnClickListener(v -> {
+                if (postUser.getUser_id() != currentUser.getUser_id()) {
+                    // Start ProfilePage activity for the selected user
+                    Intent intent = new Intent(context, ProfilePage.class);
+                    intent.putExtra("AppUser", currentUser);
+                    intent.putExtra("ProfileUser", postUser);
+                    context.startActivity(intent);
+                }
+            });
+
+            // Set click listener for post photo
+            holder.photo.setOnClickListener(v -> {
+                PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(postPhotoURL);
+                photoDialogFragment.show(fragmentManager, "photo_dialog");
+            });
+
+            // Set like button behavior if enabled
+            if (showLikeButton) {
+                final boolean[] isLiked = {post.isLikedByUser(currentUser.getUser_id())};
+                holder.buttonLike.setImageResource(isLiked[0] ? R.drawable.post_like_btn : R.drawable.post_unlike_btn);
+                holder.buttonLike.setOnClickListener(v -> {
+                    if (!isLiked[0]) {
+                        isLiked[0] = true;
+                        holder.buttonLike.setImageResource(R.drawable.post_like_btn);
+                        post.likedByUser(currentUser.getUser_id());
+                    } else {
+                        isLiked[0] = false;
+                        holder.buttonLike.setImageResource(R.drawable.post_unlike_btn);
+                    }
+                });
+            }
+
+            // Load user avatar and post photo from URLs
+            loadImageFromURL(context, postUserAvatarURL, holder.userAvatar, "Avatar");
+            holder.username.setText(postUserUsername);
+            holder.content.setText(postContent.stream().map(Token::getToken).collect(Collectors.joining(" ")));
+            holder.timestamp.setText(formatTimestamp(postTimestamp));
+            // Set user level image based on the number of plants discovered
+            ProfileFragment.setUserLevelImage(holder.userLevel, postTreeManager.getUserPlantDiscovered(uid).size());
+            loadImageFromURL(context, postPhotoURL, holder.photo, "Photo");
+
+        } else {
+            String postPhotoURL = post.getPhoto_url();
+            // Show toast if user information is not available
+            holder.userAvatar.setOnClickListener(v -> Toast.makeText(context, "No user info available", Toast.LENGTH_SHORT).show());
+            holder.username.setText("Unknown User");
+            holder.content.setText(post.getContent().stream().map(Token::getToken).collect(Collectors.joining(" ")));
+            holder.userAvatar.setImageResource(R.drawable.unknown_user);
+            loadImageFromURL(context, postPhotoURL, holder.photo, "Photo");
+        }
+
+        // Show divider if the current item is not the last item
+        holder.divider.setVisibility(position == postsList.size() - 1 ? View.GONE : View.VISIBLE);
+    }
+
+    // Returns the total number of posts in the list
+    @Override
+    public int getItemCount() {
+        return postsList.size();
+    }
+
+    // Updates the posts list and notifies the adapter about the change
+    public void setPosts(List<Post> posts) {
+        postsList.clear();
+        postsList.addAll(posts);
+        notifyDataSetChanged();
+    }
+
+    // ViewHolder class to hold the views inside each post item
+    public static class PostViewHolder extends RecyclerView.ViewHolder {
+        public final TextView username;
+        public final ImageView userAvatar;
+        public final TextView content;
+        public final ImageView photo;
+        public final ImageButton buttonLike;
+        public final TextView timestamp;
+        public final ImageView userLevel;
+        public final View divider;
+
+        // Constructor to initialize the views
+        public PostViewHolder(View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.post_user_name);
             userAvatar = itemView.findViewById(R.id.post_user_avatar);
@@ -73,142 +175,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             buttonLike = itemView.findViewById(R.id.button_post_like);
             timestamp = itemView.findViewById(R.id.post_timestamp);
             userLevel = itemView.findViewById(R.id.post_user_level);
+            divider=itemView.findViewById(R.id.divider);;
         }
-    }
-
-    public PostAdapter(Context context, List<Post> postsList, FragmentManager fragmentManager, Boolean showLikeButton, User currentUser){
-        this.context = context;
-        this.postsList = postsList;
-        this.fragmentManager = fragmentManager;
-        this.showLikeButton = showLikeButton;
-        this.currentUser = currentUser;
-        Log.d(TAG, "Initialize postAdapter successful, show_like_button=" + showLikeButton + ", current user=" + currentUser.getUser_id());
-    }
-
-    @NonNull
-    @Override
-    public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
-        return new PostViewHolder(v);
-    }
-
-    /**
-     * attach the date onto view holder
-     * @param holder The ViewHolder which should be updated to represent the contents of the
-     *        item at the given position in the data set.
-     * @param position The position of the item within the adapter's data set.
-     */
-
-    @Override
-    public void onBindViewHolder(PostViewHolder holder, int position){
-        UserTreeManager userTreeManager=UserTreeManager.getInstance();
-        // get current post
-        Post post = postsList.get(position);
-        // get uid of this post user
-        int uid = post.getUser_id();
-        // get the user using this uid
-        User postUser = userTreeManager.findUserById(uid);
-        // get the user name,the user's avatar and the post photo
-        if (postUser != null){
-            String postUserUsername = postUser.getUsername();
-            String postUserAvatarURL = postUser.getAvatar_url();
-            String postPhotoURL = post.getPhoto_url();
-            String postContent = post.getContent();
-            String postTimestamp = post.getTimestamp();
-
-
-            // 设置头像点击事件
-            holder.userAvatar.setOnClickListener(v -> {
-                PhotoDialogFragment avatarDialogFragment = PhotoDialogFragment.newInstance(postUserAvatarURL);
-                avatarDialogFragment.show(fragmentManager, "avatar_dialog");
-            });
-            // 设置用户名点击事件，点击后会进入个人主页
-            holder.username.setOnClickListener(v -> {
-                if(postUser.getUser_id() != currentUser.getUser_id()) {
-                    // 跳转被点击用户的个人主页
-                    Intent intent = new Intent(context, ProfilePage.class);
-                    intent.putExtra("AppUser", currentUser);
-                    intent.putExtra("ProfileUser", postUser);
-                    context.startActivity(intent);
-                }
-            });
-            // 设置照片点击事件
-            holder.photo.setOnClickListener(v -> {
-                PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(postPhotoURL);
-                photoDialogFragment.show(fragmentManager, "photo_dialog");
-            });
-
-            // 设置点赞按钮装态
-            if(showLikeButton){
-                // 加载点赞状态
-                isLiked = post.isLikedByUser(currentUser.getUser_id());
-                // 设置点赞图标
-                if(!isLiked){
-                    holder.buttonLike.setImageResource(R.drawable.button_post_like);
-                } else {
-                    holder.buttonLike.setImageResource(R.drawable.button_post_unlike);
-                }
-                // 设置点赞按钮事件
-                holder.buttonLike.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        if (!isLiked) {
-                            // 此次为点赞操作
-                            isLiked = !isLiked;
-                            // UI逻辑
-                            holder.buttonLike.setImageResource(R.drawable.button_post_unlike);  // 点赞后的图标
-                            //后台逻辑
-                            post.likedByUser(currentUser.getUser_id());
-
-
-                        } else {
-                            // 此次为取消点赞操作
-                            isLiked = !isLiked;
-                            // UI逻辑
-                            holder.buttonLike.setImageResource(R.drawable.button_post_like);  // 默认图标
-                            //后台逻辑
-//                            post.likedByUser(currentUser.getUser_id());
-                        }
-                    }
-                });
-            }
-
-
-            PostTreeManager postTreeManager=PostTreeManager.getInstance();
-            // set the content of the viewHolder
-            // load avatar image from url
-            loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar, "Avatar");
-            holder.username.setText(postUserUsername);
-            holder.content.setText(postContent);
-            // 处理时间戳
-            holder.timestamp.setText(formatTimestamp(postTimestamp));
-            // user level
-            ProfileFragment.setUserLevelImage(holder.userLevel, postTreeManager.getUserPlantDiscovered(uid).size());
-            // load photo from post
-            loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
-        } else {
-            String postPhotoURL = post.getPhoto_url();
-
-            // 如果用户不存在，不做任何操作
-            holder.userAvatar.setOnClickListener(v -> {
-                Toast.makeText(context, "No user info available", Toast.LENGTH_SHORT).show();
-            });
-
-            holder.username.setText("Unknown User");
-            holder.content.setText(post.getContent());
-            holder.userAvatar.setImageResource(R.drawable.unknown_user);
-            loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
-        }
-
-    }
-
-    public int getItemCount(){
-        return postsList.size();
-    }
-    // a method to update the posts and change the display
-    public void setPosts(List<Post> posts){
-        this.postsList = posts;
-        notifyDataSetChanged();
     }
 }

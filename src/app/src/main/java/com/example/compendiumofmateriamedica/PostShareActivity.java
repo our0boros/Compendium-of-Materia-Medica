@@ -56,6 +56,8 @@ import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
+import model.Parser.Token;
+import model.Parser.Tokenizer;
 import model.Plant_Identification;
 
 
@@ -333,7 +335,8 @@ public class PostShareActivity extends AppCompatActivity {
         String timestamp = sdf.format(now);
 
         // 生成Post并加入到当前app的MainActivity的postTree中
-        Post post = new Post(postId, uid, plantId, photo, content, timestamp);
+        Tokenizer tokenizer = new Tokenizer(content);
+        Post post = new Post(postId, uid, plantId, photo, tokenizer.getFullToken(), timestamp);
         PostTreeManager.getInstance().insert(post.getPost_id(), post);
         Log.d("SharePost", "Post added to the postTree in MainActivity");
     }
