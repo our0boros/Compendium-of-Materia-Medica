@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,7 +19,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +35,7 @@ import okhttp3.*;
 //import org.apache.http.impl.client.HttpClientBuilder;
 //import org.apache.http.util.EntityUtils;
 
-public class Plant_Identification {
+public class PlantIdentification {
 
 	public static String imageToBase64(String imagePath) throws IOException {
 		File file = new File(imagePath);

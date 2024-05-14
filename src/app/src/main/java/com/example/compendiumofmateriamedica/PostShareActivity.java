@@ -3,12 +3,8 @@ package com.example.compendiumofmateriamedica;
 import static model.UtilsApp.loadImageFromURL;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.asynclayoutinflater.view.AsyncLayoutInflater;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,7 +26,6 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,11 +49,10 @@ import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
-import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
 import model.Parser.Token;
 import model.Parser.Tokenizer;
-import model.Plant_Identification;
+import model.PlantIdentification;
 
 
 /**
@@ -110,7 +104,7 @@ public class PostShareActivity extends AppCompatActivity {
         Thread thread = new Thread(() -> {
             Log.println(Log.ASSERT, "START THREAD", "=================================== START THREAD =================================== ");
             Log.println(Log.ASSERT, "API INPUT", photoPath);
-            String result = Plant_Identification.getPlantNetAPIResult(photoPath);
+            String result = PlantIdentification.getPlantNetAPIResult(photoPath);
             Log.println(Log.ASSERT, "API RESULT", result);
             try {
 
@@ -138,7 +132,7 @@ public class PostShareActivity extends AppCompatActivity {
                                     .get(0),
                             "no slug",
                             sciName,
-                            Plant_Identification.getFromWiki(sciName, "image"),
+                            PlantIdentification.getFromWiki(sciName, "image"),
                             (String) jsonObject.getJSONArray("results")
                                     .getJSONObject(0)
                                     .getJSONObject("species")
@@ -149,7 +143,7 @@ public class PostShareActivity extends AppCompatActivity {
                                     .getJSONObject("species")
                                     .getJSONObject("family")
                                     .get("scientificNameWithoutAuthor"),
-                            Plant_Identification.getFromWiki(sciName, "content")
+                            PlantIdentification.getFromWiki(sciName, "content")
                     );
                     Log.println(Log.ASSERT, "API RESULT", "Create new result: " + currentPlant);
                     PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);

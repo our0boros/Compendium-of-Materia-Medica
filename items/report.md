@@ -114,19 +114,26 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 4. **u7733037, Hongjun Xu**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
-    - =
-    - =
-    - =
-    - Feature [Search] - class [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads), class [SearchGrammarParser](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java?ref_type=heads), class [Token](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Token.java?ref_type=heads), class [Tokenizer](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java?ref_type=heads), class ParserEventHandler
-    - Feature [Search-Invalid] - class ParserEventHandler: getSearchedResultsFromParameters(), 
+    - Feature [Search] - class [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads), class [SearchGrammarParser](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java?ref_type=heads), class [Token](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Token.java?ref_type=heads), class [Tokenizer](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java?ref_type=heads), class ParserEventHandler, class SearchedResults
+    - Feature [Search-Invalid] - class ParserEventHandler: getSearchedResultsFromParameters(), getSearchedResultsFromBlurParameter()
+    - Facade Design Pattern - class PlantIdentification: getPlantNetAPIResult(), getPlantNetAPIResultOKHttp(), getFromWiki()
+    - Singleton Design Pattern - class GeneralFunctions
+    - HTTP API Request - class PlantIdentification
+    - Some APP recyclerviewAdapters functions
+    - Some getter function in TreeManagers
+    - 
     
 - **Code and App Design**
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
-
+    - Data structure - RBTree
+        - By hashing the special values in the data, new instances are re-inserted to improve the efficiency of subsequent tree searches.
+    - Facade Design Pattern
+        - I proposed to encapsulate the complex http interaction process into a method of obtaining plant parameters through the image path through the appearance design pattern.
+    - UI Design - Cooperation Tools
+        - To facilitate the collaborative design and discussion of team projects, we tried to use the online design tool "Miro" to interact and determine the general appearance of the APP UI.
+    - UI Design - Rounded Corners
+        - In order to prevent visual impact when users use it, I added some rounded corners, a soft and friendly visual experience. It can reduce visual impact, create a more relaxed and approachable appearance, and increase users’ willingness to interact.
+    - 
+    
 - **Others**: (only if significant and significantly different from an "average contribution")
     - [Report Writing?] [Slides preparation?]*
     - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
@@ -253,6 +260,8 @@ Note that the core criteria of contribution is based on `code contribution` (the
         * Decoupling between classes.
         * Realtime updates.
         * Better for system with massive number of users like ours.
+4. Facade Pattern
+    -   
 
 <hr>
 
@@ -423,6 +432,7 @@ Additionally, when users post threads, we similarly tokenize their textual input
     * If the app user's newest post has less than 6 likes, it will be liked by a random user.
     * User will get notification both as system notification and UI updates.
    <br>
+5. [Search]. 
 
 ### Custom Features
 Feature Category: Privacy <br>
