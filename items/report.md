@@ -128,13 +128,24 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 5. **u7725171, Xing Chen**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
+    - Feature DataStream, Interact-Noti - class MyApp, NotificationService, NewEvent, NewEventHandler, NotificationAdapter, MessagesActivity
+    - Feature Interact-Micro - class PostAdapter, SocialFragment, SocialViewModel, PhotoDialogFragment
+    - Feature Interact-Share - class PostShareActivity
+    - Feature Data-Profile, Data-Formats - class ProfileFragment, ProfilePage, MyPost, PlantDiscovered
+    - Singleton Design Pattern - class PostTreeManager, PlantTreeManager, UserTreeManager, NewEventHandler
+    - Observer Design Pattern - class NewEventHandler, MainActivity, ProfileFragment
+    - Camera use - class CaptureFragment
+    - ImageLoader function
+    - Some getter function
+    -
 
 - **Code and App Design**
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+    - Singleton Design Pattern
+        - I proposed that applying this design pattern on the data structure manager and event handler will significantly reduce memory usage.
+    - Capturing new events in Application layer
+        - User can get notification anywhere during the app is running. This will be more user-friendly.
+    - UI design
+        - Show user level in profile page to give user a target to chase so that user could have momentum.
 
 - **Others**: (only if significant and significantly different from an "average contribution")
     - [Report Writing?] [Slides preparation?]*
@@ -220,11 +231,24 @@ Note that the core criteria of contribution is based on `code contribution` (the
         * [Class PostTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L18-35)
         * [Class PlantTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L21-32)
         * [Class UserTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L21-32)
+        * Class NewEventHandler, methods
     * *Reasons:*
         * Controlled Initialization: Guarantees managers are properly initialized with an RBTree<T> before use, preventing errors from premature use.
         * Resource Efficiency: Saves memory and processing power by preventing the creation of multiple instances of data management objects.
         * Thread Safety: The synchronized getInstance method ensures each manager is created once, protecting against data corruption in multi-thread environments.
         * Consistency and Integrity: Ensures all parts of the app work with the same data instance, maintaining data integrity and avoiding discrepancies.
+
+3. *Observer Pattern*
+    * *Objective: Enable user to get notification when user's posts are liked by others. We also use this in some UI updating case.*
+    * *Code Locations: defined in*
+        * Class NewEventHandler
+        * Class
+    * *Reasons:*
+        * Our app is a social app so user will be interested in other user's action and reaction.
+        * Decoupling between classes.
+        * Realtime updates.
+        * Better for system with massive number of users like ours.
+
 <hr>
 
 ### Parser
