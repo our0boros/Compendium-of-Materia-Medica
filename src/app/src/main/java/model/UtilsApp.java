@@ -8,6 +8,8 @@ import com.example.compendiumofmateriamedica.R;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UtilsApp {
 
@@ -66,5 +68,33 @@ public class UtilsApp {
         return dateTime.format(formatter);
     }
 
-    // Other utility methods can be added here
+    // Check robot avatar url validation
+    public static boolean isValidRoboHashURL(String url) {
+        // Define the regex pattern to match the RoboHash URL
+        String regex = "https://robohash\\.org/.+";
+        // Compile the regex pattern into a Pattern object
+        Pattern pattern = Pattern.compile(regex);
+        // Create a Matcher object to match the input URL against the pattern
+        Matcher matcher = pattern.matcher(url);
+        // Return true if the URL matches the pattern, false otherwise
+        return matcher.matches();
+    }
+
+
+    // Check username validation
+    // Here, we assume that valid characters include letters, digits, and underscores
+    public static boolean isValidUsername(String username) {
+        // Check if username is not empty
+        if (username == null || username.trim().isEmpty()) {
+            return false;
+        }
+        // Check if username contains only valid characters
+        String regex = "^[a-zA-Z0-9_]+$";
+        if (!username.matches(regex)) {
+            return false;
+        }
+        // Username is valid
+        return true;
+    }
+
 }

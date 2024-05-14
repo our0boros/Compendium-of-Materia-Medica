@@ -1,27 +1,31 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
+import static model.UtilsApp.isValidRoboHashURL;
 import static model.UtilsApp.loadImageFromURL;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
+import com.example.compendiumofmateriamedica.LoginActivity;
 import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import model.Datastructure.User;
-/**
- * @author: Tianhao Shan
- * @datetime: 2024/5
- * @description:
- */
+
+
 public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
 
     private ImageView image_avatar;
@@ -34,14 +38,21 @@ public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
     }
 
     // Create a new instance of the bottom sheet dialog fragment
-    public static UserAvatarDialogFragment newInstance() {
-        return new UserAvatarDialogFragment();
+    public static UserAvatarDialogFragment newInstance(User currentUser) {
+        UserAvatarDialogFragment fragment = new UserAvatarDialogFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("CurrentUser", currentUser);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            currentUser = (User) bundle.getSerializable("CurrentUser");
+        }
     }
 
     @Override
@@ -49,7 +60,6 @@ public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.bottom_sheet_upload_avatar, container, false);
-//        currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
 
         image_avatar = view.findViewById(R.id.image_avatar);
         image_url = view.findViewById(R.id.input_text);
@@ -60,13 +70,15 @@ public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 // Get the image URL entered by the user
                 String imageUrl = image_url.getText().toString().trim();
+                // Check URL validation
+                if (isValidRoboHashURL(imageUrl)){
+                    //Perform upload operation using the URL (update user avatar_url)
+                    loadImageFromURL(getContext(), imageUrl, image_avatar, "Avatar");
+                    currentUser.setAvatar_url(imageUrl);
+                }else{
+                    Toast.makeText(getContext(), "Invalid URL. We only accept avatar from 'https://robohash.org/'", Toast.LENGTH_SHORT).show();
 
-                // TODO: Validate the URL
-
-                //Perform upload operation using the URL (update user avatar_url)
-                // TODO: update to current user and data file
-                loadImageFromURL(getContext(), imageUrl, image_avatar, "Avatar");
-//                currentUser.setAvatar_url(imageUrl);
+                }
             }
         });
 
@@ -81,6 +93,23 @@ public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
         image_url=null;
         button_upload_url=null;
     }
+
+    // Interface to communicate dismissal event to activity
+    public interface DialogDismissListener {
+        void onDialogDismiss(User currentUser);
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (getActivity() instanceof DialogDismissListener) {
+            // Get the current user from your dialog fragment
+//            User currentUser = getCurrentUser(); // Implement this method to get the current user
+            ((DialogDismissListener) getActivity()).onDialogDismiss(currentUser);
+        }
+    }
+
+
 }
 
 
