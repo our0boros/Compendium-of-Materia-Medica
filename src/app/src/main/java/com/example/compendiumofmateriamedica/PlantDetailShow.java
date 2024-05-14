@@ -29,27 +29,10 @@ public class PlantDetailShow extends AppCompatActivity {
     private int plantId;
 
 
-
-
-//    private RBTree<User> userTree;
-//    private RBTree<Plant> plantTree;
-//    private RBTree<Post> postTree;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_detail_show);
-
-        // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
-//        // 运行加载数据的函数
-//        try {
-//            DataInitial();
-//        } catch (JSONException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
 
         commonName = findViewById(R.id.common_name);
         slug = findViewById(R.id.slug);
@@ -71,18 +54,6 @@ public class PlantDetailShow extends AppCompatActivity {
         family.setText(plant.getFamily());
         description.setText(plant.getDescription());
     }
-
-
-    // 因为用了单例模式，LoginActivity已经实例化了，这些不需要了
-//    /**
-//     * @author: Haochen Gong
-//     * @description: 加载数据
-//     **/
-//    private void DataInitial() throws JSONException, IOException {
-//        userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-//        plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-//        postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
-//    }
 
 
 }
