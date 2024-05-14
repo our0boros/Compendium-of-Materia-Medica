@@ -67,23 +67,23 @@ public class PlantTreeManager implements TreeManager<Plant>{
         // 如果当前节点的值与搜索的值相等，加入结果列表
         switch (infoType) {
             case COMMON_NAME:
-                if (node.getValue().getCommonName().contains((CharSequence) info)) {
+                if (node.getValue().getCommonName().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
             case SLUG:
-                if (node.getValue().getSlug().contains((CharSequence) info)) {
+                if (node.getValue().getSlug().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
             case SCIENTIFIC_NAME:
-                if (node.getValue().getScientificName().contains((CharSequence) info)) {
+                if (node.getValue().getScientificName().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
             case GENUS:
-                if (node.getValue().getGenus().contains((CharSequence) info)) {
+                if (node.getValue().getGenus().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
             case FAMILY:
-                if (node.getValue().getFamily().contains((CharSequence) info)) {
+                if (node.getValue().getFamily().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
         }
@@ -98,6 +98,8 @@ public class PlantTreeManager implements TreeManager<Plant>{
         switch (type.toUpperCase()) {
             case "ID":
                 return PlantInfoType.ID;
+            case "COMMON_NAME":
+                return PlantInfoType.COMMON_NAME;
             case "SLUG":
                 return PlantInfoType.SLUG;
             case "SCIENTIFIC_NAME":
