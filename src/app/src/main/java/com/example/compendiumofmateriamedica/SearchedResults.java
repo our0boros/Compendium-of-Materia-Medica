@@ -32,7 +32,7 @@ public class SearchedResults extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searched_results);
-        this.getSupportActionBar().hide();
+//        this.getSupportActionBar().hide();
         dataToShow = (ArrayList<Integer>) getIntent().getExtras().getSerializable("idList");
         isPost = (boolean) getIntent().getExtras().getSerializable("isPost");
         if (dataToShow.size() != 0) {

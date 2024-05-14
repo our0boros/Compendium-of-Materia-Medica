@@ -24,11 +24,13 @@ import com.example.compendiumofmateriamedica.ui.profile.ProfilePage;
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
+import model.Parser.Token;
 
 /**
  * A post adapter for displaying posts.
@@ -75,7 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             String postUserUsername = postUser.getUsername();
             String postUserAvatarURL = postUser.getAvatar_url();
             String postPhotoURL = post.getPhoto_url();
-            String postContent = post.getContent();
+            List<Token> postContent = post.getContent();
             String postTimestamp = post.getTimestamp();
 
             // Set click listeners for user avatar and username
@@ -119,7 +121,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             // Load user avatar and post photo from URLs
             loadImageFromURL(context, postUserAvatarURL, holder.userAvatar, "Avatar");
             holder.username.setText(postUserUsername);
-            holder.content.setText(postContent);
+            holder.content.setText(postContent.stream().map(Token::getToken).collect(Collectors.joining(" ")));
             holder.timestamp.setText(formatTimestamp(postTimestamp));
             // Set user level image based on the number of plants discovered
             ProfileFragment.setUserLevelImage(holder.userLevel, postTreeManager.getUserPlantDiscovered(uid).size());
@@ -130,7 +132,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             // Show toast if user information is not available
             holder.userAvatar.setOnClickListener(v -> Toast.makeText(context, "No user info available", Toast.LENGTH_SHORT).show());
             holder.username.setText("Unknown User");
-            holder.content.setText(post.getContent());
+            holder.content.setText(post.getContent().stream().map(Token::getToken).collect(Collectors.joining(" ")));
             holder.userAvatar.setImageResource(R.drawable.unknown_user);
             loadImageFromURL(context, postPhotoURL, holder.photo, "Photo");
         }
