@@ -32,6 +32,7 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
+                android:background="@drawable/rounded_corner"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/unknown_user"

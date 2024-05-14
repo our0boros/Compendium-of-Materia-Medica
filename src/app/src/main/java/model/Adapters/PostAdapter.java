@@ -3,7 +3,6 @@ package model.Adapters;
 import static model.UtilsApp.formatTimestamp;
 import static model.UtilsApp.loadImageFromURL;
 
-import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;

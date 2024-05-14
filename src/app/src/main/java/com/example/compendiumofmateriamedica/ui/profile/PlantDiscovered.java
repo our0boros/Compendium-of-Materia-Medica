@@ -2,49 +2,37 @@ package com.example.compendiumofmateriamedica.ui.profile;
 
 import static com.example.compendiumofmateriamedica.SearchedResults.getFirstNItems;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.compendiumofmateriamedica.R;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import model.Adapters.GridAdapter;
-import model.Adapters.RowAdapter;
-import model.Datastructure.Plant;
-import model.Datastructure.PlantTreeManager;
-import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
-import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
-/**
- * @author: Xing Chen
- * @datetime: 2024/5/10
- * @description: show the plants user discovered in a grid
- */
+
 public class PlantDiscovered extends AppCompatActivity {
+
     private User currentUser;
-    private TextView page_name;
-    private ImageView back;
+    private TextView pageName;
+    private ImageView backButton;
 
     private RecyclerView plantsRecyclerView;
     private GridAdapter gridAdapter;
     private ArrayList<Integer> plantIdList;
 
-    private final int N = 6;  // 每次加载10个条目
+    private final int N = 6; // Load 6 items at a time
     private int currentLoadedItems = 0;
 
     @Override
@@ -52,51 +40,44 @@ public class PlantDiscovered extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
-        // 当前user
-        currentUser = (User) this.getIntent().getSerializableExtra("CurrentUser");
-
-        page_name=findViewById(R.id.page_name);
-        page_name.setText("Discovered Plants");
-
-        back=findViewById(R.id.back_btn);
-        back.setOnClickListener(new View.OnClickListener() {
-            // when start an activity from a fragment, the fragment never got killed
-            // simply come back to original fragment by kill the current activity
+        // Initialize views
+        pageName = findViewById(R.id.page_name);
+        pageName.setText("Discovered Plants");
+        backButton = findViewById(R.id.back_btn);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
 
-        PostTreeManager postTreeManager=PostTreeManager.getInstance();
-        // show PLANTS
-        Set<Integer> plantIdSet = postTreeManager.getUserPlantDiscovered(currentUser.getUser_id());
-//        for (Integer id : plantIdSets) {
-//            ArrayList<RBTreeNode<Plant>> temp = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(id));
-//            if (temp.size() != 0) plantIdSets.add(temp.get(0).getValue().getPlant_id());
-//        }
-//        plantIDs = new ArrayList<>();
-//        plantIDs.addAll(plantIdSets);
+        // Get current user
+        currentUser = (User) getIntent().getSerializableExtra("CurrentUser");
 
+        // Get plant IDs discovered by the user
+        Set<Integer> plantIdSet = PostTreeManager.getInstance().getUserPlantDiscovered(currentUser.getUser_id());
 
-
+        // Initialize RecyclerView
         plantsRecyclerView = findViewById(R.id.messages_recyclerView);
         plantsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+        // Load initial data
         plantIdList = new ArrayList<>(plantIdSet);
         ArrayList<Integer> initialData = getFirstNItems(plantIdList, N);
         currentLoadedItems = initialData.size();
 
         try {
-            gridAdapter = new GridAdapter(this, getFirstNItems(initialData,N));
-        } catch (JSONException | IOException e) {
+            gridAdapter = new GridAdapter(this, initialData);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         plantsRecyclerView.setAdapter(gridAdapter);
 
+        // Setup scroll listener
         setupScrollListener();
-
     }
+
+    // Method to setup scroll listener for RecyclerView
     private void setupScrollListener() {
         plantsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -109,6 +90,7 @@ public class PlantDiscovered extends AppCompatActivity {
         });
     }
 
+    // Method to load more items when scrolled to the bottom
     private void loadMoreItems() {
         int totalItems = plantIdList.size();
         int itemsToLoad = Math.min(N, totalItems - currentLoadedItems);
