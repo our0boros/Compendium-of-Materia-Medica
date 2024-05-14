@@ -324,6 +324,8 @@ Production Rules:
 
 
 
+接下来对于搜索语法的算法，我们可以参照前文 `Grammar(s)` 中提到的详细描述将语法的识别拆分为多个子逻辑块逐一处理，从最表层的`ExpParser` 到最底层的`ContentParser`，分别进行语义的识别。由于在最初的语法设计时就考虑到了语法的复杂性问题，每一个字逻辑快的处理都非常的简单，通常我们只需要确认子字串的开头和结尾有没有出现预期字符即可，这大大的提高了语法处理的效率。而程序后端在处理时会将标签栏目和参数栏目的所有子字串一一对应集成为一个HashMap 回传到前端，同时回传当前的搜索方法。
+
 ### Others
 
 *[What other design decisions have you made which you feel are relevant? Feel free to separate these into their own subheadings.]*
