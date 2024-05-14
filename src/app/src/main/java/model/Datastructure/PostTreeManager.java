@@ -64,6 +64,9 @@ public class PostTreeManager implements TreeManager<Post> {
             RBTreeNode<Post> post = this.postRBTree.search(Integer.parseInt((String) info));
             if (post != null) {
                 posts.add(post.getValue());
+                Log.d("PostTreeManager", "Found post id " + post.getValue().getPost_id() + " in postTree.");
+            } else{
+                Log.d("PostTreeManager", "Post id is not in postTree.");
             }
         } else {
             search(this.postRBTree.root, infoType, info, posts);

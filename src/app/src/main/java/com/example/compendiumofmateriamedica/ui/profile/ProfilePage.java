@@ -74,6 +74,7 @@ public class ProfilePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProfilePage.this, MyPost.class);
+                intent.putExtra("AppUser", appUser);
                 intent.putExtra("CurrentUser", profileUser); // Pass the current user object
                 startActivity(intent);
             }

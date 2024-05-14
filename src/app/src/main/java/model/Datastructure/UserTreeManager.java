@@ -24,9 +24,9 @@ public class UserTreeManager implements TreeManager<User> {
         if(instance == null){
             instance = new UserTreeManager(userRBTree);
         }
-            return instance;
+        return instance;
     }
-    public static UserTreeManager getInstance(){
+    public static synchronized UserTreeManager getInstance(){
         if(instance == null){
             throw new IllegalStateException("Instance not created. Call getInstance(RBTree<User>) first.");
         }
