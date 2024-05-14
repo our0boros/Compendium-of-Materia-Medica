@@ -88,7 +88,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
   - [What design patterns, data structures, did the involved member propose?]*
   - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* `<br><br>`
 - **Others**: (only if significant and significantly different from an "average contribution")
-
   - [Report Writing?] [Slides preparation?]*
   - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* `<br><br>`
 
@@ -287,6 +286,32 @@ Production Rules:
 *[Where do you use tokenisers and parsers? How are they built? What are the advantages of the designs?]*
 
 <hr>
+为了处理人机交互界面的输入问题，目前我们的分词器主要在两个场景下使用，分别是搜索的语法内容以及发布帖子的文字内容。
+
+首先对于搜索的语法内容，为了提高解析器的识别效率并将词法记号化，我们需要在用户使用语法搜索时先将输入的单一字串转化为Token列表，再进行后续的语法处理。这样的好处是可以确保在进入Parser之前用户所输入的语法符号符合预期（不存在非法字符或者乱码），以提高语法逻辑的处理效率。
+
+由于普遍的自然语言理解逻辑是单向的串流，我们在处理分词器的逻辑时时会按照读取的串流依次排查，如果当前输入的字符匹配到关键字符则提取当前字符并将其放入词组列表中，反之则继续堆叠当前的字符知道找到下一个对应的字符组为止。
+
+```
+
+1. 初始化一个空的 ArrayList<Token> 对象，用于存储所有的 Token。
+2. 当前还有未处理的 Token 时，进入循环。
+    3. 在循环中，将当前 Token 添加到 fullToken 列表中。
+
+        1. 去除当前缓冲区中的空白字符。
+        2. 如果缓冲区已经为空，则将当前 Token 设为 null，表示没有剩余的 Token，然后结束方法。
+        3. 获取缓冲区中的第一个字符，并根据不同的字符类型来识别 Token 的类型。
+        4. 根据第一个字符的不同，生成相应的 Token 对象，并将其设为当前 Token。
+        5. 如果第一个字符是字母、数字或者中文字符，则进入循环，依次读取连续的字符，直到遇到不是字母、数字或中文字符的字符为止，然后将这一部分字符作为一个 Token 的字符串，类型为 STR，生成 Token 对象并设为当前 Token。
+        6. 如果第一个字符不是以上任何一种情况，则抛出 IllegalTokenException 异常，表示遇到了意外的 Token。
+        7. 将当前 Token 从缓冲区中移除。
+        8. 方法结束。
+
+    5. 重复步骤 3 和 4，直到没有剩余的 Token。
+6. 返回存储了所有 Token 的 fullToken 列表。
+
+```
+
 
 
 ### Others
