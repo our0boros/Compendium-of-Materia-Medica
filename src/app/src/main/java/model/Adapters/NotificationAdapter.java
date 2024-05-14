@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.compendiumofmateriamedica.MainActivity;
 import model.Datastructure.NewEvent;
 import com.example.compendiumofmateriamedica.R;
 
@@ -83,7 +82,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         if (event.getEventType() == NewEvent.EventType.LIKE) {
             holder.userActivity.setText("liked your post");
             // 设置与行为对应的图标图片
-            holder.userActivityIcon.setImageResource(R.drawable.button_post_unlike);
+            holder.userActivityIcon.setImageResource(R.drawable.post_like_btn);
         } else if (event.getEventType() == NewEvent.EventType.COMMENT) {
             holder.userActivity.setText("commented your post");
             // 设置与行为对应的图标图片

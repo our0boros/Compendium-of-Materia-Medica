@@ -94,5 +94,20 @@ public class PlantTreeManager implements TreeManager<Plant>{
         search(node.getRight(), infoType, info, plants);
     }
 
-
+    public PlantInfoType getTypeByString(String type) throws Exception {
+        switch (type.toUpperCase()) {
+            case "ID":
+                return PlantInfoType.ID;
+            case "SLUG":
+                return PlantInfoType.SLUG;
+            case "SCIENTIFIC_NAME":
+                return PlantInfoType.SCIENTIFIC_NAME;
+            case "GENUS":
+                return PlantInfoType.GENUS;
+            case "FAMILY":
+                return PlantInfoType.FAMILY;
+            default:
+                throw new Exception("Invalid Plant Type");
+        }
+    }
 }

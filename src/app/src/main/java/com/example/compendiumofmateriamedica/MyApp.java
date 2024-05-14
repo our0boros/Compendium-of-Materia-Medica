@@ -1,21 +1,13 @@
 package com.example.compendiumofmateriamedica;
 
-import android.Manifest;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
-
-import com.google.firebase.events.EventHandler;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,7 +77,7 @@ public class MyApp extends Application {
         Notification notification = new NotificationCompat.Builder(this, "YOUR_CHANNEL_ID")
                 .setContentTitle("New Like")
                 .setContentText(message)
-                .setSmallIcon(R.drawable.button_post_unlike)
+                .setSmallIcon(R.drawable.post_like_btn)
                 .setAutoCancel(true)
                 .build();
         // 使用 System.currentTimeMillis() 生成唯一的通知 ID

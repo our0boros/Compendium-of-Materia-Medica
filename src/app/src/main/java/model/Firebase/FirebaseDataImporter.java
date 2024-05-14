@@ -1,4 +1,4 @@
-package model;
+package model.Firebase;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
