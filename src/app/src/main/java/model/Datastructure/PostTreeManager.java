@@ -229,6 +229,23 @@ public class PostTreeManager implements TreeManager<Post> {
         }
         return true;
     }
+
+    public PostInfoType getTypeByString(String type) throws Exception {
+        switch (type.toUpperCase()) {
+            case "POST_ID":
+                return PostInfoType.POST_ID;
+            case "UID":
+                return PostInfoType.UID;
+            case "PLANT_ID":
+                return PostInfoType.PLANT_ID;
+            case "TIME":
+                return PostInfoType.TIME;
+            case "CONTENT":
+                return PostInfoType.CONTENT;
+            default:
+                throw new Exception("Invalid Post Type");
+        }
+    }
 }
 
 

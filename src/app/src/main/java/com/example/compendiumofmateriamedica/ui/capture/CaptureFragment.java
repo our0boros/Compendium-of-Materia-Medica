@@ -86,13 +86,10 @@ public class CaptureFragment extends Fragment {
     private Switch plantPostSwitch;
     private boolean isPost = false;
     private ArrayAdapter<CharSequence> currentArrayAdapter;
-    private ArrayList<String> plantAttributes = new ArrayList<>(Arrays.asList(new String[]{"ID", "COMMON_NAME", "SLUG", "SCIENTIFIC_NAME", "GENUS", "FAMILY"}));
-    private ArrayList<String> postAttributes = new ArrayList<>(Arrays.asList(new String[]{"POST_ID", "USER_ID", "PLANT_ID", "TIME", "CONTENT"}));
     // ================ Xing Chen 拍照用
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     private String currentPhotoPath;
 
-    private ActivityResultLauncher<String> requestPermissionLauncher =
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     dispatchTakePictureIntent();
@@ -250,8 +247,7 @@ public class CaptureFragment extends Fragment {
                 // =============================================================================
                 // Search with grammar
                 // =============================================================================
-//                PlantTreeManager plantTreeManager = new PlantTreeManager(((MainActivity) requireActivity()).getPlantTree());
-//                PostTreeManager postTreeManager = new PostTreeManager(((MainActivity) requireActivity()).getPostTree());
+
                 // 如果spinner选择的不是第一项【语法搜索】，反之按照当前选择搜索
                 if (spinner.getSelectedItemId() == 0) {
                     // 反之进行语法判定逻辑
@@ -276,11 +272,12 @@ public class CaptureFragment extends Fragment {
                             ArrayList temp;
                             // 如果是搜索植物
                             if (!isPost) {
-                                int index = plantAttributes.indexOf(entry.getKey());
-                                // 如果没有匹配的则忽略
-                                if (index == -1) continue;
-                                temp = PlantTreeManager.getInstance().search(
-                                        PlantTreeManager.PlantInfoType.values()[index], entry.getValue());
+                                try {
+                                    temp = PlantTreeManager.getInstance().search(
+                                            PlantTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
+                                } catch (Exception e) {
+                                    continue;
+                                }
                                 // 添加搜索结果
                                 for (Object node : temp) {
                                     if (searchResult.containsKey(node)) {
@@ -290,12 +287,13 @@ public class CaptureFragment extends Fragment {
                                     }
                                 }
                             } else {
-                                int index = postAttributes.indexOf(entry.getKey());
-                                Log.println(Log.ASSERT, "DEBUG", "[OnClick] index: " + index);
-                                // 如果没有匹配的则忽略
-                                if (index == -1) continue;
-                                temp = PostTreeManager.getInstance().search(
-                                        PostTreeManager.PostInfoType.values()[index], entry.getValue());
+                                try {
+                                    temp = PostTreeManager.getInstance().search(
+                                            PostTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
+                                } catch (Exception e) {
+                                    continue;
+                                }
+
                                 // 添加搜索结果
                                 for (Object node : temp) {
                                     if (searchResult.containsKey(node)) {
