@@ -45,22 +45,15 @@ import model.Datastructure.NewEventHandler;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 
-/**
- * @author: Tianhao Shan, Xing Chen
- * @datetime: 2024/5
- * @description:
- */
+
 public class ProfileFragment extends Fragment implements NewEventHandler.EventObserver{
 
     private ProfileViewModel mViewModel;
     private FragmentProfileBinding binding;
     private User currentUser;
     private NewEventHandler eventHandler;
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
-    }
-    LocationManager locationManager;
-    LocationListener locationListener;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
     private TextView user_location;
     private static final long NOTIFICATION_UPDATE_INTERVAL = 5000; // 通知状态5秒更新一次
     private TextView notificationCountTextView;
@@ -68,10 +61,17 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
     private Runnable notificationUpdateRunnable;
     private int plantsUserDiscovered;
 
+    public static ProfileFragment newInstance() {
+        return new ProfileFragment();
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        // Initialize PostTreeManager
+        PostTreeManager postTreeManager = PostTreeManager.getInstance();
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
@@ -97,7 +97,6 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
         // user location
         user_location = binding.profileUserLocation;
 
-        PostTreeManager postTreeManager=PostTreeManager.getInstance();
         // how many plant user has discovered
         plantsUserDiscovered = postTreeManager.getUserPlantDiscovered(currentUser.getUser_id()).size();
         // display user level with icon
@@ -154,27 +153,12 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
 
         // messages
         TextView messages=binding.messages;
-        // 找到显示通知数量的 TextView
         notificationCountTextView = binding.messagesCount;
-        // 初始化值
         notificationCountTextView.setText(String.valueOf(eventHandler.getUnreadNotifications()));
-        // 创建 Handler 和 Runnable,用于定期更新通知数量
-//        handler = new Handler(Looper.getMainLooper());
-//        notificationUpdateRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                updateNotificationCount();
-//                handler.postDelayed(this, NOTIFICATION_UPDATE_INTERVAL);
-//            }
-//        };
 
         // other features in profile
         TextView personal_information=binding.personalInformation;
         TextView settings=binding.settings;
-
-        // deleted profile features (maybe Temporary)
-//        TextView user_points = binding.userPoints;
-//        TextView user_search=binding.userSearch;
 
         // Initialize LocationManager
         locationManager = (LocationManager) ContextCompat.getSystemService(requireContext(), LocationManager.class);
@@ -213,22 +197,6 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
 
-
-        // jump logic
-//        user_points.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MyPoints.class);
-//                startActivity(intent);
-//            }
-//        });
-//        user_search.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), MySearchHistory.class);
-//                startActivity(intent);
-//            }
-//        });
         user_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -46,8 +46,8 @@ public class User implements Comparable<User>, Serializable {
     }
 
 //    public void setAvatar_url(String avatar_url){ this.avatar_url=avatar_url;}
-//
-//    public void setUser_name (String username){ this.username=username;}
+
+//    public void setUsername (String username){ this.username=username;}
 
     @Override
     public int compareTo(User user) {
@@ -63,5 +63,21 @@ public class User implements Comparable<User>, Serializable {
                 + "Email: " + email + ", "
                 + "Password: " + password + ", "
                 + "AvatarUrl: " + avatar_url + "}";
+    }
+
+    public void setValue(User user) {
+        this.user_id=user.user_id;
+        this.email=user.email;
+        this.avatar_url=user.avatar_url;
+        this.password=user.password;
+        this.username=user.username;
+    }
+
+    public void setAvatar_url(String url) {
+        this.avatar_url=url;
+    }
+
+    public void setUsername(String uname) {
+        this.username=uname;
     }
 }
