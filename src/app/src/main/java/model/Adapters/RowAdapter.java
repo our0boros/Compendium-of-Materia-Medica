@@ -20,12 +20,15 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
+import model.Parser.Token;
 
 public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
     private Context context;
@@ -57,8 +60,8 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
         // 加载用户名字
         holder.userName.setText(user.getValue().getUsername());
 
-        String postContent = nodes.get(0).getValue().getContent();
-        holder.postContent.setText(postContent);
+        List<Token> postContent = nodes.get(0).getValue().getContent();
+        holder.postContent.setText(postContent.stream().map(Token::getToken).collect(Collectors.joining(" ")));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

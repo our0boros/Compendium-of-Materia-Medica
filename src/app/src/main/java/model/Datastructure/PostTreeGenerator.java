@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
 
+import model.Parser.Tokenizer;
+
 /**
  * @author: Haochen Gong
  * @description: post树的生成器（处理post的json数据，generateTree()方法可以将处理后的数据生成树）
@@ -59,7 +61,8 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                 }
 
                 // 创建并插入节点
-                Post post = new Post(postId,uid,plantId,photo,content,timestamp,likes,likesRecord,comments);
+                Tokenizer tokenizer = new Tokenizer(content);
+                Post post = new Post(postId,uid,plantId,photo,tokenizer.getFullToken(),timestamp,likes,likesRecord,comments);
                 if(post.getLikes() == null
                         || post.getLikesRecord() == null
                         || post.getComments() == null)

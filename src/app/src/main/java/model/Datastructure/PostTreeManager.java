@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import model.Parser.Token;
+
 /**
  * @author: Haochen Gong
  * @description: post树的管理方法类
@@ -96,9 +98,12 @@ public class PostTreeManager implements TreeManager<Post> {
                 break;
             // 查找内容里是否含有某字符
             case CONTENT:
-                String content = node.getValue().getContent(); // 转换成小写字母
-                if (content.toLowerCase().contains((CharSequence) info)) {
-                    posts.add(node);
+                List<Token> content = node.getValue().getContent(); // 转换成小写字母
+                for (Token token : content) {
+                    if (token.getToken().toLowerCase().contains((CharSequence) info)) {
+                        posts.add(node);
+                        break;
+                    }
                 }
                 break;
         }
