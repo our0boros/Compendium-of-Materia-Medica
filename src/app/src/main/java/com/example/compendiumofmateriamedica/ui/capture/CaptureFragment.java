@@ -54,12 +54,14 @@ import java.util.Map;
 
 import com.example.compendiumofmateriamedica.EmptySearchResult;
 
+import model.Datastructure.DataType;
 import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTreeNode;
 import model.Datastructure.UserTreeManager;
+import model.Parser.ParserEventHandler;
 import model.Parser.SearchGrammarParser;
 import model.Parser.Token;
 import model.Parser.Tokenizer;
@@ -247,141 +249,15 @@ public class CaptureFragment extends Fragment {
                 // =============================================================================
                 // Search with grammar
                 // =============================================================================
-
                 // 如果spinner选择的不是第一项【语法搜索】，反之按照当前选择搜索
                 if (spinner.getSelectedItemId() == 0) {
                     // 反之进行语法判定逻辑
-                    try {
-                        // Search with grammar
-                        Tokenizer tokenizer = new Tokenizer(textView.getText().toString());
-                        SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer);
-                        Map<String, String> searchParam = searchGrammarParser.parseExp();
-                        searchMethod = searchGrammarParser.getSearchMethod(); // otherwise AND
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search with grammar");
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] Found searchParam has "
-                                + searchParam.size() + " entities with " + (searchMethod ? "OR" : "AND"));
-                        Toast.makeText(requireActivity().getApplicationContext() ,"Search with grammar", Toast.LENGTH_LONG).show();
-
-                        // 遍历搜索attribute
-                        Map<RBTreeNode<?>, Integer> searchResult = new HashMap<>();
-
-                        for (Map.Entry<String, String> entry : searchParam.entrySet()) {
-                            Log.println(Log.ASSERT, "DEBUG", "[OnClick] search: " + entry.getKey() +
-                                    " value: " + entry.getValue());
-                            // 生成文件树
-                            ArrayList temp;
-                            // 如果是搜索植物
-                            if (!isPost) {
-                                try {
-                                    temp = PlantTreeManager.getInstance().search(
-                                            PlantTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
-                                } catch (Exception e) {
-                                    continue;
-                                }
-                                // 添加搜索结果
-                                for (Object node : temp) {
-                                    if (searchResult.containsKey(node)) {
-                                        searchResult.put((RBTreeNode<Plant>) node, searchResult.get(node) + 1);
-                                    } else {
-                                        searchResult.put((RBTreeNode<Plant>) node, 1);
-                                    }
-                                }
-                            } else {
-                                try {
-                                    temp = PostTreeManager.getInstance().search(
-                                            PostTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
-                                } catch (Exception e) {
-                                    continue;
-                                }
-
-                                // 添加搜索结果
-                                for (Object node : temp) {
-                                    if (searchResult.containsKey(node)) {
-                                        searchResult.put((RBTreeNode<Post>) node, searchResult.get(node) + 1);
-                                    } else {
-                                        searchResult.put((RBTreeNode<Post>) node, 1);
-                                    }
-                                }
-                            }
-                        }
-
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] searchResult: " + searchResult.size());
-                        searchMethod = true;
-                        // 准备跳转数据
-                        // 既然Node无法序列化那就用Id list
-                        ArrayList<Integer> plantIDList = new ArrayList<>();
-                        for (Map.Entry<RBTreeNode<?>, Integer> entry : searchResult.entrySet()) {
-                            // 如果是OR直接添加
-                            if (searchMethod) {
-                                plantIDList.add((isPost ? (RBTreeNode<Post>) entry.getKey() :
-                                        (RBTreeNode<Plant>) entry.getKey()).getKey());
-                                // 如果是AND 只添加出现次数与attribute size相同的plant
-                            } else if (entry.getValue() == searchResult.size()) {
-                                plantIDList.add((isPost ? (RBTreeNode<Post>) entry.getKey() :
-                                        (RBTreeNode<Plant>) entry.getKey()).getKey());
-                            }
-
-                        }
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + plantIDList.size());
-
-
-                        // 跳转界面
-                        textView.setText("");
-                        if (plantIDList.size() == 0) {
-                            Intent noResult = new Intent(getContext(), EmptySearchResult.class);
-                            startActivity(noResult);
-                            return false;
-                        } else {
-                            // 跳转界面
-                            Intent postIntent = new Intent(getContext(), SearchedResults.class);
-                            postIntent.putExtra("isPost", isPost);
-                            postIntent.putExtra("idList", plantIDList);
-                            startActivity(postIntent);
-                            return true;
-                        }
-                        // =============================================================================
-                    } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
-                        textView.setText("");
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] catch error: " + e);
-                        Toast.makeText(requireActivity().getApplicationContext() ,"Grammar Error", Toast.LENGTH_LONG).show();
-                        return false;
-                    }
-                } else {
-
-                    // =============================================================================
-                    // Search without grammar
-                    // =============================================================================
-
-                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
-                    Toast.makeText(requireActivity().getApplicationContext(), "Search without grammar", Toast.LENGTH_LONG).show();
-
-                    // 搜索节点
-                    ArrayList<Integer> plantIDList = new ArrayList<>();
-                    if (!isPost) {
-                        ArrayList<Plant> searchResult = PlantTreeManager.getInstance().search(
-                                PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
-                                + " with: " + textView.getText().toString().trim());
-
-                        for (Plant plant : searchResult) {
-                            plantIDList.add(plant.getId());
-                        }
-                    } else {
-                        ArrayList<Post> searchResult = PostTreeManager.getInstance().search(
-                                PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1], textView.getText().toString().trim());
-                        Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
-                                + " with: " + textView.getText().toString().trim());
-
-                        for (Post post : searchResult) {
-                            plantIDList.add(post.getPost_id());
-                        }
-                    }
-
-
+                    ArrayList<Integer> IDList = ParserEventHandler.getIDListFromGrammarText(String.valueOf(textView.getText()), isPost ? DataType.POST : DataType.PLANT);
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search with grammar");
+                    Toast.makeText(requireActivity().getApplicationContext(), "Search with grammar", Toast.LENGTH_LONG).show();
                     // 跳转界面
-                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + plantIDList.size());
                     textView.setText("");
-                    if (plantIDList.size() == 0) {
+                    if (IDList == null || IDList.size() == 0) {
                         Intent noResult = new Intent(getContext(), EmptySearchResult.class);
                         startActivity(noResult);
                         return false;
@@ -389,7 +265,50 @@ public class CaptureFragment extends Fragment {
                         // 跳转界面
                         Intent postIntent = new Intent(getContext(), SearchedResults.class);
                         postIntent.putExtra("isPost", isPost);
-                        postIntent.putExtra("idList", plantIDList);
+                        postIntent.putExtra("idList", IDList);
+                        startActivity(postIntent);
+                        return true;
+                    }
+                } else {
+                    // =============================================================================
+                    // Search without grammar
+                    // =============================================================================
+
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search without grammar");
+                    Toast.makeText(requireActivity().getApplicationContext(), "Search without grammar", Toast.LENGTH_LONG).show();
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
+                            + " with: " + textView.getText().toString().trim());
+                    // 搜索节点
+                    ArrayList<Integer> IDList = new ArrayList<>();
+                    if (!isPost) {
+                        ArrayList<Plant> searchResult = PlantTreeManager.getInstance().search(
+                                PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1],
+                                textView.getText().toString().trim());
+
+                        for (Plant node : searchResult) {
+                            IDList.add(node.getId());
+                        }
+                    } else {
+                        ArrayList<Post> searchResult = PostTreeManager.getInstance().search(
+                                PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1],
+                                textView.getText().toString().trim());
+
+                        for (Post node : searchResult) {
+                            IDList.add(node.getPost_id());
+                        }
+                    }
+                    // 跳转界面
+                    Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + IDList.size());
+                    textView.setText("");
+                    if (IDList.size() == 0) {
+                        Intent noResult = new Intent(getContext(), EmptySearchResult.class);
+                        startActivity(noResult);
+                        return false;
+                    } else {
+                        // 跳转界面
+                        Intent postIntent = new Intent(getContext(), SearchedResults.class);
+                        postIntent.putExtra("isPost", isPost);
+                        postIntent.putExtra("idList", IDList);
                         startActivity(postIntent);
                         return true;
                     }

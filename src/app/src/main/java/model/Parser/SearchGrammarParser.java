@@ -26,7 +26,7 @@ public class SearchGrammarParser {
 
     Tokenizer tokenizer;
     // false as &, true as |
-    Boolean searchMethod = null;
+    Token.Type searchMethod = null;
     Map<String, String> output;
 
     public SearchGrammarParser(Tokenizer tokenizer) {
@@ -78,7 +78,7 @@ public class SearchGrammarParser {
         } else throw new IllegalAccessException("Unexpected Columns");
         // check search method
         SearchGrammarParser searchGrammarParser3 = new SearchGrammarParser(new Tokenizer(columns.get(2)));
-        this.searchMethod = searchGrammarParser3.parseMethod();
+        this.searchMethod = searchGrammarParser3.parseMethod() ? Token.Type.OR : Token.Type.AND;
         if (this.searchMethod == null) throw new IllegalProductionException("Invalid search Method");
         // if tag do not match text
         if (tagList.size() != textList.size()) throw new IllegalProductionException("Unmatched entries size");
@@ -171,7 +171,7 @@ public class SearchGrammarParser {
         return fullToken.get(3).getType() == Token.Type.OR;
     }
 
-    public Boolean getSearchMethod() {
+    public Token.Type getSearchMethod() {
         return searchMethod;
     }
 }
