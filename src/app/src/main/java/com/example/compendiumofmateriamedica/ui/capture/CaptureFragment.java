@@ -163,8 +163,8 @@ public class CaptureFragment extends Fragment {
         // 搜索内容切换
         plantPostSwitch = binding.plantPostSwitch;
         // 设置Switch的Text
-        captureViewModel.setSwitchTextText(getResources().getString(R.string.search_switch));
-        captureViewModel.getSwitchText().observe(getViewLifecycleOwner(), plantPostSwitch::setText);
+//        captureViewModel.setSwitchTextText(getResources().getString(R.string.search_switch));
+//        captureViewModel.getSwitchText().observe(getViewLifecycleOwner(), plantPostSwitch::setText);
         // 搜索栏文字监听
         searchText = binding.searchBarText;
         // 添加一个下拉菜单
