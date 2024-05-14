@@ -330,13 +330,18 @@ Feature Category: User Interactivity <br>
     * User can see how many unread messages he has now. After checking the messages, the number will be reset to 0.
     * If the unread notifications are more than 3, user will get system notification.
 
-Feature Category: User Interactivity <br>
+Feature Category: Greater Data Usage, Handling and Sophistication <br>
 7. [Data-Profile] Profile page has a user level icon.
     * Code: class ProfileFragment, ProfilePage, PostAdapter
     * Based on how many plants user has discovered, the profile page will display different level icon.
     * There is a process bar showing how many plants left to level up.
     * User level will also be shown in his posts.
 
+8. [Data-Formats] Read data from local files in at least 2 different formats.
+    * Code: class JsonReader 还有哪里读了文件？？图片？？
+    * 
+    *
+    *
 
 <hr>
 
