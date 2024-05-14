@@ -1,5 +1,7 @@
 package model.Adapters;
 
+import static model.UtilsApp.loadImageFromURL;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,12 +48,12 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: nodes size " + nodes.size());
         // 加载Post图片
         String postURL = nodes.get(0).getValue().getPhoto_url();
-        MainActivity.loadImageFromURL(this.context, postURL, holder.postImage, "Photo");
+        loadImageFromURL(this.context, postURL, holder.postImage, "Photo");
         // 加载用户图片
         RBTreeNode<User> user = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, nodes.get(0).getValue().getUser_id()).get(0);
         String userURL = user.getValue().getAvatar_url();
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: user avatar: " + userURL);
-        MainActivity.loadImageFromURL(this.context, userURL, holder.userImage, "Avatar");
+        loadImageFromURL(this.context, userURL, holder.userImage, "Avatar");
         // 加载用户名字
         holder.userName.setText(user.getValue().getUsername());
 

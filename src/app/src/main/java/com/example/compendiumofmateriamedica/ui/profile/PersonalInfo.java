@@ -2,6 +2,8 @@ package com.example.compendiumofmateriamedica.ui.profile;
 
 
 
+import static model.UtilsApp.loadImageFromURL;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,7 +38,7 @@ public class PersonalInfo extends AppCompatActivity {
         user_name = findViewById(R.id.profile_username);
         user_name.setText(currentUser.getUsername());
         avatar = findViewById(R.id.user_avatar);
-        MainActivity.loadImageFromURL(this, currentUser.getAvatar_url(), avatar, "Avatar");
+        loadImageFromURL(this, currentUser.getAvatar_url(), avatar, "Avatar");
 
 
         // jump to dialog fragment

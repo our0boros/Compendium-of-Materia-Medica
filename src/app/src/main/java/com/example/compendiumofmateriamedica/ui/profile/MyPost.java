@@ -19,6 +19,7 @@ import java.util.List;
 
 import model.Adapters.PostAdapter;
 import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 
 /**
@@ -55,9 +56,10 @@ public class MyPost extends AppCompatActivity {
             }
         });
 
+        PostTreeManager postTreeManager=PostTreeManager.getInstance();
         // my posts
         postsRecyclerView = findViewById(R.id.messages_recyclerView);
-        List<Post> myPosts = MainActivity.getPostsByUserId(currentUser.getUser_id());
+        List<Post> myPosts = postTreeManager.getPostsByUserId(currentUser.getUser_id());
         postAdapter = new PostAdapter(this, myPosts, getSupportFragmentManager(),false, currentUser);
         postsRecyclerView.setAdapter(postAdapter);
 

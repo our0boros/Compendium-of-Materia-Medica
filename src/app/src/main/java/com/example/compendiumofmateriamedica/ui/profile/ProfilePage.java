@@ -1,6 +1,7 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
-import static com.example.compendiumofmateriamedica.MainActivity.getPostsByUserId;
+
+import static model.UtilsApp.loadImageFromURL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
+import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 
 public class ProfilePage extends AppCompatActivity {
@@ -36,9 +38,10 @@ public class ProfilePage extends AppCompatActivity {
         int uid = profileUser.getUser_id();
         String name = profileUser.getUsername();
 
+        PostTreeManager postTreeManager=PostTreeManager.getInstance();
         // user avtar
         userAvatar = findViewById(R.id.profile_page_avatar);
-        MainActivity.loadImageFromURL(this, profileUser.getAvatar_url(),userAvatar,"Avatar");
+        loadImageFromURL(this, profileUser.getAvatar_url(),userAvatar,"Avatar");
         userAvatar.setOnClickListener(v -> {
             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(profileUser.getAvatar_url());
             photoDialogFragment.show(getSupportFragmentManager(), "photo_dialog");
@@ -47,7 +50,7 @@ public class ProfilePage extends AppCompatActivity {
         username = findViewById(R.id.profile_page_username);
         username.setText(profileUser.getUsername());
 
-        int plantDiscovered = MainActivity.getUserPlantDiscovered(uid).size();
+        int plantDiscovered = postTreeManager.getUserPlantDiscovered(uid).size();
 
         // user level image
         userLevel = findViewById(R.id.profile_page_level_icon);
@@ -67,7 +70,7 @@ public class ProfilePage extends AppCompatActivity {
 
         // post number
         posts_number = findViewById(R.id.profile_page_posts_number);
-        posts_number.setText(String.valueOf(MainActivity.getPostsByUserId(uid).size()));
+        posts_number.setText(String.valueOf(postTreeManager.getPostsByUserId(uid).size()));
         posts_number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

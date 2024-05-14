@@ -1,10 +1,10 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
 
+import static model.UtilsApp.loadImageFromURL;
+
 import android.Manifest;
 
-import static com.example.compendiumofmateriamedica.MainActivity.getPostsByUserId;
-import static com.example.compendiumofmateriamedica.MainActivity.getUserPlantDiscovered;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 
 import model.Datastructure.NewEventHandler;
+import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 
 /**
@@ -81,7 +82,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
 
         // user avatar
         ImageView userAvatar = binding.profileUserAvatar;
-        MainActivity.loadImageFromURL(getContext(), currentUser.getAvatar_url(), userAvatar, "Avatar");
+        loadImageFromURL(getContext(), currentUser.getAvatar_url(), userAvatar, "Avatar");
         // click on avatar will show big picture
         userAvatar.setOnClickListener(v -> {
             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentUser.getAvatar_url());
@@ -96,8 +97,9 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
         // user location
         user_location = binding.profileUserLocation;
 
+        PostTreeManager postTreeManager=PostTreeManager.getInstance();
         // how many plant user has discovered
-        plantsUserDiscovered = getUserPlantDiscovered(currentUser.getUser_id()).size();
+        plantsUserDiscovered = postTreeManager.getUserPlantDiscovered(currentUser.getUser_id()).size();
         // display user level with icon
         ImageView  userLevel = binding.profileUserLevel;
         setUserLevelImage(userLevel, plantsUserDiscovered);
@@ -142,7 +144,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
 //        Log.d("ProfileFragment", "He has " + getPostsByUserId(currentUser.getUser_id()).size() + " posts.");
 //        Log.d("ProfileFragment", "Trying to get a post using post id " + 94);
 //        Log.d("ProfileFragment", "The post content is " + MainActivity.getPostByPostId(94).getContent());
-        mViewModel.updateUserPost(getPostsByUserId(currentUser.getUser_id()));
+        mViewModel.updateUserPost(postTreeManager.getPostsByUserId(currentUser.getUser_id()));
         mViewModel.getUserPost().observe(getViewLifecycleOwner(), value -> {
             // Convert integer value to string and set it to TextView
             user_post.setText(String.valueOf(value));

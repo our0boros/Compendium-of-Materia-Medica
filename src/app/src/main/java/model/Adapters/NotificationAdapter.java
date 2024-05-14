@@ -1,6 +1,8 @@
 package model.Adapters;
 
 //import android.app.Notification;
+import static model.UtilsApp.loadImageFromURL;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +77,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         // 设置用户名
         holder.username.setText(user.getUsername());
         // 设置用户头像
-        MainActivity.loadImageFromURL(context, user.getAvatar_url(), holder.userAvatar, "Avatar");
+        loadImageFromURL(context, user.getAvatar_url(), holder.userAvatar, "Avatar");
 
         // 设置用户行为
         if (event.getEventType() == NewEvent.EventType.LIKE) {

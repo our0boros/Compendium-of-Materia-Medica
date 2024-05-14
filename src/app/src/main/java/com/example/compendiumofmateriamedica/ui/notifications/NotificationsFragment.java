@@ -1,5 +1,7 @@
 package com.example.compendiumofmateriamedica.ui.notifications;
 
+import static model.UtilsApp.loadImageFromURL;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,7 @@ public class NotificationsFragment extends Fragment {
 
         // user avatar
         ImageView userAvatar = binding.profileUserAvatar;
-        MainActivity.loadImageFromURL(getContext(), currentUser.getAvatar_url(), userAvatar, "Avatar");
+        loadImageFromURL(getContext(), currentUser.getAvatar_url(), userAvatar, "Avatar");
         // click on avatar will show big picture
         userAvatar.setOnClickListener(v -> {
             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentUser.getAvatar_url());

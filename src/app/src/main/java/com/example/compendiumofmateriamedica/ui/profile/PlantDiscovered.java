@@ -1,6 +1,5 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
-import static com.example.compendiumofmateriamedica.MainActivity.getUserPlantDiscovered;
 import static com.example.compendiumofmateriamedica.SearchedResults.getFirstNItems;
 
 import androidx.annotation.NonNull;
@@ -69,8 +68,9 @@ public class PlantDiscovered extends AppCompatActivity {
             }
         });
 
+        PostTreeManager postTreeManager=PostTreeManager.getInstance();
         // show PLANTS
-        Set<Integer> plantIdSet = getUserPlantDiscovered(currentUser.getUser_id());
+        Set<Integer> plantIdSet = postTreeManager.getUserPlantDiscovered(currentUser.getUser_id());
 //        for (Integer id : plantIdSets) {
 //            ArrayList<RBTreeNode<Plant>> temp = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(id));
 //            if (temp.size() != 0) plantIdSets.add(temp.get(0).getValue().getPlant_id());

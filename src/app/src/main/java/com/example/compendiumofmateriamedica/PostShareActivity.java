@@ -1,5 +1,7 @@
 package com.example.compendiumofmateriamedica;
 
+import static model.UtilsApp.loadImageFromURL;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -88,7 +90,7 @@ public class PostShareActivity extends AppCompatActivity {
         photoPath = getIntent().getStringExtra("photoPath");
         // 显示照片
         ImageView photo = findViewById(R.id.imageView_post_share_photo);
-        MainActivity.loadImageFromURL(this, photoPath, photo, "Photo");
+        loadImageFromURL(this, photoPath, photo, "Photo");
         // 点击显示大图
         photo.setOnClickListener(v -> {
             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(photoPath);
@@ -155,7 +157,7 @@ public class PostShareActivity extends AppCompatActivity {
                     if (currentPlant != null) {
                         Log.println(Log.ASSERT, "THREAD", "Update UI: \n" + currentPlant);
                         // 准备要展示的植物资料
-                        MainActivity.loadImageFromURL(this, currentPlant.getImage(), plantImage, "Photo");
+                        loadImageFromURL(this, currentPlant.getImage(), plantImage, "Photo");
                         plantImage.setOnClickListener(v -> {
                             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentPlant.getImage());
                             photoDialogFragment.show(getSupportFragmentManager(), "photo_dialog");

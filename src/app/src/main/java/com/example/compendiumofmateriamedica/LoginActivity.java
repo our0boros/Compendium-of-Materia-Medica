@@ -1,8 +1,6 @@
 package com.example.compendiumofmateriamedica;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,22 +17,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
-import model.Datastructure.DataType;
-import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
-import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
-import model.Datastructure.RBTree;
 import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
 import model.FirebaseAuthManager;
-import model.GeneratorFactory;
 
 /**
  * @author: Tianhao Shan

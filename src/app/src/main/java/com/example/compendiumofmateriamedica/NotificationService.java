@@ -15,6 +15,7 @@ import java.util.TimerTask;
 
 import model.Datastructure.NewEvent;
 import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
 
@@ -82,7 +83,8 @@ public class NotificationService extends Service {
     }
     // 模拟点赞行为的逻辑
     private void simulateLikes() {
-        Post userNewestPost = MainActivity.getUserNewestPost(currentUser.getUser_id());
+        PostTreeManager postTreeManager=PostTreeManager.getInstance();
+        Post userNewestPost = postTreeManager.getUserNewestPost(currentUser.getUser_id());
         User author = currentUser;
         if(userNewestPost != null){
             // 如果post被点赞小于5次，即用户被通知小于5次

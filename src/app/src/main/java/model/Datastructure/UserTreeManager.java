@@ -1,5 +1,7 @@
 package model.Datastructure;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -90,5 +92,35 @@ public class UserTreeManager implements TreeManager<User> {
     public List<User> getAllUser() {
         return this.userRBTree.getAllElements();
     }
+
+    public User findUserById(int uid){
+        // Check the initialization of UserTreeManager
+        if (checkManagerInitial()==false){
+            return null;
+        }
+        // Search user with given uid
+        ArrayList<RBTreeNode<User>> users = instance.search(UserTreeManager.UserInfoType.ID, uid);
+        // Check user validation, uid is unique
+        if (!users.isEmpty()) {
+            User foundUser = users.get(0).getValue();
+            Log.d("UserTreeManager", "Find User: " + foundUser.getUsername());
+            return foundUser;
+        } else {
+            Log.w("UserTreeManager", "Do not find user.");
+            return null;
+        }
+    }
+
+    public boolean checkManagerInitial(){
+        // Check the initialization of UserTreeManager
+        if (instance == null) {
+            Log.w("UserTreeManager", "UserTreeManager has not been initialized");
+            return false;
+        }
+        return true;
+    }
+
+
+
 }
 

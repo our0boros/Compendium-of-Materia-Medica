@@ -1,31 +1,40 @@
 package model.Datastructure;
 
+import android.util.Log;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author: Haochen Gong
  * @description: post树的管理方法类
  **/
-public class PostTreeManager implements TreeManager<Post>{
+public class PostTreeManager implements TreeManager<Post> {
     private final RBTree<Post> postRBTree;
+
     public enum PostInfoType {
         POST_ID, UID, PLANT_ID, TIME, CONTENT;
     }
+
     // singleton design pattern
     private static PostTreeManager instance;
+
     private PostTreeManager(RBTree<Post> postRBTree) {
         this.postRBTree = postRBTree;
     }
+
     public static synchronized PostTreeManager getInstance(RBTree<Post> postRBTree) {
         if (instance == null) {
             instance = new PostTreeManager(postRBTree);
         }
         return instance;
     }
+
     // getter
     public static PostTreeManager getInstance() {
         if (instance == null) {
@@ -33,6 +42,7 @@ public class PostTreeManager implements TreeManager<Post>{
         }
         return instance;
     }
+
     @Override
     public void insert(int postId, Post post) {
         this.postRBTree.insert(postId, post);
@@ -44,13 +54,13 @@ public class PostTreeManager implements TreeManager<Post>{
     }
 
     // 对外的搜索接口，调用这个方法来开始搜索
-    public <T> ArrayList<RBTreeNode<Post>> search (PostInfoType infoType, T info) {
+    public <T> ArrayList<RBTreeNode<Post>> search(PostInfoType infoType, T info) {
 
         ArrayList<RBTreeNode<Post>> posts = new ArrayList<>();
 
         if (infoType == PostInfoType.POST_ID) {
             RBTreeNode<Post> post = this.postRBTree.search(Integer.parseInt((String) info));
-            if(post != null) {
+            if (post != null) {
                 posts.add(post);
             }
         } else {
@@ -61,7 +71,7 @@ public class PostTreeManager implements TreeManager<Post>{
     }
 
     // 实际的递归搜索方法
-    private  <T> void search(RBTreeNode<Post> node, PostInfoType infoType, T info, ArrayList<RBTreeNode<Post>> posts) {
+    private <T> void search(RBTreeNode<Post> node, PostInfoType infoType, T info, ArrayList<RBTreeNode<Post>> posts) {
         // 如果当前节点是null，说明已经到达了叶子节点的子节点，直接返回
         if (node == null) {
             return;
@@ -132,18 +142,88 @@ public class PostTreeManager implements TreeManager<Post>{
             getBeforePosts(node.getRight(), timeStamp, posts);  // 访问右子树
         }
     }
-//    private void getLatestPostsFromRBTree(RBTreeNode<Post> node, int numberOfPosts, ArrayList<Post> latestPosts) {
-//        if (node != null && latestPosts.size() < numberOfPosts) {
-//            getLatestPostsFromRBTree(node.getRight(), numberOfPosts, latestPosts);
-//            if (latestPosts.size() < numberOfPosts) {
-//                latestPosts.add(node.getValue());
-//                getLatestPostsFromRBTree(node.getLeft(), numberOfPosts, latestPosts);
-//            }
-//        }
-//    }
 
-    public int getTreeSize(){
+    public int getTreeSize() {
         return postRBTree.size();
     }
 
+    public Post getPostByPostId(int postId) {
+        // Check the initialization of PostTreeManager
+        if (checkManagerInitial()==false){
+            return null;
+        }
+        // Search post with given postId
+        ArrayList<RBTreeNode<Post>> searchResult = instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
+        // Check user validation, uid is unique
+        if (!searchResult.isEmpty()) {
+            return searchResult.get(0).getValue();
+        }
+        return null;
+    }
+
+    // get all posts by user with uid
+    public List<Post> getPostsByUserId(int uid) {
+        // Check the initialization of PostTreeManager
+        if (checkManagerInitial()==false){
+            return null;
+        }
+        // Search post with given uID
+        ArrayList<RBTreeNode<Post>> user_post_data = instance.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+//        Log.w("PostTree root",""+instance.postRBTree);
+        List<Post> user_post_data_list = new ArrayList<>();
+        if (!user_post_data.isEmpty()) {
+            for (RBTreeNode<Post> node : user_post_data) {
+                user_post_data_list.add(node.getValue());
+            }
+            return user_post_data_list;
+        } else {
+            Log.w("MainActivity", "Get posts by user id" + uid + " failed, there is no posts of this user");
+        }
+        return user_post_data_list;
+    }
+
+
+    public Set<Integer> getUserPlantDiscovered(int uid){
+        // Check the initialization of PostTreeManager
+        if (checkManagerInitial()==false){
+            return null;
+        }
+        List<Post> posts = getPostsByUserId(uid);
+        Set<Integer> plantsDiscovered = new HashSet<>();
+        for (Post post : posts){
+            int plantId = post.getPlant_id();
+            plantsDiscovered.add(plantId);
+        }
+        return plantsDiscovered;
+    }
+
+    // get the newest one post of given uid
+    public Post getUserNewestPost(int uid){
+        // Check the initialization of PostTreeManager
+        if (checkManagerInitial()==false){
+            return null;
+        }
+        List<Post> allUserPosts = getPostsByUserId(uid);
+        if (allUserPosts.isEmpty()) {
+            return null;
+        }
+        Post newestPost = allUserPosts.get(0);
+        for (Post post : allUserPosts) {
+            if (post.getTimestamp().compareTo(newestPost.getTimestamp()) > 0) {
+                newestPost = post;
+            }
+        }
+        return newestPost;
+    }
+
+    public boolean checkManagerInitial(){
+        // Check the initialization of PostTreeManager
+        if (instance == null) {
+            Log.w("PostTreeManager", "PostTreeManager has not been initialized");
+            return false;
+        }
+        return true;
+    }
 }
+
+

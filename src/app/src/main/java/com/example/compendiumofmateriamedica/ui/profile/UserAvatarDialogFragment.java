@@ -1,5 +1,7 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
+import static model.UtilsApp.loadImageFromURL;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +65,7 @@ public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
 
                 //Perform upload operation using the URL (update user avatar_url)
                 // TODO: update to current user and data file
-                MainActivity.loadImageFromURL(getContext(), imageUrl, image_avatar, "Avatar");
+                loadImageFromURL(getContext(), imageUrl, image_avatar, "Avatar");
 //                currentUser.setAvatar_url(imageUrl);
             }
         });

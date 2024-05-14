@@ -2,6 +2,10 @@ package model.Adapters;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+
+import static model.UtilsApp.formatTimestamp;
+import static model.UtilsApp.loadImageFromURL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -27,7 +31,10 @@ import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 import java.util.List;
 
 import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
+import model.UtilsApp;
 
 /**
  * @author: Xing Chen
@@ -94,12 +101,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position){
+        UserTreeManager userTreeManager=UserTreeManager.getInstance();
         // get current post
         Post post = postsList.get(position);
         // get uid of this post user
         int uid = post.getUser_id();
         // get the user using this uid
-        User postUser = MainActivity.findUserById(uid);
+        User postUser = userTreeManager.findUserById(uid);
         // get the user name,the user's avatar and the post photo
         if (postUser != null){
             String postUserUsername = postUser.getUsername();
@@ -167,17 +175,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
 
 
+            PostTreeManager postTreeManager=PostTreeManager.getInstance();
             // set the content of the viewHolder
             // load avatar image from url
-            MainActivity.loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar, "Avatar");
+            loadImageFromURL(this.context, postUserAvatarURL, holder.userAvatar, "Avatar");
             holder.username.setText(postUserUsername);
             holder.content.setText(postContent);
             // 处理时间戳
-            holder.timestamp.setText(MainActivity.formatTimestamp(postTimestamp));
+            holder.timestamp.setText(formatTimestamp(postTimestamp));
             // user level
-            ProfileFragment.setUserLevelImage(holder.userLevel, MainActivity.getUserPlantDiscovered(uid).size());
+            ProfileFragment.setUserLevelImage(holder.userLevel, postTreeManager.getUserPlantDiscovered(uid).size());
             // load photo from post
-            MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
+            loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
         } else {
             String postPhotoURL = post.getPhoto_url();
 
@@ -189,7 +198,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.username.setText("Unknown User");
             holder.content.setText(post.getContent());
             holder.userAvatar.setImageResource(R.drawable.unknown_user);
-            MainActivity.loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
+            loadImageFromURL(this.context, postPhotoURL, holder.photo, "Photo");
         }
 
     }

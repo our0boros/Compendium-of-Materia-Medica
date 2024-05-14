@@ -1,6 +1,6 @@
 package com.example.compendiumofmateriamedica.ui.capture;
 
-import static com.example.compendiumofmateriamedica.MainActivity.loadImageFromURL;
+import static model.UtilsApp.loadImageFromURL;
 
 import android.Manifest;
 import android.app.AlertDialog;

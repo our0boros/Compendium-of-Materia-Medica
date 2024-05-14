@@ -1,5 +1,7 @@
 package model.Adapters;
 
+import static model.UtilsApp.loadImageFromURL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -50,7 +52,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
         ArrayList<RBTreeNode<Plant>> nodes = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position)));
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: nodes size " + nodes.size());
         String plantURL = nodes.get(0).getValue().getImage();
-        MainActivity.loadImageFromURL(this.context, plantURL, holder.plantImage, "Photo");
+        loadImageFromURL(this.context, plantURL, holder.plantImage, "Photo");
         String plantName = nodes.get(0).getValue().getCommonName();
         String plantFamily = nodes.get(0).getValue().getFamily();
         holder.postContent.setText(plantName);
