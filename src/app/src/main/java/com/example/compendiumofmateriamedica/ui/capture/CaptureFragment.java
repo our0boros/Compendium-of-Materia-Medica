@@ -69,9 +69,9 @@ import model.Parser.Tokenizer;
 import model.Datastructure.User;
 
 /**
- * @author: Hongjun Xu
- * @datetime: 2024/4/27
- * @description: Capture Page
+ * @author: Hongjun Xu, Xing Chen
+ * @datetime: u7733037, u7725171
+ * @description: Capture Page, user can search and take photo here
  */
 public class CaptureFragment extends Fragment {
     // =========== UI变量 ===========
@@ -339,25 +339,26 @@ public class CaptureFragment extends Fragment {
             }
         });
 
-        // ===================== Xing Chen: 如果点击拍照按钮，会发起相机界面申请，跳转至相机界面拍照确认完毕后，进入post share页面，并传入当前用户
+        // ===================== Xing Chen:
+        // if capture button clicked, will launch camera action, after taking a photo, enter post share page
         captureButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 Log.d("CaptureFragment", "Capture button clicked");
-                // 启动相机
+                // launch camera
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     Log.d("CaptureFragment", "Request for camera permission");
-                    // 请求权限
+                    // require for access
                     requestPermissionLauncher.launch(Manifest.permission.CAMERA);
                     Log.d("CaptureFragment", "Camera permission grated.");
                 } else {
                     Log.d("CaptureFragment", "call dispatchTakePictureIntent()");
-                    // 启动相机
+                    // launch camera
                     dispatchTakePictureIntent();
                 }
             }
         });
 
-        // ===================== Xing Chen： 到这里结束
+        // ===================== Xing Chen: ends here
     }
 
 
@@ -367,21 +368,21 @@ public class CaptureFragment extends Fragment {
         binding = null;
         currentArrayAdapter = null;
     }
-    // ===================== Xing Chen: 点击拍照会进入拍照界面
+    // ===================== Xing Chen: launch camera
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             Log.d("CaptureFragment", "Camera app is available");
-            // 创建文件来保存图片
+            // create file to save image
             File photoFile = null;
             try {
                 Log.d("CaptureFragment", "call createImageFile");
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // 错误处理
+                // handle error
                 Log.d("CaptureFragment", "Error creating file: " + ex.getMessage());
             }
-            // 继续只有当文件被成功创建
+            // continue only if file created
             Log.d("CaptureFragment", "Camera intent is about to launch");
             if (photoFile != null) {
                 Log.d("CaptureFragment", "File created: " + photoFile.getAbsolutePath());
@@ -401,20 +402,20 @@ public class CaptureFragment extends Fragment {
     }
 
     private File createImageFile() throws IOException {
-        // 创建一个唯一的文件名
+        // create a file with unique name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* 前缀 */
-                ".jpg",         /* 后缀 */
-                storageDir      /* 目录 */
+                imageFileName,  /* former */
+                ".jpg",         /* latter */
+                storageDir      /* storage direction */
         );
 
-        // 保存文件:路径用于与Intent数据一起传递
+        // save file path
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
-    // ===================== Xing Chen： 到这里结束
+    // ===================== Xing Chen: ends here
 }

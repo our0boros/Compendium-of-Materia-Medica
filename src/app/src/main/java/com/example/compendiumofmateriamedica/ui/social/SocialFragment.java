@@ -19,7 +19,11 @@ import java.util.ArrayList;
 import model.Adapters.PostAdapter;
 import model.Datastructure.User;
 
-
+/**
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description: A fragment to show user's posts
+ */
 public class SocialFragment extends Fragment {
 
     private FragmentSocialBinding binding;

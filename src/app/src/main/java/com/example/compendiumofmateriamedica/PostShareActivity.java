@@ -57,19 +57,18 @@ import model.PlantIdentification;
 
 /**
  * @author: Haochen Gong, Xing Chen
- * @description: 用于发布Post
- * 实现了GPS定位并在界面上显示当前位置的功能。
- *
+ * @uid: u7733037, u7725171
+ * @description:
+ * Get information from last activity and can share post here
+ * The plant can be recognized by an API and will show details in this page.
+ * Also GPS location can be seen.
  **/
 public class PostShareActivity extends AppCompatActivity {
 
     LocationManager locationManager;
     LocationListener locationListener;
     TextView locationText;
-
     private User currentUser;
-
-    //一个图片链接，用于测试发布post，实际的图片应当由调用这个Activity的
     private String photoPath;
 
     Plant currentPlant;
@@ -78,23 +77,22 @@ public class PostShareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_share);
 
-        // 给User和图片赋值
-        // 获取从上个activity处传来的User
+        // get user from last activity
         currentUser = (User) this.getIntent().getSerializableExtra("User");
         Log.d("SharePost", "Enter share page, user = " + currentUser.getUsername() + ".");
-        // 获取从上个activity处传来的照片路径
+        // get photo path
         photoPath = getIntent().getStringExtra("photoPath");
-        // 显示照片
+        // show image
         ImageView photo = findViewById(R.id.imageView_post_share_photo);
         loadImageFromURL(this, photoPath, photo, "Photo");
-        // 点击显示大图
+        // click will show big picture
         photo.setOnClickListener(v -> {
             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(photoPath);
             photoDialogFragment.show(getSupportFragmentManager(), "photo_dialog");
         });
         // ======================================================================
-        // 对接API
-        // 创建网络请求线程
+        // API
+        // create internet requirement thread
         ImageView plantImage = findViewById(R.id.toPostPlantImage);
         TextView plantCommonName = findViewById(R.id.toPostPlantCommonName);
         TextView plantSciName = findViewById(R.id.toPostSciName);
@@ -114,15 +112,15 @@ public class PostShareActivity extends AppCompatActivity {
                         .getJSONObject("species")
                         .get("scientificNameWithoutAuthor");
                 Log.println(Log.ASSERT, "API RESULT", sciName);
-                // 查找当前的plant库
+                // look for current plant data
                 ArrayList<Plant> plantTreeList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME, sciName);
-                // 如果找到匹配的
+                // if found
                 if (plantTreeList.size() > 0) {
                     currentPlant = plantTreeList.get(0);
                     Log.println(Log.ASSERT, "API RESULT", "Found mapping result: " + currentPlant);
                 } else {
                     Log.println(Log.ASSERT, "API RESULT", "Do not found mapping result");
-                    // 如果不存在就塞进去
+                    // if not, create one and insert
                     currentPlant = new Plant(
                             sciName.hashCode(),
                             (String) jsonObject.getJSONArray("results")
@@ -149,11 +147,11 @@ public class PostShareActivity extends AppCompatActivity {
                     PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);
                 }
 
-                // 在获取到植物信息后更新UI
+                // update UI
                 runOnUiThread(() -> {
                     if (currentPlant != null) {
                         Log.println(Log.ASSERT, "THREAD", "Update UI: \n" + currentPlant);
-                        // 准备要展示的植物资料
+                        // prepare data
                         loadImageFromURL(this, currentPlant.getImage(), plantImage, "Photo");
                         plantImage.setOnClickListener(v -> {
                             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentPlant.getImage());
@@ -175,22 +173,13 @@ public class PostShareActivity extends AppCompatActivity {
 
             }
         });
-        thread.start(); // 启动线程
-//        if (currentPlant != null) {
-//
-//            Log.println(Log.ASSERT, "THREAD", "Update UI: \n" + currentPlant);
-//            // 准备要展示的植物资料
-//            MainActivity.loadImageFromURL(this, currentPlant.getImage(), plantImage, "Photo");
-//            plantCommonName.setText(currentPlant.getCommonName());
-//            plantSciName.setText(currentPlant.getScientificName());
-//            plantFamily.setText(currentPlant.getFamily());
-//            plantDescription.setText(currentPlant.getDescription());
-//        }
+        thread.start(); // start thread
+
         // ======================================================================
-        // post 内容
+        // post content
         EditText postContent = findViewById(R.id.editText_post_content);
 
-        // 设置cancel按钮点击事件
+        // set cancel event
         Button buttonCancel = findViewById(R.id.button_post_share_cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -201,24 +190,23 @@ public class PostShareActivity extends AppCompatActivity {
 
 
 
-        // 设置Post按钮点击事件
+        // set post event
         Button buttonPost = findViewById(R.id.button_post_share_post);
         buttonPost.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // 如果当前植物还没有从API回传
+                // if api still does not callback
                 if(currentPlant == null){
-                    // 暂时不能post
+                    // could not post
+                    // show dialog
                     showCannotPostDialog();
-                    // 显示一个对话框提示一下
                 } else {
                     // share post
                     boolean success = sharePost(postContent, photoPath);
                     if (success) {
                         // go back to MainActivity
                         Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
-                        // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        // 指定返回MainActivity中的SocialFragment
+                        // go back to SocialFragment in MainActivity
                         intent.putExtra("navigate_fragment_id", R.id.navigation_social);
                         intent.putExtra("User", currentUser);
                         startActivity(intent);
@@ -229,20 +217,20 @@ public class PostShareActivity extends AppCompatActivity {
 
 
 
-        // 实现gps获取和显示
+        // GPS part
         locationText = (TextView) findViewById(R.id.locationText);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                // 当位置发生变化时，使用Geocoder将经纬度转换为可读地址
+                // use Geocoder to create location information when location changed
                 if (location != null) {
                     Geocoder geocoder = new Geocoder(PostShareActivity.this, Locale.getDefault());
                     try {
                         List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         if (!addressList.isEmpty()) {
                             Address address = addressList.get(0);
-                            String addressText = address.getAddressLine(0); // 获取完整地址
+                            String addressText = address.getAddressLine(0); // get full location
                             locationText.setText(location.getLatitude() + ", " + location.getLongitude() + "\nAddress：" + addressText);
                         } else {
                             locationText.setText(location.getLatitude() + ", " + location.getLongitude() + "\nAddress: " + "No address found");
@@ -257,13 +245,13 @@ public class PostShareActivity extends AppCompatActivity {
 
             @Override
             public void onProviderDisabled(@NonNull String provider) {
-                // 如果位置服务被禁用，引导用户到设置页面开启位置服务
+                // if location denied
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
         };
 
-        // 如果运行设备为Android 6.0（API 23）以上，需要动态请求位置权限
+        // if API 23 or higher，ask for location constantly
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
             || checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -272,13 +260,13 @@ public class PostShareActivity extends AppCompatActivity {
             }
         }
 
-        // 请求位置更新，设置最小更新时间为1000毫秒，最小距离变化为0米
+        // set min time and distance
         locationManager.requestLocationUpdates("gps", 1000, 0, locationListener);
 
     }
 
     /**
-     * 跳出一个确认窗口，点击确认会返回MainActivity，取消则什么都不做
+     * Show a dialog, confirm to cancel post editing and go back
      */
     private void showConfirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -287,9 +275,8 @@ public class PostShareActivity extends AppCompatActivity {
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 用户确认取消，返回主界面
+                // if cancel
                 Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
-                // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("User", currentUser);
                 startActivity(intent);
@@ -298,12 +285,13 @@ public class PostShareActivity extends AppCompatActivity {
         builder.setNegativeButton("Stay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 用户选择留在当前页面，对话框消失，不进行任何操作
+                // if stay
                 dialog.dismiss();
             }
         });
         builder.create().show();
     }
+    // prevent user from sharing post without plant information
     private void showCannotPostDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("-_- Cannot post now.");
@@ -311,7 +299,6 @@ public class PostShareActivity extends AppCompatActivity {
         builder.setNegativeButton("Got it", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // 用户选择留在当前页面，对话框消失，不进行任何操作
                 dialog.dismiss();
             }
         });
@@ -319,18 +306,18 @@ public class PostShareActivity extends AppCompatActivity {
     }
     private boolean sharePost(EditText postContent, String photoURL){
         Log.d("SharePost", "Share post......");
-        // 为生成post设置变量
+        // create post
         int postId = PostTreeManager.getInstance().getTreeSize() + 1;
         int uid = currentUser.getUser_id();
-        int plantId = currentPlant.getId(); // 这里随便给个plantid，实际拍到照片识别后再传进来就有了
+        int plantId = currentPlant.getId();
         String photo = photoURL;
         String content = postContent.getText().toString();
-        // 获取当前时间
+        // now
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", Locale.getDefault());
         Date now = new Date();
         String timestamp = sdf.format(now);
 
-        // 生成Post并加入到当前app的MainActivity的postTree中
+        // create post and add it into post tree
         try {
             Tokenizer tokenizer = new Tokenizer(content);
             Post post = new Post(postId, uid, plantId, photo, tokenizer.getFullToken(), timestamp);
@@ -344,17 +331,16 @@ public class PostShareActivity extends AppCompatActivity {
 
     }
     private void setTextViewContent(TextView textView, String label, String content){
-        // 创建一个SpannableString对象
         String text = label + "\n" + content;
         SpannableString spannableString = new SpannableString(text);
-        // 为“Common Name:”设置一个大号字体样式
+        // set font for title
         spannableString.setSpan(new RelativeSizeSpan(1.f), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  // 加粗
-        // 为内容设置一个小号字体样式
+        // set font for content
         int startIndexOfContent = text.indexOf(content);
         spannableString.setSpan(new RelativeSizeSpan(0.8f), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), startIndexOfContent, startIndexOfContent + content.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 应用这个SpannableString到TextView
+        // apply this to textview
         textView.setText(spannableString);
     }
 }

@@ -40,7 +40,7 @@ public class PlantTreeManager implements TreeManager<Plant>{
         plantRBTree.delete(id);
     }
 
-    // 对外的搜索接口，调用这个方法来开始搜索
+    // call this method to search
     public <T> ArrayList<Plant> search (PlantInfoType infoType, T info) {
 
         ArrayList<Plant> plants = new ArrayList<>();
@@ -61,7 +61,7 @@ public class PlantTreeManager implements TreeManager<Plant>{
         return plants;
     }
 
-    // 实际的递归搜索方法
+    // actual iteration method
     private  <T> void search(RBTreeNode<Plant> node, PlantInfoType infoType, T info, ArrayList<Plant> plants) {
         // 如果当前节点是null，说明已经到达了叶子节点的子节点，直接返回
         if (node == null) {

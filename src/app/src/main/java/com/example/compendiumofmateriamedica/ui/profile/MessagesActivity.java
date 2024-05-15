@@ -29,8 +29,8 @@ import model.Datastructure.NewEventHandler;
 import model.Datastructure.User;
 /**
  * @author: Xing Chen
- * @datetime: 2024/5/9
- * @description: Show messages.
+ * @uid: u7725171
+ * @description: Show all unread messages
  */
 public class MessagesActivity extends AppCompatActivity {
 
@@ -47,11 +47,11 @@ public class MessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
-        // 当前user
+        // get current user
         currentUser = (User) this.getIntent().getSerializableExtra("CurrentUser");
-        // 获得单例
+        // get singleton
         eventHandler = NewEventHandler.getInstance();
-        // 获得当前通知列表
+        // get events list
         List<NewEvent> notifications = eventHandler.getEventList();
 
         page_name=findViewById(R.id.page_name);
@@ -62,48 +62,20 @@ public class MessagesActivity extends AppCompatActivity {
             // simply come back to original fragment by kill the current activity
             @Override
             public void onClick(View view) {
-                // 清空事件列表
+                // empty events list
                 eventHandler.markAllEventsAsRead();
-                // 清空通知列表
+                // empty notifications list
                 notificationAdapter.setNotifications(new ArrayList<>());
                 finish();
             }
         });
 
-        // 找到 RecyclerView
+        // get RecyclerView
         notificationRecyclerView = findViewById(R.id.messages_recyclerView);
-        // 创建适配器
+        // create adapter for it
         notificationAdapter = NotificationAdapter.getInstance();
         notificationRecyclerView.setAdapter(notificationAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         notificationRecyclerView.setLayoutManager(layoutManager);
-
-//        // 获取当前用户的通知列表,并更新适配器
-//        int currentUserId = getCurrentUserId();
-//        List<Notification> notifications = getNotificationsForUser(currentUserId);
-//        notificationAdapter.setNotifications(notifications);
-
-
     }
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onNewLikeEvent(NewEvent event) {
-//        // 将新的点赞事件添加到通知列表中
-//        notificationAdapter.getNotifications().add(event);
-//        notificationAdapter.notifyDataSetChanged();
-//
-//        eventHandler.addEvent(event);
-//    }
-//    private List<Notification> getNotificationsForUser(int userId) {
-//        List<Notification> notifications = new ArrayList<>();
-//        List<Post> posts = PostTreeManager.getInstance().getPostsByUserId(userId);
-//        for (Post post : posts) {
-//            List<Integer> likes = post.getLikes();
-//            for (int likerId : likes) {
-//                User likeUser = UserTreeManager.getInstance().getUserById(likerId);
-//                String message = likeUser.getUsername() + " 点赞了你的帖子 " + post.getPost_id();
-//                notifications.add(new Notification(message));
-//            }
-//        }
-//        return notifications;
-//    }
 }

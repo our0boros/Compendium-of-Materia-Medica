@@ -15,12 +15,10 @@ import com.github.chrisbanes.photoview.PhotoView;
 
 /**
  * @author: Xing Chen
- * @datetime: 2024/5/4
- * @description: 这个类用于点击图片后显示图片的详细内容
- * 再次点击图片会关闭
- * 可以复用
- * 用法如下：
- * // 设置头像点击事件
+ * @uid: u7725171
+ * @description: This class is used to show big picture after click on an image
+ * click on it again will dismiss
+ * Can be used like this:
  *             userAvatar.setOnClickListener(v -> {
  *                 PhotoDialogFragment avatarDialogFragment = PhotoDialogFragment.newInstance(postUserAvatarURL);
  *                 avatarDialogFragment.show(fragmentManager, "avatar_dialog");

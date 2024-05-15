@@ -19,12 +19,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import model.Datastructure.NewEventHandler;
 import model.Datastructure.User;
-
+/**
+ * @author: All group members
+ * @description: Main activity of this app, linking most of the activities and fragments.
+ */
 public class MainActivity extends AppCompatActivity implements NewEventHandler.EventObserver{
 
     private ActivityMainBinding binding;
     private NewEventHandler eventHandler;
-    private TextView profileNotificationCountTextView;
 
     // Declare BadgeDrawable for the profile menu item
     private BadgeDrawable profileBadge;
@@ -57,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements NewEventHandler.E
     @Override
     protected void onStart() {
         super.onStart();
-        // Register EventBus
-//        EventBus.getDefault().register(this);
         // Start notification service
         startNotificationService();
     }
@@ -67,10 +67,6 @@ public class MainActivity extends AppCompatActivity implements NewEventHandler.E
     @Override
     protected void onStop() {
         super.onStop();
-//        // Unregister EventBus
-////        EventBus.getDefault().unregister(this);
-//        // Stop notification service
-//        stopNotificationService();
     }
 
     // Method to initialize the badge for the profile menu item
@@ -122,8 +118,6 @@ public class MainActivity extends AppCompatActivity implements NewEventHandler.E
                 navController.navigate(fragmentId);
             }
         }
-        // 返回Social页面后，刷新页面以显示用户刚刚发布的Post
-        // TODO
     }
 
     public User getCurrentUser(){

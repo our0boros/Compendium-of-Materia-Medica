@@ -32,8 +32,8 @@ import model.Parser.Tokenizer;
 
 /**
  * @author: Xing Chen
- * @description: 用于后台模拟通知消息
- *
+ * @uid: u7725171
+ * @description: a backstage service to simulate periodically like and post action by other users
  **/
 public class NotificationService extends Service {
     private static final String TAG = "NotificationService";
@@ -45,7 +45,7 @@ public class NotificationService extends Service {
     private JsonReader jsonReader;
     private List<JSONObject> postsJsonList;
     private int currentIndex = 0; // index to read post from json
-    private final int NOTIFICATION_PERIOD = 5000; // 每10秒执行一次，这里1000对应1秒
+    private final int NOTIFICATION_PERIOD = 5000; // execute period, 1000 = 1 second
     private final int POST_PERIOD = 5000;
     private final int DELAY = 5000;
 
@@ -56,12 +56,12 @@ public class NotificationService extends Service {
         random = new Random();
         postTreeManager = PostTreeManager.getInstance();
         jsonReader = new JsonReader(this);
-        // 初始化 JSON 数据
+        // initialize json data
         try {
             postsJsonList = jsonReader.readJsonFromFile(R.raw.posts_stream);
         } catch (IOException | JSONException e) {
             e.printStackTrace();
-            postsJsonList = new ArrayList<>(); // 防止空指针异常
+            postsJsonList = new ArrayList<>(); // prevent nullptr
         }
     }
     @Override
@@ -86,11 +86,11 @@ public class NotificationService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-    // 定时模拟点赞和发布post行为
+    // set timer
     private void startTimer() {
         if (timer4like != null) {
-            timer4like.cancel();  // 取消当前运行的定时器任务
-            timer4like = null;    // 将定时器设置为null，确保垃圾回收
+            timer4like.cancel();  // cancel current timer
+            timer4like = null;    // ensure garbage collection
         }
         if (timer4post != null) {
             timer4post.cancel();
@@ -122,18 +122,17 @@ public class NotificationService extends Service {
             timer4post = null;
         }
     }
-    // 模拟点赞行为的逻辑
+    // simulate like
     private void simulateLikes() {
         Post userNewestPost = postTreeManager.getUserNewestPost(currentUser.getUser_id());
-        User author = currentUser;
         if(userNewestPost != null){
-            // 如果post被点赞小于5次，即用户被通知小于5次
+            // only execute when user newest post has less than 6 likes
             if (userNewestPost.getLikesRecord().size() < 6) {
-                // 随机选择一个其他用户点赞
+                // choose a random user
                 User randomUser = getRandomUser(userNewestPost);
                 userNewestPost.likedByUser(randomUser.getUser_id());
 
-                //记录当前时间
+                // get current time
                 Date now = new Date();
 
                 Log.d(TAG, randomUser.getUsername() + " liked your post (Post id:" + userNewestPost.getPost_id() + ")");
@@ -142,7 +141,7 @@ public class NotificationService extends Service {
             }
         }
     }
-    // 模拟用户发布Post的逻辑
+    // simulate post
     private void simulateUserPosts(){
         // read a Post from json
         Post post = getPostFromJson();
@@ -152,13 +151,13 @@ public class NotificationService extends Service {
             // put this post into PostTree, post id as key
             postTreeManager.insert(postId, post);
             // notify changes
-            //记录当前时间
+            // now
             Date now = new Date();
             Log.d(TAG, "User " + postUid + " shared a new post, post id " + postId);
             EventBus.getDefault().post(new NewEvent(postId, UserTreeManager.getInstance().findUserById(postUid), NewEvent.EventType.POST, now));
         }
     }
-    // 获取除了uid之外的其他随机一个用户
+    // get a user except from current user
     private User getRandomUser(Post post) {
         List<User> users = UserTreeManager.getInstance().getAllUser();
         int randomIndex;
@@ -169,7 +168,7 @@ public class NotificationService extends Service {
                 || post.wasLikedByUser(users.get(randomIndex).getUser_id()));
         return users.get(randomIndex);
     }
-    // 从JSON文件中依次读取出一个post
+    // read posts from json one by one
     private Post getPostFromJson(){
         if (currentIndex >= postsJsonList.size()) {
             Log.d(TAG, "No more posts available in JSON.");
@@ -177,7 +176,7 @@ public class NotificationService extends Service {
         }
 
         JSONObject jsonObject = postsJsonList.get(currentIndex);
-        currentIndex++; // 更新索引，确保下次读取时读取下一个
+        currentIndex++; // update index
 
         try {
             int postId = PostTreeManager.getInstance().getTreeSize() + 1;
@@ -198,7 +197,7 @@ public class NotificationService extends Service {
             List<Integer> likesRecord = new ArrayList<>();
             Map<Integer, String> comments = new LinkedHashMap<>();
 
-            // 创建并插入节点
+            // create new post
             Tokenizer tokenizer = new Tokenizer(content);
             Log.d("NotificationService", "Post read successfully.");
             return new Post(postId,uid,plantId,photo,tokenizer.getFullToken(),timestamp,likes,likesRecord,comments);

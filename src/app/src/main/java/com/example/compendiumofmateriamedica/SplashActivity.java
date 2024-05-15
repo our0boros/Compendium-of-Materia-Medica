@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -40,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
 
     // Set the delay time in milliseconds
     private static final long SPLASH_DELAY = 3000; // 3 seconds
+    private static final int PERMISSION_REQUEST_CODE = 200;
 
 
     @Override
@@ -47,29 +49,17 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-//        generalFunctions = GeneralFunctions.getInstance(getBaseContext());
-        // load data from files to trees
-//        try {
-//            userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-//            plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-//            postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
-//        } catch (JSONException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        // initialization of singleton instances before any other activities started
-//        userTreeManager = UserTreeManager.getInstance(userTree);
-//        postTreeManager = PostTreeManager.getInstance(postTree);
-//        plantTreeManager = PlantTreeManager.getInstance(plantTree);
-
         // check permission 'POST_NOTIFICATIONS'
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // request permission 'POST_NOTIFICATIONS' if do not have permission
             Toast.makeText(this, "Please grant notification permission in settings", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 200);
+        } else {
+            // If permission is already granted, proceed with initialization
+            proceedWithInitialization();
         }
-
+    }
+    private void proceedWithInitialization(){
         // Delay transition to the next activity
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -78,13 +68,26 @@ public class SplashActivity extends AppCompatActivity {
                 startLoginActivity();
             }
         }, SPLASH_DELAY);
-
     }
-
     private void startLoginActivity() {
         Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
         startActivity(intent);
         // Finish SplashActivity
         finish();
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            // If permission is granted, proceed with initialization
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                proceedWithInitialization();
+            } else {
+                // If permission is denied, show a message and proceed without notification permission
+                Toast.makeText(this, "Notification permission denied. Some features may not work properly.", Toast.LENGTH_SHORT).show();
+                proceedWithInitialization();
+            }
+        }
     }
 }

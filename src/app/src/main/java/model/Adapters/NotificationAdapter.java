@@ -19,7 +19,12 @@ import java.util.List;
 import model.Datastructure.NewEvent;
 import model.Datastructure.User;
 import static model.UtilsApp.loadImageFromURL;
-
+/**
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description:
+ * Adapter for notification showing.
+ */
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
 
     private List<NewEvent> notifications = new ArrayList<>();

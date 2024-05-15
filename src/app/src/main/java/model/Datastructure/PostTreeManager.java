@@ -128,14 +128,14 @@ public class PostTreeManager implements TreeManager<Post> {
         search(node.getRight(), infoType, info, posts);
     }
 
-    // 根据时间戳获取指定数量post
+    // get newest posts based on given number and timestamp
     public ArrayList<Post> getNewestPosts(int numberOfPosts, String lastLoadedPostTimestamp) {
 
         ArrayList<Post> beforePosts = new ArrayList<>();
 
-        // 获取指定时间戳之前的帖子
-        getBeforePosts(postRBTree.root, lastLoadedPostTimestamp, beforePosts);  // 获取所有时间在指定时间之前的post
-        // 按时间戳降序排列
+        // get all posts before this timestamp
+        getBeforePosts(postRBTree.root, lastLoadedPostTimestamp, beforePosts);
+        // descending order
         beforePosts.sort(new Comparator<Post>() {
             @Override
             public int compare(Post p1, Post p2) {
@@ -143,7 +143,7 @@ public class PostTreeManager implements TreeManager<Post> {
             }
         });
 
-        // 不足需要的数量时,全部返回,足够时返回指定数量
+        // return all when not adequate, partial when enough.
         if (beforePosts.size() <= numberOfPosts) {
             return beforePosts;
         } else {
@@ -151,14 +151,14 @@ public class PostTreeManager implements TreeManager<Post> {
         }
     }
 
-    // 找到所有发布时间在输入时间之前的post
+    // find all posts before timestamp
     private void getBeforePosts(RBTreeNode<Post> node, String timeStamp, ArrayList<Post> posts) {
         if (node != null) {
             if (LocalDateTime.parse(node.getValue().getTimestamp()).isBefore(LocalDateTime.parse(timeStamp))) {
-                posts.add(node.getValue());  // 当前节点时间在输入时间之前时，添加到结果列表
+                posts.add(node.getValue());  // add
             }
-            getBeforePosts(node.getLeft(), timeStamp, posts);  // 访问左子树
-            getBeforePosts(node.getRight(), timeStamp, posts);  // 访问右子树
+            getBeforePosts(node.getLeft(), timeStamp, posts);  // iterate left child
+            getBeforePosts(node.getRight(), timeStamp, posts);  // iterate right child
         }
     }
 

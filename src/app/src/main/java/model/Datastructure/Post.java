@@ -14,7 +14,7 @@ import model.Parser.Token;
 
 /**
  * @author: Haochen Gong
- * @description: Post类
+ * @description: Post class
  **/
 public class Post implements Comparable<Post>{
     // Start with 1
@@ -96,52 +96,30 @@ public class Post implements Comparable<Post>{
             default: return null;
         }
     }
-    // 判断Post现在是否被某用户点赞了
+    // determine if post is liked by user
     public boolean isLikedByUser(int uid){
-//        lock.lock();
-//        try{
-//            if(likes == null)
-//            {Log.w("Post", "Post id:" + this.post_id + "'s isLiked is null!");
-//                this.likes = new ArrayList<>();}
-            return this.likes.contains(uid);
-//        } finally {
-//            lock.unlock();
-//        }
+        return this.likes.contains(uid);
     }
-    // 判断Post以前是否被某用户点赞过
+    // determine if post was liked by user
     public boolean wasLikedByUser(int uid){
-//        lock.lock();
-//        try{
-//            if(likes == null) {
-//                Log.w("Post", "Post id:" + this.post_id + " is null!");
-//                likes = new ArrayList<>();
-//            }
-            return this.likesRecord.contains(uid);
-//        } finally {
-//            lock.unlock();
-//        }
+        return this.likesRecord.contains(uid);
     }
-    // 在用户按点赞按钮的时候调用
+    // called when user press like button
     public void likedByUser(int uid){
-//        lock.lock();
-//        try{
-            if (isLikedByUser(uid)) {
-                // 如果现在已经被该用户点赞了
-                // 取消点赞
-                this.likes.remove(Integer.valueOf(uid)); //这里使用Integer.valueOf(uid)防止被认为是索引
-            } else {
-                // 现在没有被该用户点赞
-                // 点赞
-                this.likes.add(uid);
-                // 如果以前没有被他点赞过，则加入点赞用户记录
-                if(!wasLikedByUser(uid)){
-                    likesRecord.add(uid);
-                }
-                // 如果以前被他点赞过，说明他是取消了再点的,不用做处理
+        if (isLikedByUser(uid)) {
+            // if already liked
+            // cancel
+            this.likes.remove(Integer.valueOf(uid)); // use Integer.valueOf(uid) here means it is not index
+        } else {
+            // if not liked
+            // like
+            this.likes.add(uid);
+            // if now liked before
+            if(!wasLikedByUser(uid)){
+                likesRecord.add(uid);
             }
-//        }finally {
-//            lock.unlock();
-//        }
+            // if was liked before, do nothing
+        }
     }
 
     @Override

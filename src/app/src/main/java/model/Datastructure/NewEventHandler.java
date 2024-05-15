@@ -2,7 +2,13 @@ package model.Datastructure;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description:
+ * Handle events.
+ * Singleton and observer pattern used here.
+ */
 public class NewEventHandler {
     private List<NewEvent> eventList;
     private List<EventObserver> observers = new ArrayList<>();

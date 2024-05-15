@@ -21,17 +21,18 @@ import java.util.Set;
 import model.Adapters.GridAdapter;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
-
+/**
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description: Show all plants user has posted
+ */
 public class PlantDiscovered extends AppCompatActivity {
-
     private User currentUser;
     private TextView pageName;
     private ImageView backButton;
-
     private RecyclerView plantsRecyclerView;
     private GridAdapter gridAdapter;
     private ArrayList<Integer> plantIdList;
-
     private final int N = 6; // Load 6 items at a time
     private int currentLoadedItems = 0;
 

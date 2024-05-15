@@ -1,7 +1,11 @@
 package model.Datastructure;
 
 import java.util.Date;
-
+/**
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description: define user action.
+ */
 public class NewEvent {
     private int postId;
     private User eventUser;

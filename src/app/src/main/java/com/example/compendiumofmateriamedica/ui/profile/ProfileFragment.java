@@ -46,7 +46,11 @@ import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
 
-
+/**
+ * @author: Xing Chen, Tianhao Shan
+ * @uid: u7725171, u7709429
+ * @description: Show user's profile, messages and settings entrance
+ */
 public class ProfileFragment extends Fragment implements NewEventHandler.EventObserver{
 
     private ProfileViewModel mViewModel;
@@ -113,7 +117,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
 
         if (plantsUserDiscovered >= 60) {
             progressBar.setProgressDrawable(ContextCompat.getDrawable(getContext(), R.drawable.progress_bar_gold));
-            progressBar.setProgress(maxProgress); // 将进度设置为最大值
+            progressBar.setProgress(maxProgress); // maximize progress
             progressBar.setMax(maxProgress);
         } else {
             progressBar.setProgressDrawable(ContextCompat.getDrawable(getContext(), R.drawable.progress_bar_green));
@@ -142,17 +146,11 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
 
         // user post number
         TextView user_post=binding.profileUserPost;
-//        Log.d("ProfileFragment", "Current user's uid is " + currentUser.getUser_id());
-//        Log.d("ProfileFragment", "He has " + getPostsByUserId(currentUser.getUser_id()).size() + " posts.");
-//        Log.d("ProfileFragment", "Trying to get a post using post id " + 94);
-//        Log.d("ProfileFragment", "The post content is " + MainActivity.getPostByPostId(94).getContent());
         mViewModel.updateUserPost(postTreeManager.getPostsByUserId(currentUser.getUser_id()));
         mViewModel.getUserPost().observe(getViewLifecycleOwner(), value -> {
             // Convert integer value to string and set it to TextView
             user_post.setText(String.valueOf(value));
         });
-
-
 
         // messages
         TextView messages=binding.messages;
@@ -237,29 +235,27 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
 
         return root;
     }
-    // when fragment is resumed, require location update
+    // when fragment is resumed, require update
     public void onResume(){
         super.onResume();
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
-        // 开始定期更新通知数量
+        // starting to observe event
         eventHandler.addObserver(this);
-        // 更新数量
+        // update numbers
         mViewModel.updateUserPlantDiscovered(postTreeManager.getUserPlantDiscovered(currentUser.getUser_id()).size());
         mViewModel.updateUserPost(postTreeManager.getPostsByUserId(currentUser.getUser_id()));
-        // 更新用户头像
+        // update user avtar
         loadImageFromURL(getContext(), UserTreeManager.getInstance().findUserById(currentUser.getUser_id()).getAvatar_url(), userAvatar, "Avatar");
-//        handler.post(notificationUpdateRunnable);
     }
     // when fragment is paused, close update
     @Override
     public void onPause() {
         super.onPause();
         locationManager.removeUpdates(locationListener);
-        // 停止定期更新通知数量
+        // stop observing event
         eventHandler.removeObserver(this);
-//        handler.removeCallbacks(notificationUpdateRunnable);
     }
     @Override
     public void onDestroyView() {
@@ -268,7 +264,6 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
     }
 
     private void updateNotificationCount() {
-        // 获取当前用户的未读通知数量,并更新界面
         notificationCountTextView.setText(String.valueOf(eventHandler.getUnreadNotifications()));
     }
     public static void setUserLevelImage(ImageView image, int plantDiscovered) {
@@ -291,19 +286,19 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
 
     public static int getMaxProgress(int plantDiscovered) {
         if (plantDiscovered < 1) {
-            return 1; // 从种子到嫩芽需要发现至少1种植物
+            return 1;
         } else if (plantDiscovered < 4) {
-            return 4; // 从嫩芽到幼苗需要发现至少4种植物
+            return 4;
         } else if (plantDiscovered < 10) {
-            return 10; // 从幼苗到开花需要发现至少10种植物
+            return 10;
         } else if (plantDiscovered < 20) {
-            return 20; // 从开花到树需要发现至少20种植物
+            return 20;
         } else if (plantDiscovered < 40) {
-            return 40; // 从树到丰收需要发现至少40种植物
+            return 40;
         } else if (plantDiscovered < 60) {
-            return 60; // 从丰收到金树需要发现至少60种植物
+            return 60;
         } else {
-            return 100; // 假设金树是最高级别，设定一个目标，比如100种植物
+            return 100;
         }
     }
 

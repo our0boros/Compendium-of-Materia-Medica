@@ -24,13 +24,11 @@ import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 
 /**
- * @author: Hongjun Xu, Xing Chen
- * @datetime: 2024/5/2
- * @description: A fragment to show the social page in app
- * using HomeViewModel to control the datastream.
+ * @author: Xing Chen, Tianhao Shan
+ * @uid: u7725171, u7709429
+ * @description: Show all of user's post by time descending order
  */
 public class MyPost extends AppCompatActivity {
-
     private TextView page_name;
     private ImageView back;
     private PostAdapter postAdapter;

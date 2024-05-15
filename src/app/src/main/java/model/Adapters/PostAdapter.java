@@ -37,11 +37,13 @@ import model.Datastructure.UserTreeManager;
 import model.Parser.Token;
 
 /**
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description:
  * A post adapter for displaying posts.
  * Each post is shown in a separate view holder arranged using post_item.xml.
  */
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
-
     private final Context context;
     private final List<Post> postsList;
     private final FragmentManager fragmentManager;
@@ -123,27 +125,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
 
             // Set delete button behavior if enabled
-            if (post_uid == currentUser.getUser_id()){
-                // 删除按钮可见
-                holder.buttonDelete.setVisibility(View.VISIBLE);
-                holder.buttonDelete.setImageResource(R.drawable.icon_delete);
-                holder.buttonDelete.setOnClickListener(v -> {
-                    Log.d("Delete clicked", "They are same? " + (post_uid == currentUser.getUser_id()));
-                    Log.d("Delete clicked", "Current post id is " + post.getPost_id() + ", username is " + postUser.getUsername());
-                    Log.d("Delete clicked", "App user id  is " + currentUser.getUser_id() + ", username is " + currentUser.getUsername());
-                    // delete post from tree
-                    System.out.println(postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id())).size());
-                    postTreeManager.delete(post.getPost_id());
-                    System.out.println(postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id())).size());
-                    // TODO still have bugs, post will appear again when come back
-                    // update ui
-                    postsList.remove(post);
-                    notifyDataSetChanged();
-
-                });
-            } else{
-                holder.buttonDelete.setVisibility(View.GONE);
-            }
+            holder.buttonDelete.setVisibility(View.GONE); // if has functional bug, use this
+            // if without bugs, use this
+//            if (post_uid == currentUser.getUser_id()){
+//                // show delete button
+//                holder.buttonDelete.setVisibility(View.VISIBLE);
+//                holder.buttonDelete.setImageResource(R.drawable.icon_delete);
+//                holder.buttonDelete.setOnClickListener(v -> {
+//                    Log.d("Delete clicked", "They are same? " + (post_uid == currentUser.getUser_id()));
+//                    Log.d("Delete clicked", "Current post id is " + post.getPost_id() + ", username is " + postUser.getUsername());
+//                    Log.d("Delete clicked", "App user id  is " + currentUser.getUser_id() + ", username is " + currentUser.getUsername());
+//                    // delete post from tree
+//                    System.out.println(postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id())).size());
+//                    postTreeManager.delete(post.getPost_id());
+//                    System.out.println(postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id())).size());
+//                    // update ui
+//                    postsList.remove(post);
+//                    notifyDataSetChanged();
+//
+//                });
+//            } else{
+//                holder.buttonDelete.setVisibility(View.GONE);
+//            }
 
 
             // Load user avatar and post photo from URLs

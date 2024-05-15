@@ -24,8 +24,6 @@ public class PlantDetailShow extends AppCompatActivity {
     private TextView genus;
     private TextView family;
     private TextView description;
-
-    // Xing Chen: 这里假设要putExtra一个植物的id
     private int plantId;
 
 
@@ -41,7 +39,7 @@ public class PlantDetailShow extends AppCompatActivity {
         family = findViewById(R.id.family);
         description = findViewById(R.id.description);
 
-        // Xing Chen: 这里假设要putExtra一个植物的id，key为"PlantId"
+        // get plant id from last activity
         plantId = (int) this.getIntent().getSerializableExtra("PlantId");
         ArrayList<Plant> plants = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(plantId));
         Plant plant = plants.get(0);

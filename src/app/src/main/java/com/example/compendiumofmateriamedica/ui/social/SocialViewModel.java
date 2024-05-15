@@ -22,14 +22,12 @@ import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 
 /**
- * @author: Hongjun Xu, Xing Chen
- * @datetime: 2024/5/2
- * @description: A ViewModel to control the datastream.
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description: Use ViewModel to manage and prepare data for UI components,
+ * survive configuration changes (like screen rotations),
+ * and handle communication between the UI and the underlying data sources.
  */
-
-// Use ViewModel to manage and prepare data for UI components,
-// survive configuration changes (like screen rotations),
-// and handle communication between the UI and the underlying data sources.
 public class SocialViewModel extends ViewModel {
     // Hold data that can be observed for changes
     private final MutableLiveData<List<Post>> postsLiveData;
