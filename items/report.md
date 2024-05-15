@@ -122,7 +122,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
     - HTTP API Request - class PlantIdentification
     - Some APP recyclerviewAdapters functions
     - Some getter function in TreeManagers
-    - 
+    - (Test)
     
 - **Code and App Design**
     - Data structure - RBTree

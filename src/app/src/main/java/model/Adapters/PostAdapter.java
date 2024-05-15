@@ -132,9 +132,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     Log.d("Delete clicked", "Current post id is " + post.getPost_id() + ", username is " + postUser.getUsername());
                     Log.d("Delete clicked", "App user id  is " + currentUser.getUser_id() + ", username is " + currentUser.getUsername());
                     // delete post from tree
-                    postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id()));
+                    System.out.println(postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id())).size());
                     postTreeManager.delete(post.getPost_id());
-                    postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id()));
+                    System.out.println(postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id())).size());
                     // TODO still have bugs, post will appear again when come back
                     // update ui
                     postsList.remove(post);
