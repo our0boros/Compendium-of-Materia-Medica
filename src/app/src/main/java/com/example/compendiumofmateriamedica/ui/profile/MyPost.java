@@ -15,6 +15,7 @@ import com.example.compendiumofmateriamedica.R;
 import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import model.Adapters.PostAdapter;
@@ -62,6 +63,7 @@ public class MyPost extends AppCompatActivity {
         // my posts
         postsRecyclerView = findViewById(R.id.messages_recyclerView);
         List<Post> myPosts = postTreeManager.getPostsByUserId(currentUser.getUser_id());
+        myPosts.sort(Comparator.comparingInt(Post::getPost_id).reversed());
         postAdapter = new PostAdapter(this, myPosts, getSupportFragmentManager(),false, currentUser);
         postsRecyclerView.setAdapter(postAdapter);
 
