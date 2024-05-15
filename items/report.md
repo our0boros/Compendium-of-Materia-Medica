@@ -100,17 +100,18 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 3. **u7755061, Yusi Zhong**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
-    - Feature A1, A2, A3 - class Dummy: [Dummy.java](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java)
-    - XYZ Design Pattern -  class AnotherClass: [functionOne()](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43), [function2()](the-URL)
-    - ... (any other contribution in the code, including UI and data files) ... [Student class](../src/path/to/class/Student.java), ..., etc.*, [LanguageTranslator class](../src/path/to/class/LanguageTranslator.java): function1(), function2(), ... <br><br>
-
+    - Feature [DataFiles] - [posts.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/posts.json), [plants.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/plants.json), [users.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/users.json), [posts_stream.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/posts_stream.json)
+    - Feature [FB-Auth] - [UserRepository.java](), [LoginViewModel]()
+  
 - **Code and App Design**
-    - [What design patterns, data structures, did the involved member propose?]*
-    - [UI Design. Specify what design did the involved member propose? What tools were used for the design?]* <br><br>
+    - *Chose JSON over XML for data storage due to better compatibility and performance within the app. JSON was selected because it is lightweight and easier to parse, which improved the app’s speed and responsiveness.*
+    - *Data instances included real plant information and Wikipedia descriptions retrieved from APIs, while posts and user data were generated for development purposes.*
+    - *Firebase provided a robust authentication mechanism, ensuring secure user logins and data protection. However, its persistence capabilities were limited due to data transfer restrictions and occasional instability.*
+      <br><br>
 
-- **Others**: (only if significant and significantly different from an "average contribution")
-    - [Report Writing?] [Slides preparation?]*
-    - [You are welcome to provide anything that you consider as a contribution to the project or team.] e.g., APK, setups, firebase* <br><br>
+- **Others**: (only if significant and significantly different from an "average contribution") 
+    - Firebase: Initially implemented Firebase for data persistence but switched to local storage due to stability issues and data transfer limitations. This transition ensured better scalability and enhanced app reliability. The final submitted version does not include the related Firebase code, but integration attempts like firebase realtime database and could firestore are documented in the firebase_bug branch.*
+    <br><br>
 
 4. **u7733037, Hongjun Xu**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
@@ -286,9 +287,11 @@ Production Rules:
     * Description of feature: ... <br>
     * Description of your implementation: ... <br>
 
-2. [DataFiles]. Description  ... ... (...)
-    * Code to the Data File [users_interaction.json](link-to-file), [search-queries.xml](link-to-file), ...
-    * Link to the Firebase repo: ...
+2. [DataFiles]. Create at least 2500 valid data instances (easy)
+    * Code to the Data File [posts.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/posts.json), [plants.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/plants.json), [users.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/users.json), [posts_stream.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/posts_stream.json)
+    * Link to the Firebase repo: https://console.firebase.google.com/project/gp-24s1-fb08c/overview?hl=zh-cn
+    * Plants includes plant names, images, common names, scientific names, genus, family, and extensive descriptions, it sourced from APIs, ensuring accuracy and relevance.
+    * Posts and users were generated for development purposes, providing a realistic dataset for testing the app’s social features.
 
 3. [LoadShowData]. Implemented a page that shows information about a single plant instance.
     * Code: class PlantDetailShow: [PlantDetailShow.java](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PlantDetailShow.java)
@@ -313,10 +316,11 @@ Feature Category: Privacy <br>
    <br><br>
 
 Feature Category: Firebase Integration <br>
-3. [FB-Auth] Description of the feature (easy)
+3. [FB-Auth]. Implemented Firebase Authentication for secure user login and management. Users authenticate using their email and password (easy)
     * Code: [Class X, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
     * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
-    * Description of your implementation: ... <br>
+    * The UserRepository class handles user authentication, while the LoginActivity class manages user login UI and interaction. Upon successful authentication, users are redirected to the main activity of the application.
+
 
 Feature Category: User Interactivity <br>
 4. [Interact-Micro] User can like other users' posts by clicking the like button
