@@ -141,9 +141,10 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 5. **u7725171, Xing Chen**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
-    - Feature DataStream, Interact-Noti - class MyApp, NotificationService, NewEvent, NewEventHandler, NotificationAdapter, MessagesActivity
+    - Feature DataStream - class MyApp, NotificationService, NewEvent, NewEventHandler
     - Feature Interact-Micro - class PostAdapter, SocialFragment, SocialViewModel, PhotoDialogFragment
     - Feature Interact-Share - class PostShareActivity
+    - Feature Interact-Noti - class MyApp, NotificationService, NewEvent, NewEventHandler, NotificationAdapter, MessagesActivity
     - Feature Data-Profile, Data-Formats - class ProfileFragment, ProfilePage, MyPost, PlantDiscovered
     - Singleton Design Pattern - class PostTreeManager, PlantTreeManager, UserTreeManager, NewEventHandler
     - Observer Design Pattern - class NewEventHandler, MainActivity, ProfileFragment
@@ -432,6 +433,8 @@ Additionally, when users post threads, we similarly tokenize their textual input
 4. [DataStream]. After a user logs in, a background service periodically generates events where random users like the current app user's post. The user can see notifications of new events and handle them.
     * Code: NotificationService.java
     * The service will generate a new event representing other user's like action periodically.
+    * The service will also simulate other user sharing posts, reading post information from json.
+    * The social page can do real-time update when someone share a new post.
     * If the app user's newest post has less than 6 likes, it will be liked by a random user.
     * User will get notification both as system notification and UI updates.
    <br>
