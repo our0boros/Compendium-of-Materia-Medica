@@ -17,6 +17,7 @@ import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
 
 public class ProfilePage extends AppCompatActivity {
     private User appUser;
@@ -40,7 +41,7 @@ public class ProfilePage extends AppCompatActivity {
 
         // user avtar
         userAvatar = findViewById(R.id.profile_page_avatar);
-        loadImageFromURL(this, profileUser.getAvatar_url(),userAvatar,"Avatar");
+        updateUserAvatar();
         userAvatar.setOnClickListener(v -> {
             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(profileUser.getAvatar_url());
             photoDialogFragment.show(getSupportFragmentManager(), "photo_dialog");
@@ -96,6 +97,7 @@ public class ProfilePage extends AppCompatActivity {
         super.onResume();
         updatePostsNumber();
         updatePlantNumber();
+        updateUserAvatar();
     }
     private void updatePostsNumber() {
         int postCount = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.UID, profileUser.getUser_id()).size();
@@ -106,6 +108,9 @@ public class ProfilePage extends AppCompatActivity {
         int plantDiscovered = postTreeManager.getUserPlantDiscovered(profileUser.getUser_id()).size();
         plants_discovered_number.setText(String.valueOf(plantDiscovered));
         ProfileFragment.setUserLevelImage(userLevel, plantDiscovered);
+    }
+    private void updateUserAvatar(){
+        loadImageFromURL(this, UserTreeManager.getInstance().findUserById(profileUser.getUser_id()).getAvatar_url(),userAvatar,"Avatar");
     }
 
 }

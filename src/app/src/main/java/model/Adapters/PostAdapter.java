@@ -79,7 +79,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         if (postUser != null) {
             // Extracting post details
             String postUserUsername = postUser.getUsername();
-            String postUserAvatarURL = postUser.getAvatar_url();
+            String postUserAvatarURL = UserTreeManager.getInstance().findUserById(postUser.getUser_id()).getAvatar_url();
             String postPhotoURL = post.getPhoto_url();
             List<Token> postContent = post.getContent();
             String postTimestamp = post.getTimestamp();

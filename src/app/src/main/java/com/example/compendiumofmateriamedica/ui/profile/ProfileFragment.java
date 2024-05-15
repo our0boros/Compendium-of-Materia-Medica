@@ -44,6 +44,7 @@ import java.util.Locale;
 import model.Datastructure.NewEventHandler;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
 
 
 public class ProfileFragment extends Fragment implements NewEventHandler.EventObserver{
@@ -61,6 +62,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
     private Runnable notificationUpdateRunnable;
     private int plantsUserDiscovered;
     private PostTreeManager postTreeManager;
+    private ImageView userAvatar;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -82,8 +84,8 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
         eventHandler = NewEventHandler.getInstance();
 
         // user avatar
-        ImageView userAvatar = binding.profileUserAvatar;
-        loadImageFromURL(getContext(), currentUser.getAvatar_url(), userAvatar, "Avatar");
+        userAvatar = binding.profileUserAvatar;
+        loadImageFromURL(getContext(), UserTreeManager.getInstance().findUserById(currentUser.getUser_id()).getAvatar_url(), userAvatar, "Avatar");
         // click on avatar will show big picture
         userAvatar.setOnClickListener(v -> {
             PhotoDialogFragment photoDialogFragment = PhotoDialogFragment.newInstance(currentUser.getAvatar_url());
@@ -246,6 +248,8 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
         // 更新数量
         mViewModel.updateUserPlantDiscovered(postTreeManager.getUserPlantDiscovered(currentUser.getUser_id()).size());
         mViewModel.updateUserPost(postTreeManager.getPostsByUserId(currentUser.getUser_id()));
+        // 更新用户头像
+        loadImageFromURL(getContext(), UserTreeManager.getInstance().findUserById(currentUser.getUser_id()).getAvatar_url(), userAvatar, "Avatar");
 //        handler.post(notificationUpdateRunnable);
     }
     // when fragment is paused, close update
