@@ -5,6 +5,7 @@ import static model.UtilsApp.loadImageFromURL;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ public class ProfilePage extends AppCompatActivity {
     private TextView plants_discovered_number;
     private TextView posts_number;
     private ImageView back;
+    private final PostTreeManager postTreeManager = PostTreeManager.getInstance();
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -34,10 +36,8 @@ public class ProfilePage extends AppCompatActivity {
         // get user
         appUser = (User) getIntent().getSerializableExtra("AppUser");
         profileUser = (User) getIntent().getSerializableExtra("ProfileUser");
-        int uid = profileUser.getUser_id();
         String name = profileUser.getUsername();
 
-        PostTreeManager postTreeManager=PostTreeManager.getInstance();
         // user avtar
         userAvatar = findViewById(R.id.profile_page_avatar);
         loadImageFromURL(this, profileUser.getAvatar_url(),userAvatar,"Avatar");
@@ -49,15 +49,12 @@ public class ProfilePage extends AppCompatActivity {
         username = findViewById(R.id.profile_page_username);
         username.setText(profileUser.getUsername());
 
-        int plantDiscovered = postTreeManager.getUserPlantDiscovered(uid).size();
-
         // user level image
         userLevel = findViewById(R.id.profile_page_level_icon);
-        ProfileFragment.setUserLevelImage(userLevel, plantDiscovered);
 
         // plants discovered
         plants_discovered_number = findViewById(R.id.profile_page_plants_number);
-        plants_discovered_number.setText(String.valueOf(plantDiscovered));
+        updatePlantNumber();
         plants_discovered_number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +66,7 @@ public class ProfilePage extends AppCompatActivity {
 
         // post number
         posts_number = findViewById(R.id.profile_page_posts_number);
-        posts_number.setText(String.valueOf(postTreeManager.getPostsByUserId(uid).size()));
+        updatePostsNumber();
         posts_number.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,4 +91,21 @@ public class ProfilePage extends AppCompatActivity {
 
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updatePostsNumber();
+        updatePlantNumber();
+    }
+    private void updatePostsNumber() {
+        int postCount = postTreeManager.getPostsByUserId(profileUser.getUser_id()).size();
+        Log.d("ProfilePage", "Current user " + profileUser.getUsername() + " has " + postCount + " posts in post tree manager.");
+        posts_number.setText(String.valueOf(postCount));
+    }
+    private void updatePlantNumber(){
+        int plantDiscovered = postTreeManager.getUserPlantDiscovered(profileUser.getUser_id()).size();
+        plants_discovered_number.setText(String.valueOf(plantDiscovered));
+        ProfileFragment.setUserLevelImage(userLevel, plantDiscovered);
+    }
+
 }
