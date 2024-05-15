@@ -47,21 +47,22 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        generalFunctions = GeneralFunctions.getInstance(getBaseContext());
+//        generalFunctions = GeneralFunctions.getInstance(getBaseContext());
         // load data from files to trees
-        try {
-            userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
-            plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
-            postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        // initialization of singleton instances before any other activities started
-        userTreeManager = UserTreeManager.getInstance(userTree);
-        postTreeManager = PostTreeManager.getInstance(postTree);
-        plantTreeManager = PlantTreeManager.getInstance(plantTree);
+//        try {
+//            userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
+//            plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
+//            postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        // initialization of singleton instances before any other activities started
+//        userTreeManager = UserTreeManager.getInstance(userTree);
+//        postTreeManager = PostTreeManager.getInstance(postTree);
+//        plantTreeManager = PlantTreeManager.getInstance(plantTree);
+
         // check permission 'POST_NOTIFICATIONS'
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // request permission 'POST_NOTIFICATIONS' if do not have permission

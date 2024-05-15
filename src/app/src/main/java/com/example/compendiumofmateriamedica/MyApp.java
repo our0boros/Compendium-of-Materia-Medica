@@ -12,19 +12,52 @@ import androidx.core.app.NotificationCompat;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import model.Adapters.NotificationAdapter;
+import model.Datastructure.DataType;
+import model.Datastructure.GeneratorFactory;
 import model.Datastructure.NewEvent;
 import model.Datastructure.NewEventHandler;
+import model.Datastructure.Plant;
+import model.Datastructure.PlantTreeManager;
+import model.Datastructure.Post;
+import model.Datastructure.PostTreeManager;
+import model.Datastructure.RBTree;
+import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
 
 public class MyApp extends Application {
+    private RBTree<User> userTree;
+    private RBTree<Plant> plantTree;
+    private RBTree<Post> postTree;
+    private UserTreeManager userTreeManager;
+    private PostTreeManager postTreeManager;
+    private PlantTreeManager plantTreeManager;
+    private GeneralFunctions generalFunctions;
     private NewEventHandler eventHandler;
     private NotificationAdapter notificationAdapter;
     @Override
     public void onCreate(){
         super.onCreate();
+
+        generalFunctions = GeneralFunctions.getInstance(getBaseContext());
+        try {
+            userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
+            plantTree = (RBTree<Plant>) GeneratorFactory.tree(this, DataType.PLANT, R.raw.plants);
+            postTree = (RBTree<Post>) GeneratorFactory.tree(this, DataType.POST, R.raw.posts);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // initialization of singleton instances before any other activities started
+        userTreeManager = UserTreeManager.getInstance(userTree);
+        postTreeManager = PostTreeManager.getInstance(postTree);
+        plantTreeManager = PlantTreeManager.getInstance(plantTree);
 
         eventHandler = NewEventHandler.getInstance(new ArrayList<>());
         notificationAdapter = NotificationAdapter.getInstance(getApplicationContext(), new ArrayList<>());
