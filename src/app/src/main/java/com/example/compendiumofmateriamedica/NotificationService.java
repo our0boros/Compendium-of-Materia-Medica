@@ -47,6 +47,7 @@ public class NotificationService extends Service {
     private int currentIndex = 0; // index to read post from json
     private final int NOTIFICATION_PERIOD = 5000; // 每10秒执行一次，这里1000对应1秒
     private final int POST_PERIOD = 5000;
+    private final int DELAY = 5000;
 
     @Override
     public void onCreate() {
@@ -101,14 +102,14 @@ public class NotificationService extends Service {
             public void run() {
                 simulateLikes();
             }
-        }, 0, NOTIFICATION_PERIOD);
+        }, DELAY, NOTIFICATION_PERIOD);
         timer4post = new Timer();
         timer4post.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 simulateUserPosts();
             }
-        }, 0, POST_PERIOD);
+        }, DELAY * 2, POST_PERIOD);
     }
 
     private void stopTimer() {

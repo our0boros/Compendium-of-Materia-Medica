@@ -9,7 +9,7 @@ public class NewEvent {
     private Date eventTime;
 
     public enum EventType{
-        LIKE, COMMENT
+        LIKE, COMMENT, POST
     }
 
     public NewEvent(int postId, User eventUser, EventType eventType, Date eventTime) {
