@@ -98,7 +98,7 @@ public class ProfilePage extends AppCompatActivity {
         updatePlantNumber();
     }
     private void updatePostsNumber() {
-        int postCount = postTreeManager.getPostsByUserId(profileUser.getUser_id()).size();
+        int postCount = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.UID, profileUser.getUser_id()).size();
         Log.d("ProfilePage", "Current user " + profileUser.getUsername() + " has " + postCount + " posts in post tree manager.");
         posts_number.setText(String.valueOf(postCount));
     }
