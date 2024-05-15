@@ -59,6 +59,18 @@ public class Plant implements Comparable<Plant>{
         return description;
     }
 
+    public Object getByType(PlantTreeManager.PlantInfoType type) {
+        switch (type) {
+            case ID: return getId();
+            case COMMON_NAME: return getCommonName();
+            case SLUG: return getSlug();
+            case SCIENTIFIC_NAME: return getScientificName();
+            case GENUS: return getGenus();
+            case FAMILY: return getFamily();
+            default: return null;
+        }
+    }
+
     @Override
     public int compareTo(Plant plant) {
         return this.id - plant.id;

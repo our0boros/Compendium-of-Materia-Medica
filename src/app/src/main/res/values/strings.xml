@@ -5,7 +5,7 @@
     <string name="title_profile">Profile</string>
     <string name="search_text"></string>
     <string name="search_switch">Plant/Post</string>
-    <string name="greeting_msg">Hi [], what you want to know?</string>
+    <string name="greeting_msg">Hi []\nWhat do you want to search?</string>
     <string-array name="plants_attribute">
         <item>Grammar Search</item>
         <item>ID</item>

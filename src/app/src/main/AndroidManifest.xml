@@ -77,16 +77,13 @@
             android:name=".ui.profile.MessagesActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.profile.MyPoints"
-            android:exported="false" />
-        <activity
             android:name=".ui.profile.MyPost"
             android:exported="false" />
         <activity
             android:name=".ui.profile.ProfilePage"
             android:exported="false" />
         <activity
-            android:name=".ui.profile.MySearchHistory"
+            android:name=".ui.profile.PlantDiscovered"
             android:exported="false" />
         <activity
             android:name=".ui.profile.PersonalInfo"
@@ -99,9 +96,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.profile.PrivacyPolicy"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.PlantDiscovered"
             android:exported="false" />
 
         <!-- notification service activity-->

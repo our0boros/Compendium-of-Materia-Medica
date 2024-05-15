@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="30sp"
-        android:text="Title"/>
+        android:text="Title"
+        android:fontFamily="@font/aver"/>
 
     <!--content-->
     <TextView
@@ -31,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:text="Write something~"/>
+        android:text="Write something~"
+        android:fontFamily="@font/roboto"/>
 
 </LinearLayout>

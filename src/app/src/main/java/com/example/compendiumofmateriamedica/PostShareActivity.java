@@ -3,12 +3,8 @@ package com.example.compendiumofmateriamedica;
 import static model.UtilsApp.loadImageFromURL;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.asynclayoutinflater.view.AsyncLayoutInflater;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,7 +26,6 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,11 +49,10 @@ import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
-import model.Datastructure.RBTreeNode;
 import model.Datastructure.User;
 import model.Parser.Token;
 import model.Parser.Tokenizer;
-import model.Plant_Identification;
+import model.PlantIdentification;
 
 
 /**
@@ -110,7 +104,7 @@ public class PostShareActivity extends AppCompatActivity {
         Thread thread = new Thread(() -> {
             Log.println(Log.ASSERT, "START THREAD", "=================================== START THREAD =================================== ");
             Log.println(Log.ASSERT, "API INPUT", photoPath);
-            String result = Plant_Identification.getPlantNetAPIResult(photoPath);
+            String result = PlantIdentification.getPlantNetAPIResult(photoPath);
             Log.println(Log.ASSERT, "API RESULT", result);
             try {
 
@@ -138,7 +132,7 @@ public class PostShareActivity extends AppCompatActivity {
                                     .get(0),
                             "no slug",
                             sciName,
-                            Plant_Identification.getFromWiki(sciName, "image"),
+                            PlantIdentification.getFromWiki(sciName, "image"),
                             (String) jsonObject.getJSONArray("results")
                                     .getJSONObject(0)
                                     .getJSONObject("species")
@@ -149,7 +143,7 @@ public class PostShareActivity extends AppCompatActivity {
                                     .getJSONObject("species")
                                     .getJSONObject("family")
                                     .get("scientificNameWithoutAuthor"),
-                            Plant_Identification.getFromWiki(sciName, "content")
+                            PlantIdentification.getFromWiki(sciName, "content")
                     );
                     Log.println(Log.ASSERT, "API RESULT", "Create new result: " + currentPlant);
                     PlantTreeManager.getInstance().insert(currentPlant.getId(), currentPlant);
@@ -216,17 +210,19 @@ public class PostShareActivity extends AppCompatActivity {
                     // 暂时不能post
                     showCannotPostDialog();
                     // 显示一个对话框提示一下
-                } else{
+                } else {
                     // share post
-                    sharePost(postContent, photoPath);
-                    // go back to MainActivity
-                    Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
-                    // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    // 指定返回MainActivity中的SocialFragment
-                    intent.putExtra("navigate_fragment_id", R.id.navigation_social);
-                    intent.putExtra("User", currentUser);
-                    startActivity(intent);
+                    boolean success = sharePost(postContent, photoPath);
+                    if (success) {
+                        // go back to MainActivity
+                        Intent intent = new Intent(PostShareActivity.this, MainActivity.class);
+                        // 清除历史堆栈中MainActivity之上的所有activity并回到MainActivity，节省堆栈空间
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        // 指定返回MainActivity中的SocialFragment
+                        intent.putExtra("navigate_fragment_id", R.id.navigation_social);
+                        intent.putExtra("User", currentUser);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -321,7 +317,7 @@ public class PostShareActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
-    private void sharePost(EditText postContent, String photoURL){
+    private boolean sharePost(EditText postContent, String photoURL){
         Log.d("SharePost", "Share post......");
         // 为生成post设置变量
         int postId = PostTreeManager.getInstance().getTreeSize() + 1;
@@ -335,10 +331,17 @@ public class PostShareActivity extends AppCompatActivity {
         String timestamp = sdf.format(now);
 
         // 生成Post并加入到当前app的MainActivity的postTree中
-        Tokenizer tokenizer = new Tokenizer(content);
-        Post post = new Post(postId, uid, plantId, photo, tokenizer.getFullToken(), timestamp);
-        PostTreeManager.getInstance().insert(post.getPost_id(), post);
-        Log.d("SharePost", "Post added to the postTree in MainActivity");
+        try {
+            Tokenizer tokenizer = new Tokenizer(content);
+            Post post = new Post(postId, uid, plantId, photo, tokenizer.getFullToken(), timestamp);
+            PostTreeManager.getInstance().insert(post.getPost_id(), post);
+            Log.d("SharePost", "Post added to the postTree in MainActivity");
+            return true;
+        } catch (Token.IllegalTokenException e) {
+            Toast.makeText(getBaseContext(), "Invalid Token Please Try other words", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
     }
     private void setTextViewContent(TextView textView, String label, String content){
         // 创建一个SpannableString对象
