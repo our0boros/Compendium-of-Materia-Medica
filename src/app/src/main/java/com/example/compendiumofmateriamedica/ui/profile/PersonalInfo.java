@@ -17,6 +17,7 @@ import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 
 import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
 
 /**
  * @author: Tianhao Shan
@@ -40,7 +41,7 @@ public class PersonalInfo extends AppCompatActivity implements UserAvatarDialogF
         user_name = findViewById(R.id.profile_username);
         user_name.setText(currentUser.getUsername());
         avatar = findViewById(R.id.user_avatar);
-        loadImageFromURL(this, currentUser.getAvatar_url(), avatar, "Avatar");
+        loadImageFromURL(this, UserTreeManager.getInstance().findUserById(currentUser.getUser_id()).getAvatar_url(), avatar, "Avatar");
 
 
         // jump to dialog fragment
@@ -80,7 +81,7 @@ public class PersonalInfo extends AppCompatActivity implements UserAvatarDialogF
         user_name = findViewById(R.id.profile_username);
         user_name.setText(currentUser.getUsername());
         avatar = findViewById(R.id.user_avatar);
-        loadImageFromURL(this, currentUser.getAvatar_url(), avatar, "Avatar");
+        loadImageFromURL(this, UserTreeManager.getInstance().findUserById(currentUser.getUser_id()).getAvatar_url(), avatar, "Avatar");
     }
 
 }

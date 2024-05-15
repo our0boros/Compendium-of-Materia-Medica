@@ -24,6 +24,7 @@ import com.example.compendiumofmateriamedica.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
 
 
 public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
@@ -74,7 +75,7 @@ public class UserAvatarDialogFragment extends BottomSheetDialogFragment {
                 if (isValidRoboHashURL(imageUrl)){
                     //Perform upload operation using the URL (update user avatar_url)
                     loadImageFromURL(getContext(), imageUrl, image_avatar, "Avatar");
-                    currentUser.setAvatar_url(imageUrl);
+                    UserTreeManager.getInstance().findUserById(currentUser.getUser_id()).setAvatar_url(imageUrl);
                 }else{
                     Toast.makeText(getContext(), "Invalid URL. We only accept avatar from 'https://robohash.org/'", Toast.LENGTH_SHORT).show();
 

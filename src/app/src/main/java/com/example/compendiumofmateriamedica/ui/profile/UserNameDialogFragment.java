@@ -15,6 +15,8 @@ import com.example.compendiumofmateriamedica.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import model.Datastructure.User;
+import model.Datastructure.UserTreeManager;
+
 /**
  * @author: Tianhao Shan
  * @datetime: 2024/5
