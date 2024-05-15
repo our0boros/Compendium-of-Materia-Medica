@@ -185,6 +185,7 @@ public class PostTreeManager implements TreeManager<Post> {
         }
         // Search post with given uID
         ArrayList<Post> user_post_data = instance.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+        System.out.println(user_post_data.size());
 //        Log.w("PostTree root",""+instance.postRBTree);
         List<Post> user_post_data_list = new ArrayList<>();
         if (!user_post_data.isEmpty()) {

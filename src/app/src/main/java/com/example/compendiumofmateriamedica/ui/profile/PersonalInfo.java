@@ -54,7 +54,7 @@ public class PersonalInfo extends AppCompatActivity implements UserAvatarDialogF
         user_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserNameDialogFragment dialogFragment = UserNameDialogFragment.newInstance(currentUser);
+                UserNameDialogFragment dialogFragment = UserNameDialogFragment.newInstance();
                 dialogFragment.show(getSupportFragmentManager(), "user_name_dialog");
             }
 
