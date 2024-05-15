@@ -60,6 +60,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
     private Handler handler;
     private Runnable notificationUpdateRunnable;
     private int plantsUserDiscovered;
+    private PostTreeManager postTreeManager;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -71,7 +72,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
                              @Nullable Bundle savedInstanceState) {
 
         // Initialize PostTreeManager
-        PostTreeManager postTreeManager = PostTreeManager.getInstance();
+        postTreeManager = PostTreeManager.getInstance();
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         mViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
@@ -242,6 +243,9 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
         }
         // 开始定期更新通知数量
         eventHandler.addObserver(this);
+        // 更新数量
+        mViewModel.updateUserPlantDiscovered(postTreeManager.getUserPlantDiscovered(currentUser.getUser_id()).size());
+        mViewModel.updateUserPost(postTreeManager.getPostsByUserId(currentUser.getUser_id()));
 //        handler.post(notificationUpdateRunnable);
     }
     // when fragment is paused, close update

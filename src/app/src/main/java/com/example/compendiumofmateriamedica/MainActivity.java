@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity implements NewEventHandler.E
     @Override
     protected void onStop() {
         super.onStop();
-        // Unregister EventBus
-//        EventBus.getDefault().unregister(this);
-        // Stop notification service
-        stopNotificationService();
+//        // Unregister EventBus
+////        EventBus.getDefault().unregister(this);
+//        // Stop notification service
+//        stopNotificationService();
     }
 
     // Method to initialize the badge for the profile menu item

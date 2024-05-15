@@ -27,6 +27,9 @@ public class PostTreeManager implements TreeManager<Post> {
     private static PostTreeManager instance;
 
     private PostTreeManager(RBTree<Post> postRBTree) {
+        if (instance != null) {
+            throw new IllegalStateException("Instance already created");
+        }
         this.postRBTree = postRBTree;
     }
 
@@ -38,7 +41,7 @@ public class PostTreeManager implements TreeManager<Post> {
     }
 
     // getter
-    public static PostTreeManager getInstance() {
+    public synchronized static PostTreeManager getInstance() {
         if (instance == null) {
             throw new IllegalStateException("Instance not created. Call getInstance(RBTree<Post>) first.");
         }
@@ -169,7 +172,7 @@ public class PostTreeManager implements TreeManager<Post> {
             return null;
         }
         // Search post with given postId
-        ArrayList<Post> searchResult = instance.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
+        ArrayList<Post> searchResult = search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(postId));
         // Check user validation, uid is unique
         if (!searchResult.isEmpty()) {
             return searchResult.get(0);
@@ -184,7 +187,9 @@ public class PostTreeManager implements TreeManager<Post> {
             return null;
         }
         // Search post with given uID
-        ArrayList<Post> user_post_data = instance.search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+        ArrayList<Post> user_post_data = search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
+        if(user_post_data != null)
+            Log.d("PostTreeManager", "This user has " + user_post_data.size() + " posts in me.");
 //        Log.w("PostTree root",""+instance.postRBTree);
         List<Post> user_post_data_list = new ArrayList<>();
         if (!user_post_data.isEmpty()) {
@@ -193,7 +198,7 @@ public class PostTreeManager implements TreeManager<Post> {
             }
             return user_post_data_list;
         } else {
-            Log.w("MainActivity", "Get posts by user id" + uid + " failed, there is no posts of this user");
+            Log.w("PostTreeManager", "Get posts by user id" + uid + " failed, there is no posts of this user");
         }
         return user_post_data_list;
     }
