@@ -100,7 +100,7 @@ public class ProfilePage extends AppCompatActivity {
         updateUserAvatar();
     }
     private void updatePostsNumber() {
-        int postCount = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.UID, profileUser.getUser_id()).size();
+        int postCount = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.UID, String.valueOf(profileUser.getUser_id())).size();
         Log.d("ProfilePage", "Current user " + profileUser.getUsername() + " has " + postCount + " posts in post tree manager.");
         posts_number.setText(String.valueOf(postCount));
     }
