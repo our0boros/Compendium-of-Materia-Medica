@@ -9,6 +9,11 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
+ * @author: Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description:
+ * Read the plain text of the input and convert it into a machine-friendly concrete variable class
+ * String -> Map< String, String >
  * parser grammar:
  * <Exp>        := <TagColumn>, <TextColumn>, <METHOD> | <TextColumn>, <TagColumn>, <METHOD>
  * <TagColumn>  := #: { <Content> },
@@ -17,7 +22,7 @@ import java.util.Stack;
  * <Content>    := STR | STR, <Content>
  */
 public class SearchGrammarParser {
-
+    // Exceptions
     public static class IllegalProductionException extends IllegalArgumentException {
         public IllegalProductionException(String errorMessage) {
             super(errorMessage);
@@ -25,7 +30,7 @@ public class SearchGrammarParser {
     }
 
     Tokenizer tokenizer;
-    // false as &, true as |
+    // Only accept AND, OR
     Token.Type searchMethod = null;
     Map<String, String> output;
 
@@ -33,6 +38,12 @@ public class SearchGrammarParser {
         this.tokenizer = tokenizer;
     }
 
+    /**
+     * Parse tokens into expression
+     * <Exp>        := <TagColumn>, <TextColumn>, <METHOD> | <TextColumn>, <TagColumn>, <METHOD>
+     * @return
+     * @throws IllegalAccessException
+     */
     public Map<String, String> parseExp() throws IllegalAccessException {
 
         Log.println(Log.ASSERT, "DEBUG", "[parseExp] start parsing token");
@@ -91,7 +102,11 @@ public class SearchGrammarParser {
         return output;
     }
 
-    // <TagColumn>  := #: { <Content> },
+    /**
+     * Parse Tag column into Content
+     * <TagColumn>  := #: { <Content> },
+     * @return Tag list
+     */
     public ArrayList<String> parseTagColumn() {
         ArrayList<Token> fullToken = tokenizer.getFullToken();
         if (fullToken.get(0).getType() == Token.Type.TAG &&
@@ -109,7 +124,12 @@ public class SearchGrammarParser {
             throw new IllegalProductionException("Unexpected token...");
         }
     }
-    // <TextColumn>  := $: { <Content> },
+
+    /**
+     * Parse Text column into Content
+     * <TextColumn>  := $: { <Content> },
+     * @return Text list
+     */
     public ArrayList<String> parseTextColumn() {
         ArrayList<Token> fullToken = tokenizer.getFullToken();
         if (fullToken.get(0).getType() == Token.Type.TEXT &&
@@ -127,7 +147,12 @@ public class SearchGrammarParser {
             throw new IllegalProductionException("Unexpected token...");
         }
     }
-    // <Content>    := STR | STR, <Content>
+
+    /**
+     * Parse Content into Real Token or next Content
+     * <Content>    := STR | STR, <Content>
+     * @return Token List
+     */
     public ArrayList<String> parseContent() {
         ArrayList<Token> fullToken = tokenizer.getFullToken();
         // Case: STR

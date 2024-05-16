@@ -28,15 +28,18 @@ import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
 import model.Datastructure.RBTreeNode;
 
+/**
+ * @author: Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description: Used to load and display specific plant content, mainly displaying pictures of plants and their common names
+ */
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder> {
     private Context context;
     private ArrayList<Integer> data;
-//    private PlantTreeManager plantTreeManager;
 
     public GridAdapter(Context context, ArrayList<Integer> data) throws JSONException, IOException {
         this.context = context;
         this.data = data;
-//        plantTreeManager = PlantTreeManager((RBTree<Plant>) GeneratorFactory.tree(this.context, DataType.PLANT, R.raw.plants));
 
     }
 
@@ -52,12 +55,14 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
         ArrayList<Plant> plants = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.ID, String.valueOf(data.get(position)));
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: plants size " + plants.size());
         String plantURL = plants.get(0).getImage();
+        // Load plant image
         loadImageFromURL(this.context, plantURL, holder.plantImage, "Photo");
+        // load plant names
         String plantName = plants.get(0).getCommonName();
         String plantFamily = plants.get(0).getFamily();
         holder.postContent.setText(plantName);
         holder.plantSubheading.setText(plantFamily);
-
+        // jump to detail page when clicked
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

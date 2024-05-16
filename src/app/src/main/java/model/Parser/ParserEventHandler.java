@@ -19,29 +19,43 @@ import model.Datastructure.PlantTreeManager;
 import model.Datastructure.Post;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTreeNode;
-
+/**
+ * @author: Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description: Mainly handles the format transformation of various
+ * indexed contents, such as converting the
+ * HashMap<index id, number of occurrences> table into a valid index
+ * id list
+ */
 public class ParserEventHandler {
     /**
-     *
+     * According to the input data type, a search table (including
+     * various tags and corresponding content) is converted into
+     * a table of searched object IDs and their occurrence times,
+     * and fuzzy search is added.
      * @param searchParam
      * @param dataType
-     * @return
+     * @param bestSimilarity
+     * @return searchResult
      */
-    private static Map<Integer, Integer> getSearchedResultsFromParameters(Map<String, String> searchParam, DataType dataType) {
+    private static Map<Integer, Integer> getSearchedResultsFromParameters(Map<String, String> searchParam, DataType dataType, double bestSimilarity) {
         // 遍历搜索attribute
         Map<Integer, Integer> searchResult = new HashMap<>();
-
+        // Iterate each search entities
         for (Map.Entry<String, String> entry : searchParam.entrySet()) {
             System.out.println("[getSearchedResultsFromParameters] entry: " + entry.getKey() + " | " + entry.getValue());
             try {
                 ArrayList<?> temp;
-
+                // PLANT CASE
                 if (dataType == DataType.PLANT) {
                     temp = PlantTreeManager.getInstance().search(
                             PlantTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
+                    // if can not find mapping results, try blur search
                     if (temp.size() == 0) {
-                        // if can not find mapping results, try blur search
-                        String guessValue = getSearchedResultsFromBlurParameter(PlantTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
+                        String guessValue = getSearchedResultsFromBlurParameter(
+                                PlantTreeManager.getInstance().getTypeByString(entry.getKey()),
+                                entry.getValue(),
+                                bestSimilarity);
                         if (!guessValue.equals("")) {
                             temp = PlantTreeManager.getInstance().search(
                                     PlantTreeManager.getInstance().getTypeByString(entry.getKey()), guessValue);
@@ -49,17 +63,22 @@ public class ParserEventHandler {
                         }
 
                     }
+                    // Parse data
                     for (Object node : temp) {
                         Integer nodeValueIndex = null;
                         nodeValueIndex = ((Plant) node).getId();
                         searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 1) + 1);
                     }
+                    // POST CASE
                 }else if (dataType == DataType.POST) {
                     temp = PostTreeManager.getInstance().search(
                             PostTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
+                    // if can not find mapping results, try blur search
                     if (temp.size() == 0) {
-                        // if can not find mapping results, try blur search
-                        String guessValue = getSearchedResultsFromBlurParameter(PostTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
+                        String guessValue = getSearchedResultsFromBlurParameter(
+                                PostTreeManager.getInstance().getTypeByString(entry.getKey()),
+                                entry.getValue(),
+                                bestSimilarity);
                         if (!guessValue.equals("")) {
                             temp = PostTreeManager.getInstance().search(
                                     PostTreeManager.getInstance().getTypeByString(entry.getKey()), guessValue);
@@ -67,6 +86,7 @@ public class ParserEventHandler {
                         }
 
                     }
+                    // Parse data
                     for (Object node : temp) {
                         Integer nodeValueIndex = null;
                         nodeValueIndex = ((Post) node).getPost_id();
@@ -76,27 +96,38 @@ public class ParserEventHandler {
                     temp = new ArrayList<>();
                 }
 
-
             } catch (Exception e) {
+                // Skip these data parser if can not parse search value
                 continue;
             }
         }
         return searchResult;
     }
 
-    public static String getSearchedResultsFromBlurParameter(PlantTreeManager.PlantInfoType plantInfoType, String value) {
+    /**
+     * Compare the current parameters with all related instances.
+     * If the similarity is greater than the preset threshold,
+     * return the value closest to the original value.
+     * @param plantInfoType
+     * @param bestSimilarity
+     * @param value
+     * @return
+     */
+    public static String getSearchedResultsFromBlurParameter(PlantTreeManager.PlantInfoType plantInfoType, String value, double bestSimilarity) {
         System.out.println("=== [getSearchedResultsFromBlurParameter] ===");
         // get all plant list
-        double bestSimilarity = 0.5;
         String guessValue = "";
-        if (!(plantInfoType == PlantTreeManager.PlantInfoType.COMMON_NAME ||
-        plantInfoType == PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME ||
-        plantInfoType == PlantTreeManager.PlantInfoType.FAMILY)) {
+        // Only solve following case, and when best similarity larger than 0
+        if (!(bestSimilarity > 0 ||
+            plantInfoType == PlantTreeManager.PlantInfoType.COMMON_NAME ||
+            plantInfoType == PlantTreeManager.PlantInfoType.SCIENTIFIC_NAME ||
+            plantInfoType == PlantTreeManager.PlantInfoType.FAMILY)) {
             return guessValue;
         }
-
+        // get search list
         ArrayList<Plant> plantArrayList = PlantTreeManager.getInstance().search(PlantTreeManager.PlantInfoType.COMMON_NAME, "");
         System.out.println(plantArrayList.size());
+        // Iterate each entities
         for (Plant plant : plantArrayList) {
             double similarity = calculateStringSimilarity((String) plant.getByType(plantInfoType), value);
             if (similarity > bestSimilarity) {
@@ -107,12 +138,12 @@ public class ParserEventHandler {
         }
         return guessValue;
     }
-    public static String getSearchedResultsFromBlurParameter(PostTreeManager.PostInfoType postInfoType, String value) {
+    public static String getSearchedResultsFromBlurParameter(PostTreeManager.PostInfoType postInfoType, String value, double bestSimilarity) {
         System.out.println("=== [getSearchedResultsFromBlurParameter] ===");
         // get all plant list
-        double bestSimilarity = 0.5;
         String guessValue = "";
-        if (!(postInfoType == PostTreeManager.PostInfoType.CONTENT)) {
+        if (!(bestSimilarity > 0 ||
+            postInfoType == PostTreeManager.PostInfoType.CONTENT)) {
             return guessValue;
         }
         ArrayList<Post> postArrayList = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.CONTENT, "");
@@ -129,20 +160,25 @@ public class ParserEventHandler {
     }
 
     /**
-     *
+     * Through the matching table of the obtained ID and the number of occurrences,
+     * the correct ID list is returned according to the current search method.
+     * If the search method is AND, it means that the returned list must be the
+     * number of occurrences of the ID equal to the total number of parameters. If
+     * it is OR, it means that the returned list must be the number of occurrences
+     * of any ID.
      * @param searchResult
      * @param searchType
      * @param paramLength
-     * @return
+     * @return IDList
      */
     private static ArrayList<Integer> getIDListFromSearchedResults(Map<Integer, Integer> searchResult, Token.Type searchType, int paramLength) {
         ArrayList<Integer> IDList = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : searchResult.entrySet()) {
-            // 如果是OR直接添加
+            // If it is OR, add it directly
             if (searchType == Token.Type.OR) {
                 IDList.add(entry.getKey());
             }
-            // 如果是AND 只添加出现次数与attribute size相同的plant
+            // If it is AND, only add plants with the same number of occurrences as attribute size.
             if (searchType == Token.Type.AND && paramLength == entry.getValue()) {
                 IDList.add(entry.getKey());
             }
@@ -150,7 +186,18 @@ public class ParserEventHandler {
         }
         return IDList;
     }
-    public static ArrayList<Integer> getIDListFromGrammarText(String text, DataType dataType) {
+
+    /**
+     * Read the string that conforms to the grammatical format
+     * and convert it into a list of corresponding object IDs
+     * required for actual search results through Tokenizer and
+     * parser.
+     * @param text
+     * @param dataType
+     * @param bestSimilarity
+     * @return IDList
+     */
+    public static ArrayList<Integer> getIDListFromGrammarText(String text, DataType dataType, double bestSimilarity) {
         // 反之进行语法判定逻辑
         try {
             // Search with grammar
@@ -159,7 +206,7 @@ public class ParserEventHandler {
             Map<String, String> searchParam = searchGrammarParser.parseExp();
             Token.Type searchMethod = searchGrammarParser.getSearchMethod(); // otherwise AND
             // get List IDs
-            Map<Integer, Integer> searchResult = getSearchedResultsFromParameters(searchParam, dataType);
+            Map<Integer, Integer> searchResult = getSearchedResultsFromParameters(searchParam, dataType, bestSimilarity);
 
             // 准备跳转数据
             // 既然Node无法序列化那就用Id list
@@ -171,13 +218,14 @@ public class ParserEventHandler {
             return null;
         }
     }
+    // ===========================================================
+    // Calculate edit distance
+    // ===========================================================
 
-    // 计算编辑距离
     private static int calculateEditDistance(String s1, String s2) {
         int m = s1.length();
         int n = s2.length();
-
-        // 初始化二维数组
+        //Initialize the two-dimensional array
         int[][] dp = new int[m + 1][n + 1];
         for (int i = 0; i <= m; i++) {
             dp[i][0] = i;
@@ -185,8 +233,7 @@ public class ParserEventHandler {
         for (int j = 0; j <= n; j++) {
             dp[0][j] = j;
         }
-
-        // 动态规划计算编辑距离
+        // Dynamic programming calculates edit distance
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
@@ -200,7 +247,15 @@ public class ParserEventHandler {
         return dp[m][n];
     }
 
-    // 计算字符串相似度（基于编辑距离）
+    /**
+     * Calculate string similarity (based on edit distance)
+     * Determining the similarity between two strings through the
+     * method of minimal modification ensures that the expected
+     * results can still be found when the user makes an input error.
+     * @param s1
+     * @param s2
+     * @return
+     */
     private static double calculateStringSimilarity(String s1, String s2) {
         int editDistance = calculateEditDistance(s1, s2);
         int maxLength = Math.max(s1.length(), s2.length());

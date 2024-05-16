@@ -10,6 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * @author: Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description: A method common to the entire app,
+ * it will preload a single instance when the app
+ * is loaded and use the singleton mode.
+ */
 public class GeneralFunctions {
     private static GeneralFunctions instance;
     private static Context context;
@@ -27,24 +34,24 @@ public class GeneralFunctions {
         }
         return instance;
     }
-    // 添加加载敏感词次词库
+    // Add and load sensitive word dictionary
     public static boolean isSensitiveWord(String word) {
         try {
-            // 打开 raw 文件中的文件输入流
+            // Open the file input stream in the raw file
             InputStream inputStream = context.getResources().openRawResource(R.raw.sensitive_words);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-            // 逐行读取字符
+            // Read characters line by line
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                // 与当前字符进行匹配
+                // Match the current character
                 if (line.contains(word)) {
                     return true;
                 }
             }
 
-            // 关闭流
+            // close the stream
             bufferedReader.close();
             inputStreamReader.close();
             inputStream.close();
@@ -54,6 +61,7 @@ public class GeneralFunctions {
         return false;
     }
 
+    // Display Toast anywhere
     public void makeToast(String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }

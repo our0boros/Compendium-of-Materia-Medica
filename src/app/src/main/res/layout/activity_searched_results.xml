@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
-                android:text="科普条目" />
+                android:text="Plant Entries" />
 
             <TextView
                 android:id="@+id/searchedResultViewmore"

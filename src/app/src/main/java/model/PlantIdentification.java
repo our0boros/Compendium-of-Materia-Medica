@@ -26,17 +26,24 @@ import java.util.UUID;
 
 import okhttp3.*;
 
-//import org.apache.http.HttpEntity;
-//import org.apache.http.HttpResponse;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.entity.mime.MultipartEntityBuilder;
-//import org.apache.http.entity.mime.content.FileBody;
-//import org.apache.http.impl.client.HttpClientBuilder;
-//import org.apache.http.util.EntityUtils;
-
+/**
+ * @author: Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description: Encapsulate the API request process into a single method through Facade Pattern and use
+ * <NOTE>
+ *     In actual use, for data security issues, we should place the API token
+ *     in a safe location such as the backend to prevent others from stealing it.
+ *     However, there is no relevant hardware facility for the current project,
+ *     so we temporarily obtain it as a simple variable.
+ * </NOTE>
+ */
 public class PlantIdentification {
-
+	/**
+	 * Convert an image to a Base64 encoded string.
+	 * @param imagePath The path to the image file.
+	 * @return The Base64 encoded string representation.
+	 * @throws IOException If an I/O error occurs.
+	 */
 	public static String imageToBase64(String imagePath) throws IOException {
 		File file = new File(imagePath);
 		byte[] bytesArray = new byte[(int) file.length()];
@@ -46,32 +53,34 @@ public class PlantIdentification {
 		return Base64.getEncoder().encodeToString(bytesArray);
 	}
 
+	/**
+	 * Retrieves the result from the Plant ID API using the provided image.
+	 * <API>PlantID</API>
+	 * @param imagePath The path to the image file.
+	 * @return The JSON result from the Plant ID API.
+	 * @throws IOException If an I/O error occurs.
+	 */
 	public static String getPlantIDAPIResult(String imagePath) throws IOException {
 		String base64Image = imageToBase64(imagePath);
-
+		// Basic Parameters
 		String url = "https://plant.id/api/v3/identification";
 		String apiKey = "bGyxGZY0G38H9nbLMYq0FbqmLZEQZYSUn98DunmqkmNglnQXDO";
-
-		// 设置请求数据
+		// Set request data
 		String jsonData = "{\"images\": [\"data:image/jpg;base64," + base64Image + "\"]}";
-
-		// 发送 POST 请求
+		// Send POST request
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-		// 设置请求头
+		// Set request headers
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Content-Type", "application/json");
 		con.setRequestProperty("Api-Key", apiKey);
-
-		// 向服务器发送数据
+		// Send data to server
 		con.setDoOutput(true);
 		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 		wr.writeBytes(jsonData);
 		wr.flush();
 		wr.close();
-
-		// 读取服务器响应
+		// Read server response
 		int responseCode = con.getResponseCode();
 		System.out.println("Response Code: " + responseCode);
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -81,16 +90,20 @@ public class PlantIdentification {
 			response.append(inputLine);
 		}
 		in.close();
-
-		// 打印响应内容
-//		System.out.println("Response: " + response.toString());
+		// return response string
 		return response.toString();
 	}
-
+	/**
+	 * Retrieves the result from the Plant ID API using the provided image.
+	 * <API>Pl@ntNet</API>
+	 * @param imagePath The path to the image file.
+	 * @return The JSON result from the Plant ID API.
+	 * @throws IOException If an I/O error occurs.
+	 */
 	public static String getPlantNetAPIResult(String imagePath) {
 		StringBuilder response = new StringBuilder();
-
-		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // Your API_KEY here
+		// Basic Parameters
+		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // API_KEY
 		String PROJECT = "canada"; // try specific floras: "weurope", "canada"…
 		String api_endpoint = String.format("https://my-api.plantnet.org/v2/identify/%s?api-key=%s",
 				PROJECT, API_KEY);
@@ -164,54 +177,31 @@ public class PlantIdentification {
 		}
 		return response.toString();
 	}
-
-	private static Uri getFileUriFromMediaStore(Context context, String filePath) {
-		// 查询 MediaStore 获取文件的 Uri
-		Uri fileUri = null;
-		String[] projection = {MediaStore.Images.Media._ID};
-		String selection = MediaStore.Images.Media.DATA + "=?";
-		String[] selectionArgs = {filePath};
-		Cursor cursor = null;
-
-		try {
-			cursor = context.getContentResolver().query(
-					MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-					projection,
-					selection,
-					selectionArgs,
-					null
-			);
-
-			if (cursor != null && cursor.moveToFirst()) {
-				int columnIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-				long imageId = cursor.getLong(columnIndex);
-				fileUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Long.toString(imageId));
-			}
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-		}
-
-		return fileUri;
-	}
-
+	/**
+	 * Retrieves the result from the Plant ID API using the provided image.
+	 * <API>Pl@ntNet</API>
+	 * @param imagePath The path to the image file.
+	 * @return The JSON result from the Plant ID API.
+	 * @throws IOException If an I/O error occurs.
+	 */
 	public static String getPlantNetAPIResultOKHttp(String imagePath) {
 
-		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // Your API_KEY here
+		String API_KEY = "2b10sgwYhB8pSqL6gMuqa3R"; // API_KEY here
 		String PROJECT = "all"; // try specific floras: "weurope", "canada"…
 		String API_ENDPOINT = "https://my-api.plantnet.org/v2/identify/" + PROJECT + "?api-key=" + API_KEY;
 		String responseBody = "";
 
 		File file = new File(imagePath);
-		// 检查文件是否存在
+		// Check if the file exists
 		if (file.exists()) {
-			// 文件存在，进行相应操作
+			// The file exists, perform corresponding operations
 			System.out.println("File exists!");
 		} else {
-			// 文件不存在，进行相应处理
+			// The file does not exist, handle it accordingly.
 			System.out.println("File does not exist!");
+			return "";
 		}
+		// HTTP Request
 		OkHttpClient client = new OkHttpClient();
 
 		RequestBody requestBody = new MultipartBody.Builder()
@@ -226,7 +216,7 @@ public class PlantIdentification {
 				.url(API_ENDPOINT)
 				.post(requestBody)
 				.build();
-
+		// Waiting for request
 		try {
 			Response response = client.newCall(request).execute();
 			if (response.isSuccessful()) {
@@ -242,35 +232,12 @@ public class PlantIdentification {
 		return responseBody;
 	}
 
-
-//	public static String getPlantNetAPIResultApache(String imagePath) {
-//
-//		final String PROJECT = "all"; // try specific floras: "weurope", "canada"…
-//		final String URL = "https://my-api.plantnet.org/v2/identify/" + PROJECT + "?api-key=2b10sgwYhB8pSqL6gMuqa3R";
-//
-//		File file = new File(imagePath);
-//
-//		HttpEntity entity = MultipartEntityBuilder.create()
-//				.addPart("images", new FileBody(file)).addTextBody("organs", "flower")
-//				.addPart("images", new FileBody(file)).addTextBody("organs", "leaf")
-//				.build();
-//
-//		HttpPost request = new HttpPost(URL);
-//		request.setEntity(entity);
-//
-//		HttpClient client = HttpClientBuilder.create().build();
-//		HttpResponse response;
-//		String jsonString = "";
-//		try {
-//			response = client.execute(request);
-//			jsonString = EntityUtils.toString(response.getEntity());
-//			System.out.println(jsonString);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return jsonString;
-//	}
-
+	/**
+	 * Return the specific content of the corresponding type related to the input botanical name and wiki api
+	 * @param sciName
+	 * @param type
+	 * @return
+	 */
 	public static String getFromWiki(String sciName, String type) {
 		String requestUrl;
 		switch (type) {
@@ -291,16 +258,16 @@ public class PlantIdentification {
 		}
 
 		OkHttpClient client = new OkHttpClient();
-		// 创建 Request 对象
+		// Create a Request object
 		Request request = new Request.Builder()
 				.url(requestUrl)
 				.build();
-		// 发送请求并获取响应
+		// Send a request and get a response
 		try {
 			Response response = client.newCall(request).execute();
-			// 判断请求是否成功
+			// Determine whether the request is successful
 			if (response.isSuccessful()) {
-				// 获取 JSON 数据
+				// Get JSON data
 				String jsonData = response.body().string();
 				System.out.println(jsonData);
 				JSONObject jsonObject = new JSONObject(jsonData);
@@ -312,6 +279,7 @@ public class PlantIdentification {
 								.keys()
 								.next());
 				System.out.println(jsonData);
+				// Parse json data to String
 				switch (type) {
 					case "image": {
 						return (String) firstPageObject.getJSONObject("thumbnail").get("source");
