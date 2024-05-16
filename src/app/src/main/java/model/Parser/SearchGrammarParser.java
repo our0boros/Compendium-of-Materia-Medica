@@ -102,7 +102,7 @@ public class SearchGrammarParser {
         // store output
         output = new HashMap<>();
         for (int idx = 0; idx < tagList.size(); idx++) {
-            output.put(tagList.get(idx).toUpperCase(), textList.get(idx));
+            output.put(tagList.get(idx).toUpperCase().strip(), textList.get(idx).strip());
         }
 
         return output;
