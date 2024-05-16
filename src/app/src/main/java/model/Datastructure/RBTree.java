@@ -32,6 +32,12 @@ public class RBTree<V> {
 
     // 插入节点
     public void insert(int key, V value) {
+        RBTreeNode<V> existingNode = search(key);
+        if (existingNode != null) {
+            existingNode.setValue(value); // 更新已有节点的值
+            return;
+        }
+
         RBTreeNode<V> node = new RBTreeNode<V>(key, value);
         if (root == null) {
             root = node;

@@ -77,22 +77,27 @@ public class PlantTreeManager implements TreeManager<Plant>{
                 if (node.getValue().getCommonName().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
+                break;
             case SLUG:
                 if (node.getValue().getSlug().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
+                break;
             case SCIENTIFIC_NAME:
                 if (node.getValue().getScientificName().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
+                break;
             case GENUS:
                 if (node.getValue().getGenus().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
+                break;
             case FAMILY:
                 if (node.getValue().getFamily().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
                     plants.add(node.getValue());
                 }
+                break;
         }
 
         // 继续在左子树中递归搜索
