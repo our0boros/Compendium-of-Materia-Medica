@@ -7,16 +7,16 @@ import androidx.lifecycle.MutableLiveData;
 
 /**
  * @author: Yusi Zhong
- * @datetime: 2024/5
+ * @datetime: u7755061
  * @description: Manages user authentication and login with Firebase.
  */
-public class UserRepository {
+public class LoginAuth {
     private FirebaseAuth firebaseAuth;
 
     /**
      * Constructor to initialize FirebaseAuth instance.
      */
-    public UserRepository() {
+    public LoginAuth() {
         this.firebaseAuth = FirebaseAuth.getInstance();
     }
 
