@@ -32,7 +32,7 @@ public class SearchGrammarParser {
     Tokenizer tokenizer;
     // Only accept AND, OR
     Token.Type searchMethod = null;
-    Map<String, String> output;
+    Map<String, ArrayList<String>> output;
     private boolean useWordsFilter = false;
     public SearchGrammarParser(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
@@ -50,7 +50,7 @@ public class SearchGrammarParser {
      * @return
      * @throws IllegalProductionException
      */
-    public Map<String, String> parseExp() throws IllegalProductionException {
+    public Map<String, ArrayList<String>> parseExp() throws IllegalProductionException {
 
         System.out.println("[parseExp] start parsing token");
         Stack<String> BRACEStack = new Stack<>();
@@ -102,7 +102,10 @@ public class SearchGrammarParser {
         // store output
         output = new HashMap<>();
         for (int idx = 0; idx < tagList.size(); idx++) {
-            output.put(tagList.get(idx).toUpperCase().strip(), textList.get(idx).strip());
+            String key = tagList.get(idx).toUpperCase().strip();
+            ArrayList<String> value = output.getOrDefault(key, new ArrayList<>());
+            value.add(textList.get(idx).strip());
+            output.put(key, value);
         }
 
         return output;

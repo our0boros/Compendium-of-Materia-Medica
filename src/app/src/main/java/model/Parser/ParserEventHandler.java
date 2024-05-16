@@ -38,59 +38,60 @@ public class ParserEventHandler {
      * @param bestSimilarity
      * @return searchResult
      */
-    private static Map<Integer, Integer> getSearchedResultsFromParameters(Map<String, String> searchParam, DataType dataType, double bestSimilarity) {
-        // 遍历搜索attribute
+    private static Map<Integer, Integer> getSearchedResultsFromParameters(Map<String, ArrayList<String>> searchParam, DataType dataType, double bestSimilarity) {
         Map<Integer, Integer> searchResult = new HashMap<>();
         // Iterate each search entities
-        for (Map.Entry<String, String> entry : searchParam.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : searchParam.entrySet()) {
             System.out.println("[getSearchedResultsFromParameters] entry: " + entry.getKey() + " | " + entry.getValue());
             try {
                 ArrayList<?> temp;
                 // PLANT CASE
                 if (dataType == DataType.PLANT) {
-                    temp = PlantTreeManager.getInstance().search(
-                            PlantTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
-                    // if can not find mapping results, try blur search
-                    if (temp.size() == 0) {
-                        String guessValue = getSearchedResultsFromBlurParameter(
-                                PlantTreeManager.getInstance().getTypeByString(entry.getKey()),
-                                entry.getValue(),
-                                bestSimilarity);
-                        if (!guessValue.equals("")) {
-                            temp = PlantTreeManager.getInstance().search(
-                                    PlantTreeManager.getInstance().getTypeByString(entry.getKey()), guessValue);
-                            GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
+                    for (String value : entry.getValue()) { // Iterate over ArrayList<String>
+                        temp = PlantTreeManager.getInstance().search(
+                                PlantTreeManager.getInstance().getTypeByString(entry.getKey()), value);
+                        // if can not find mapping results, try blur search
+                        if (temp.size() == 0) {
+                            String guessValue = getSearchedResultsFromBlurParameter(
+                                    PlantTreeManager.getInstance().getTypeByString(entry.getKey()),
+                                    value,
+                                    bestSimilarity);
+                            if (!guessValue.equals("")) {
+                                temp = PlantTreeManager.getInstance().search(
+                                        PlantTreeManager.getInstance().getTypeByString(entry.getKey()), guessValue);
+                                GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
+                            }
                         }
-
-                    }
-                    // Parse data
-                    for (Object node : temp) {
-                        Integer nodeValueIndex = null;
-                        nodeValueIndex = ((Plant) node).getId();
-                        searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 0) + 1);
+                        // Parse data
+                        for (Object node : temp) {
+                            Integer nodeValueIndex = null;
+                            nodeValueIndex = ((Plant) node).getId();
+                            searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 0) + 1);
+                        }
                     }
                     // POST CASE
-                }else if (dataType == DataType.POST) {
-                    temp = PostTreeManager.getInstance().search(
-                            PostTreeManager.getInstance().getTypeByString(entry.getKey()), entry.getValue());
-                    // if can not find mapping results, try blur search
-                    if (temp.size() == 0) {
-                        String guessValue = getSearchedResultsFromBlurParameter(
-                                PostTreeManager.getInstance().getTypeByString(entry.getKey()),
-                                entry.getValue(),
-                                bestSimilarity);
-                        if (!guessValue.equals("")) {
-                            temp = PostTreeManager.getInstance().search(
-                                    PostTreeManager.getInstance().getTypeByString(entry.getKey()), guessValue);
-                            GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
+                } else if (dataType == DataType.POST) {
+                    for (String value : entry.getValue()) { // Iterate over ArrayList<String>
+                        temp = PostTreeManager.getInstance().search(
+                                PostTreeManager.getInstance().getTypeByString(entry.getKey()), value);
+                        // if can not find mapping results, try blur search
+                        if (temp.size() == 0) {
+                            String guessValue = getSearchedResultsFromBlurParameter(
+                                    PostTreeManager.getInstance().getTypeByString(entry.getKey()),
+                                    value,
+                                    bestSimilarity);
+                            if (!guessValue.equals("")) {
+                                temp = PostTreeManager.getInstance().search(
+                                        PostTreeManager.getInstance().getTypeByString(entry.getKey()), guessValue);
+                                GeneralFunctions.getInstance().makeToast("Can not find result, try guessed value: " + guessValue);
+                            }
                         }
-
-                    }
-                    // Parse data
-                    for (Object node : temp) {
-                        Integer nodeValueIndex = null;
-                        nodeValueIndex = ((Post) node).getPost_id();
-                        searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 0) + 1);
+                        // Parse data
+                        for (Object node : temp) {
+                            Integer nodeValueIndex = null;
+                            nodeValueIndex = ((Post) node).getPost_id();
+                            searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 0) + 1);
+                        }
                     }
                 } else {
                     temp = new ArrayList<>();
@@ -103,6 +104,7 @@ public class ParserEventHandler {
         }
         return searchResult;
     }
+
 
     /**
      * Compare the current parameters with all related instances.
@@ -209,7 +211,7 @@ public class ParserEventHandler {
             // Search with grammar
             Tokenizer tokenizer = new Tokenizer(text, true);
             SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer, true);
-            Map<String, String> searchParam = searchGrammarParser.parseExp();
+            Map<String, ArrayList<String>> searchParam = searchGrammarParser.parseExp();
             Token.Type searchMethod = searchGrammarParser.getSearchMethod(); // otherwise AND
             // get List IDs
             Map<Integer, Integer> searchResult = getSearchedResultsFromParameters(searchParam, dataType, bestSimilarity);
