@@ -39,8 +39,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // TreeManager based on Singleton Pattern, global access throughout the app
     private UserTreeManager userTreeManager;
-    private PostTreeManager postTreeManager;
-    private PlantTreeManager plantTreeManager;
 
     // User logged in
     private User user;
@@ -67,19 +65,12 @@ public class LoginActivity extends AppCompatActivity {
                 String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
                 // Check that the username or password cannot be empty
-                if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
+                if (email.isEmpty() || password.isEmpty()) {
                     // Failed login
-                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    // TODO: (EMPTY INPUT) USER ID 5 FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    ArrayList<User> users = userTreeManager.search(UserTreeManager.UserInfoType.ID, 5);
-                    if (!users.isEmpty()) {
-                        user = users.get(0);
-                    }
-                    startMainActivity(user);
-                    // TODO: FOR TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    Toast.makeText(LoginActivity.this, "Email and password must not be empty", Toast.LENGTH_SHORT).show();
                 } else {
                     // Implement authentication logic here
-                    // email:user1@test.com password:111111
+                    // For testing: email:user1@test.com password:111111
                     loginViewModel.login(email, password).observe(LoginActivity.this, new Observer<FirebaseUser>() {
                         @Override
                         public void onChanged(FirebaseUser firebaseUser) {
