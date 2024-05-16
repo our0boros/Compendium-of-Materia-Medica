@@ -19,6 +19,11 @@ import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTree;
 import model.Parser.Token;
 
+
+/**
+ * @author Haochen Gong
+ * PostTreeManager class test
+ **/
 public class PostTreeManagerTest {
     private RBTree<Post> postTree;
     private PostTreeManager postTreeManager;
@@ -28,7 +33,6 @@ public class PostTreeManagerTest {
         postTree = new RBTree<>();
         postTreeManager = PostTreeManager.getInstance(postTree);
 
-        // 创建一些帖子实例
         Post post1 = new Post(1, 101, 201, "photo1.png",
                 List.of(new Token("This is a post about plants", Token.Type.TEXT)),
                 "2023-01-01T10:00:00", List.of(1, 2), List.of(1), new LinkedHashMap<>(Map.of(1, "Nice post!")));

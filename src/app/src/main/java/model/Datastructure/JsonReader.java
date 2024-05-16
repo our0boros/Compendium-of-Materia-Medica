@@ -13,8 +13,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * @author: Haochen Gong
- * @description: json文件读取，返回jsonObject的arraylist
+ * @author Haochen Gong
+ * json file read, return jsonObject arraylist
  **/
 public class JsonReader {
 
@@ -28,11 +28,11 @@ public class JsonReader {
 
         ArrayList<JSONObject> data = new ArrayList<>();
 
-        // 打开res/raw中的资源文件作为InputStream
+        // Open the resource file in res/raw as InputStream
         InputStream is = context.getResources().openRawResource(resourceId);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-        // 读取文件储存为一整个字符串
+        // Reads a file and stores it as a whole string
         StringBuilder jsonBuilder = new StringBuilder();
         String line = br.readLine();
         while (line != null) {
@@ -40,15 +40,15 @@ public class JsonReader {
             line = br.readLine();
         }
 
-        // 将完整的文件内容解析为JSONArray
+        // Parses the complete file contents into a JSONArray
         JSONArray jsonArray = new JSONArray(jsonBuilder.toString());
 
-        // 遍历JSONArray，将每个元素添加到ArrayList中
+        // Iterate through the JSONArray, adding each element to the ArrayList
         for (int i = 0; i < jsonArray.length(); i++) {
             data.add(jsonArray.getJSONObject(i));
         }
 
-        // 关闭BufferedReader和InputStream
+        // Close BufferedReader and InputStream
         br.close();
         is.close();
 

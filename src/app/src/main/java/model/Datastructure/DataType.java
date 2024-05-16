@@ -3,8 +3,8 @@ package model.Datastructure;
 import androidx.annotation.NonNull;
 
 /**
- * @author: Haochen Gong
- * @description: 储存的数据类型的枚举类
+ * @author Haochen Gong
+ * Enumerated classes for stored data types
  **/
 public enum DataType {
     POST,

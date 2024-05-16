@@ -5,8 +5,8 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 /**
- * @author: Haochen Gong
- * @description: User类
+ * @author Haochen Gong
+ * User class
  **/
 public class User implements Comparable<User>, Serializable {
     private int user_id;

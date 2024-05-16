@@ -3,8 +3,8 @@ package model.Datastructure;
 import java.util.ArrayList;
 
 /**
- * @author: Haochen Gong
- * @description: plant树的管理方法类
+ * @author Haochen Gong
+ * PlantTree management methodology class
  **/
 public class PlantTreeManager implements TreeManager<Plant>{
 
@@ -66,12 +66,12 @@ public class PlantTreeManager implements TreeManager<Plant>{
 
     // actual iteration method
     private  <T> void search(RBTreeNode<Plant> node, PlantInfoType infoType, T info, ArrayList<Plant> plants) {
-        // 如果当前节点是null，说明已经到达了叶子节点的子节点，直接返回
+        // If the current node is null, it means that the child of the leaf node has been reached, and it is returned directly
         if (node == null) {
             return;
         }
 
-        // 如果当前节点的值与搜索的值相等，加入结果列表
+        // If the value of the current node is equal to the searched value, add to the result list
         switch (infoType) {
             case COMMON_NAME:
                 if (node.getValue().getCommonName().toLowerCase().contains(String.valueOf(info).toLowerCase())) {
@@ -100,9 +100,9 @@ public class PlantTreeManager implements TreeManager<Plant>{
                 break;
         }
 
-        // 继续在左子树中递归搜索
+        // Continue to search recursively in the left subtree
         search(node.getLeft(), infoType, info, plants);
-        // 继续在右子树中递归搜索
+        // Continue to search recursively in the right subtree
         search(node.getRight(), infoType, info, plants);
     }
 
