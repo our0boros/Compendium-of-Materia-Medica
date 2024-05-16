@@ -5,7 +5,12 @@ import android.graphics.drawable.Drawable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
+/**
+ * @author: Hongjun Xu
+ * @uid: u7733037
+ * @datetime: 2024/05/16
+ * @description: ViewModel of Capture Fragment
+ */
 public class CaptureViewModel extends ViewModel {
 
     private final MutableLiveData<String> greetingText;

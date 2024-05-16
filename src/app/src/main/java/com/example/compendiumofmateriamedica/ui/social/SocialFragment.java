@@ -76,5 +76,6 @@ public class SocialFragment extends Fragment {
         super.onDestroyView();
         // Release the binding
         binding = null;
+        postAdapter.releaseSoundPool();
     }
 }

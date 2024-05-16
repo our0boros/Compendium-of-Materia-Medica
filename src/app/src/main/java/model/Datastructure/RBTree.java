@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author: Haochen Gong
- * @description: 红黑树类
+ * @author Haochen Gong
+ * RBTree class
  **/
 public class RBTree<V> {
     RBTreeNode<V> root;
     private final boolean RED = false;
     private final boolean BLACK = true;
 
-    // 通过键值查询节点
+    // Query nodes by key value
     public RBTreeNode<V> search(int key) {
         RBTreeNode<V> tmp = root;
         while (tmp != null) {
@@ -30,7 +30,7 @@ public class RBTree<V> {
         return null;
     }
 
-    // 插入节点
+    // Insert node
     public void insert(int key, V value) {
         RBTreeNode<V> existingNode = search(key);
         if (existingNode != null) {
@@ -75,7 +75,7 @@ public class RBTree<V> {
         RBTreeNode<V> father, grandFather;
         while ((father = node.getParent()) != null && father.getColor() == RED) {
             grandFather = father.getParent();
-            if (grandFather.getLeft() == father) {  //F为G左儿子的情况，如之前的分析
+            if (grandFather.getLeft() == father) {  // The case where F is the left son of G
                 RBTreeNode<V> uncle = grandFather.getRight();
                 if (uncle != null && uncle.getColor() == RED) {
                     setBlack(father);
@@ -93,7 +93,7 @@ public class RBTree<V> {
                 setBlack(father);
                 setRed(grandFather);
                 rightRotate(grandFather);
-            } else {                               //F为G的右儿子的情况，对称操作
+            } else {  // The case where F is the right son of G. Symmetric operations
                 RBTreeNode<V> uncle = grandFather.getLeft();
                 if (uncle != null && uncle.getColor() == RED) {
                     setBlack(father);
@@ -116,7 +116,7 @@ public class RBTree<V> {
         setBlack(root);
     }
 
-    // 通过键值删除节点
+    // Delete nodes by key value
     public void delete(int key) {
         delete(search(key));
     }
@@ -162,10 +162,10 @@ public class RBTree<V> {
 
     }
 
-    //多余的颜色在node里
+    // extra color in node
     private void removeFix(RBTreeNode<V> father, RBTreeNode<V> node) {
         while ((node == null || node.getColor() == BLACK) && node != root) {
-            if (father.getLeft() == node) {  //S为P的左儿子的情况，如之前的分析
+            if (father.getLeft() == node) {  // The case where S is the left son of P
                 RBTreeNode<V> brother = father.getRight();
                 if (brother != null && brother.getColor() == RED) {
                     setRed(father);
@@ -191,7 +191,7 @@ public class RBTree<V> {
                 setBlack(brother.getRight());
                 leftRotate(father);
                 node = root;//跳出循环
-            } else {                         //S为P的右儿子的情况，对称操作
+            } else { // The case where S is the right son of P. Symmetric operations
                 RBTreeNode<V> brother = father.getLeft();
                 if (brother != null && brother.getColor() == RED) {
                     setRed(father);
@@ -216,7 +216,7 @@ public class RBTree<V> {
                 setBlack(father);
                 setBlack(brother.getLeft());
                 rightRotate(father);
-                node = root;//跳出循环
+                node = root;  // Jump out of the loop
             }
         }
 
@@ -292,7 +292,7 @@ public class RBTree<V> {
         }
     }
 
-    // 遍历打印红黑树
+    // Iterate over the printed red-black tree
     public void inOrder() {
         inOrder(root);
     }
@@ -324,7 +324,7 @@ public class RBTree<V> {
         return 1 + countNodes(node.getLeft()) + countNodes(node.getRight());
     }
 
-    // 添加用于遍历的方法
+    // Add methods for traversal
     private void inorderTraversal(RBTreeNode<V> node, List<V> set) {
         if (node != null) {
             inorderTraversal(node.getLeft(), set);

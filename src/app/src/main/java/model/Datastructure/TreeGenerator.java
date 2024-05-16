@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * @author: Haochen Gong
- * @description: 数据处理+树的生成器接口
+ * @author Haochen Gong
+ * Data processing + tree generator interface
  **/
 public interface TreeGenerator<T> {
     RBTree<T> generateTree(ArrayList<JSONObject> arrayList);

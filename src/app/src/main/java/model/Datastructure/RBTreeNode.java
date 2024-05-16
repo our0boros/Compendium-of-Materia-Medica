@@ -1,8 +1,8 @@
 package model.Datastructure;
 
 /**
- * @author: Haochen Gong
- * @description: 红黑树节点类
+ * @author Haochen Gong
+ * RBTree node class
  **/
 public class RBTreeNode<V> {
     private final boolean RED = false;

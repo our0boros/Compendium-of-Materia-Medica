@@ -5,8 +5,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * @author: Haochen Gong
- * @description: plant树的生成器（处理plant的json数据，generateTree()方法可以将处理后的数据生成树）
+ * @author Haochen Gong
+ * plant tree generator
+ * (processing plant's json data, generateTree() method can generate tree from the processed data)
  **/
 public class PlantTreeGenerator implements TreeGenerator<Plant>{
     private final RBTree<Plant> plantRBTree;
@@ -28,9 +29,9 @@ public class PlantTreeGenerator implements TreeGenerator<Plant>{
                 String family = jsonObject.getString("family");
                 String description = jsonObject.getString("description");
 
-                // 创建并插入节点
+                // Creating and inserting nodes
                 Plant plant = new Plant(id,commonName,slug,scientificName,image,genus,family,description);
-                // 设置plant id 作key
+                // Set plant id as key
                 plantRBTree.insert(id, plant);
             }catch (JSONException e) {
                 e.printStackTrace();

@@ -57,6 +57,7 @@ public class NewEventHandler {
     public void setEventList(List<NewEvent> eventList) {
         this.eventList = eventList;
     }
+    // Observer design pattern
     public interface EventObserver {
         void onEventChanged();
     }

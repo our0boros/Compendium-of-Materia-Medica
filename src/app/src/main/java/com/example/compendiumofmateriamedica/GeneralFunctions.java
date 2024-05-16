@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 
 /**
  * @author: Hongjun Xu
+ * @uid: u7733037
  * @datetime: 2024/05/16
  * @description: A method common to the entire app,
  * it will preload a single instance when the app

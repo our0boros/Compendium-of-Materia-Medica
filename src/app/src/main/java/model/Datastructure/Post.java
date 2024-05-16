@@ -13,8 +13,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import model.Parser.Token;
 
 /**
- * @author: Haochen Gong
- * @description: Post class
+ * @author Haochen Gong
+ * Post class
  **/
 public class Post implements Comparable<Post>{
     // Start with 1

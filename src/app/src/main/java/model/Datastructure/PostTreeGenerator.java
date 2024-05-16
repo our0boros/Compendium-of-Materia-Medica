@@ -14,8 +14,9 @@ import java.util.LinkedHashMap;
 import model.Parser.Tokenizer;
 
 /**
- * @author: Haochen Gong
- * @description: post树的生成器（处理post的json数据，generateTree()方法可以将处理后的数据生成树）
+ * @author Haochen Gong
+ * post tree generator
+ * (processing post json data, generateTree() method can generate a tree from the processed data)
  **/
 public class PostTreeGenerator implements TreeGenerator<Post>{
 
@@ -36,21 +37,21 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                 String content = jsonObject.getString("content");
                 String timestamp = jsonObject.getString("timestamp");
 
-                // 解析 likes
+                // analyze likes
                 List<Integer> likes = new ArrayList<>();
                 JSONArray likesArray = jsonObject.getJSONArray("likes");
                 for (int i = 0; i < likesArray.length(); i++) {
                     likes.add(likesArray.getInt(i));
                 }
 
-                // 解析 likesRecord
+                // analyze likesRecord
                 List<Integer> likesRecord = new ArrayList<>();
                 JSONArray likesRecordArray = jsonObject.getJSONArray("likesRecord");
                 for (int i = 0; i < likesRecordArray.length(); i++) {
                     likesRecord.add(likesRecordArray.getInt(i));
                 }
 
-                // 解析 comments
+                // analyze comments
                 Map<Integer, String> comments = new LinkedHashMap<>();
                 JSONObject commentsObject = jsonObject.getJSONObject("comments");
                 Iterator<String> keys = commentsObject.keys();
@@ -60,7 +61,7 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                     comments.put(Integer.parseInt(key), value);
                 }
 
-                // 创建并插入节点
+                // Creating and inserting nodes
                 Tokenizer tokenizer = new Tokenizer(content, true);
                 Post post = new Post(postId,uid,plantId,photo,tokenizer.getFullToken(),timestamp,likes,likesRecord,comments);
                 if(post.getLikes() == null
@@ -69,7 +70,7 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                     Log.w("TreeGenerator", "Post id:" + post.getPost_id() + " has null attributes");
 //                else
 //                    Log.d("TreeGenerator", "Post id:" + post.getPost_id() + " generated with full attributes");
-                // 设置post id 作key
+                // set post id as key
                 postRBTree.insert(postId, post);
             } catch (JSONException e) {
                 e.printStackTrace();

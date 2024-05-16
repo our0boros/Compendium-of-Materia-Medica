@@ -75,7 +75,7 @@ public class SocialViewModel extends ViewModel {
     public void onNewLikeEvent(NewEvent event) {
         // only deal with post
         if(event.getEventType() == NewEvent.EventType.POST){
-            // 更新post列表
+            // update post list
             Log.d("SocialViewModel", "Captured new post event.");
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");

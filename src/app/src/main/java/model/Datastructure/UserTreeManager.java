@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author: Haochen Gong
- * @description: user树的管理方法类
+ * @author Haochen Gong
+ * UserTree management method class
  **/
 public class UserTreeManager implements TreeManager<User> {
 
@@ -46,7 +46,7 @@ public class UserTreeManager implements TreeManager<User> {
         userRBTree.delete(id);
     }
 
-    // 对外的搜索接口，调用这个方法来开始搜索
+    // External search interface, call this method to start a search
     public <T> ArrayList<User> search(UserInfoType infoType, T info){
 
         ArrayList<User> users = new ArrayList<>();
@@ -63,14 +63,14 @@ public class UserTreeManager implements TreeManager<User> {
         return users;
     }
 
-    // 实际的递归搜索方法
+    // The actual recursive search method
     private  <T> void search(RBTreeNode<User> node, UserInfoType infoType, T info, ArrayList<User> users){
-        // 如果当前节点是null，说明已经到达了叶子节点的子节点，直接返回
+        // If the current node is null, it means that the child of the leaf node has been reached, and it is returned directly
         if (node == null) {
             return;
         }
 
-        // 如果当前节点的值与搜索的值相等，加入结果列表
+        // If the value of the current node is equal to the searched value, add to the result list
         switch (infoType) {
             case NAME:
                 if (node.getValue().getUsername().equals(info)) {
@@ -86,9 +86,7 @@ public class UserTreeManager implements TreeManager<User> {
                 }
         }
 
-        // 继续在左子树中递归搜索
         search(node.getLeft(), infoType, info, users);
-        // 继续在右子树中递归搜索
         search(node.getRight(), infoType, info, users);
     }
 

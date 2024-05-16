@@ -4,19 +4,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
-import model.Firebase.UserRepository;
+import model.Firebase.LoginAuth;
 
 /**
  * @autor: Yusi Zhong
- * @datetime: 2024/5
+ * @datetime: u7755061
  * @description: Manages user login and authentication state.
  */
 public class LoginViewModel extends ViewModel {
-    private UserRepository userRepository;
+    private LoginAuth loginAuth;
     private LiveData<FirebaseUser> userLiveData;
 
     public LoginViewModel() {
-        userRepository = new UserRepository();
+        loginAuth = new LoginAuth();
     }
 
     /**
@@ -25,7 +25,7 @@ public class LoginViewModel extends ViewModel {
      * @return LiveData<FirebaseUser> LiveData object with the authenticated user
      */
     public LiveData<FirebaseUser> login(String email, String password) {
-        userLiveData = userRepository.login(email, password);
+        userLiveData = loginAuth.login(email, password);
         return userLiveData;
     }
 

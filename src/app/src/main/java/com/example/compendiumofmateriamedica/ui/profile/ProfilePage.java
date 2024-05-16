@@ -18,7 +18,11 @@ import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
 import model.Datastructure.PostTreeManager;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
-
+/**
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description: Show a user's profile with his level, posts shared and plants discovered
+ */
 public class ProfilePage extends AppCompatActivity {
     private User appUser;
     private User profileUser;
@@ -88,8 +92,6 @@ public class ProfilePage extends AppCompatActivity {
                 finish();
             }
         });
-
-
 
     }
     @Override
