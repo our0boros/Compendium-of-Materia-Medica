@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -27,6 +28,8 @@ public class SearchedResults extends AppCompatActivity {
     boolean isPost;
     private TextView viewmore_1;
     private TextView viewmore_2;
+
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,17 @@ public class SearchedResults extends AppCompatActivity {
                 rowAdapter.setData(postIDs);
             }
         });
+
+
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
     }
 
     // 获取 ArrayList 的前 n 项，如果数量不足 n 项则返回原始列表
