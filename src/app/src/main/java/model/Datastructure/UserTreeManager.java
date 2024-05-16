@@ -106,10 +106,10 @@ public class UserTreeManager implements TreeManager<User> {
         // Check user validation, uid is unique
         if (!users.isEmpty()) {
             User foundUser = users.get(0);
-            Log.d("UserTreeManager", "Find User: " + foundUser.getUsername());
+            //Log.d("UserTreeManager", "Find User: " + foundUser.getUsername());
             return foundUser;
         } else {
-            Log.w("UserTreeManager", "Do not find user.");
+            //Log.w("UserTreeManager", "Do not find user.");
             return null;
         }
     }

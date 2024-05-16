@@ -88,12 +88,12 @@ public class UserTreeManagerTest {
         assertEquals("Charlie", users.get(2).getUsername());
     }
 
-//    @Test
-//    public void testFindUserById() {
-//        User user = userTreeManager.findUserById(1);
-//        assertNotNull(user);
-//        assertEquals(user.getUsername(), "Alice");
-//    }
+    @Test
+    public void testFindUserById() {
+        User user = userTreeManager.findUserById(1);
+        assertNotNull(user);
+        assertEquals(user.getUsername(), "Alice");
+    }
 
     @Test
     public void testSingleton() {
