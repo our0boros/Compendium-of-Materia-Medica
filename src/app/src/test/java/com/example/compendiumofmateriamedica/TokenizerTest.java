@@ -33,11 +33,15 @@ public class TokenizerTest {
 
     @Test(timeout=1000)
     public void testMidTokenCase() {
-        Type[] types = {Type.TEXT, Type.COLON, Type.LBRACE, Type.STR, Type.SEP,  Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR, Type.RBRACE,
-            Type.SEP, Type.METHOD, Type.COLON, Type.LBRACE, Type.OR, Type.RBRACE};
+        Type[] types = {
+                Type.TEXT, Type.COLON, Type.LBRACE,
+                    Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR,
+                Type.RBRACE, Type.SEP,
+                Type.METHOD, Type.COLON, Type.LBRACE,
+                    Type.OR,
+                Type.RBRACE};
         String plainText = "$: {1,1,227114,2024-01-23}, *: {|}";
         tokenizer = new Tokenizer(plainText, false);
-//        String plainText = "#: {ID, COMMON_NAME, SLUG, GENUS, FAMILY}, $: {77116, Milfoil, dactylis-glomerata, Quercus, Asteraceae}, *: {|}";
         int count = 0;
         while (tokenizer.hasNext()) {
             // check the type of the first token
@@ -46,5 +50,63 @@ public class TokenizerTest {
             tokenizer.next();
             count++;
         }
+    }
+    @Test(timeout=1000)
+    public void testAdvancedTokenResult() {
+        Type[] types = {
+                Type.TAG, Type.COLON, Type.LBRACE,
+                    Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR,
+                Type.RBRACE, Type.SEP,
+                Type.TEXT, Type.COLON, Type.LBRACE,
+                    Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR, Type.SEP, Type.STR,
+                Type.RBRACE, Type.SEP,
+                Type.METHOD, Type.COLON, Type.LBRACE,
+                    Type.OR,
+                Type.RBRACE};
+        String plainText = "#: {ID, COMMON_NAME, SLUG, GENUS, FAMILY}, $: {77116, Milfoil, dactylis-glomerata, Quercus, Asteraceae}, *: {|}";
+        tokenizer = new Tokenizer(plainText, false);
+
+        int count = 0;
+        while (tokenizer.hasNext()) {
+            // check the type of the first token
+            assertEquals("wrong token type", types[count], tokenizer.current().getType());
+            System.out.println(tokenizer.current().getType() + " " + tokenizer.current().getToken());
+            tokenizer.next();
+            count++;
+        }
+    }
+
+    @Test(timeout=1000)
+    public void testExceptionToken() {
+        // Test a series of non-identifiable tokens
+        assertThrows(Token.IllegalTokenException.class, () -> {
+            tokenizer = new Tokenizer("）（*@#……", false);
+            tokenizer.next();
+        });
+
+        assertThrows(Token.IllegalTokenException.class, () -> {
+            tokenizer = new Tokenizer("燙燙燙錕斤拷~", false);
+            tokenizer.next();
+        });
+
+        assertThrows(Token.IllegalTokenException.class, () -> {
+            tokenizer = new Tokenizer("痛みを感じる", false);
+            tokenizer.next();
+        });
+
+        assertThrows(Token.IllegalTokenException.class, () -> {
+            tokenizer = new Tokenizer("Сайн уу", false);
+            tokenizer.next();
+        });
+
+        assertThrows(Token.IllegalTokenException.class, () -> {
+            tokenizer = new Tokenizer("(╬▔皿▔)╯)", false);
+            tokenizer.next();
+        });
+
+        assertThrows(Token.IllegalTokenException.class, () -> {
+            tokenizer = new Tokenizer("(👉ﾟヮﾟ)👉)", false);
+            tokenizer.next();
+        });
     }
 }
