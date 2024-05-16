@@ -63,17 +63,13 @@ public class PrivacyPolicy extends AppCompatActivity {
                 "\n" +
                 "Our App may contain links to third-party websites or services that are not operated by us. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services. We encourage you to review the privacy policies of these third parties before providing any personal information.\n" +
                 "\n" +
-                "Children's Privacy\n" +
-                "\n" +
-                "Our App is not intended for use by children under the age of 5. We do not knowingly collect personal information from children under 5. If you are a parent or guardian and believe that your child has provided us with personal information, please contact us immediately so that we can take appropriate action.\n" +
-                "\n" +
                 "Changes to This Privacy Policy\n" +
                 "\n" +
                 "We may update this Privacy Policy from time to time. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.\n" +
                 "\n" +
                 "Contact Us\n" +
                 "\n" +
-                "If you have any questions or concerns about this Privacy Policy, please contact us at G053@email.com.");
+                "If you have any questions or concerns about this Privacy Policy, please contact us at G053@email.com.\n\n\n\n");
 
         back=findViewById(R.id.back_btn);
         back.setOnClickListener(new View.OnClickListener() {
