@@ -70,7 +70,8 @@ import model.Datastructure.User;
 
 /**
  * @author: Hongjun Xu, Xing Chen
- * @datetime: u7733037, u7725171
+ * @uid: u7733037, u7725171
+ * @datetime: 2024/05/16
  * @description: Capture Page, user can search and take photo here
  */
 public class CaptureFragment extends Fragment {

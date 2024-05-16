@@ -28,6 +28,7 @@ import okhttp3.*;
 
 /**
  * @author: Hongjun Xu
+ * @uid: u7733037
  * @datetime: 2024/05/16
  * @description: Encapsulate the API request process into a single method through Facade Pattern and use
  * <NOTE>
