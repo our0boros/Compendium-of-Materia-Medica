@@ -155,7 +155,7 @@ public class ParserEventHandler {
             if (similarity > bestSimilarity) {
                 System.out.println("[getSearchedResultsFromBlurParameter] find similar string");
                 bestSimilarity = similarity;
-                guessValue = (String) post.getByType(postInfoType);
+                guessValue = String.valueOf(post.getByType(postInfoType));
             }
         }
         return guessValue;
@@ -219,7 +219,7 @@ public class ParserEventHandler {
             ArrayList<Integer> IDList = getIDListFromSearchedResults(searchResult, searchMethod, searchParam.size());
             return IDList;
             // =============================================================================
-        } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
+        } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException e) {
             System.out.println("[getIDListFromGrammarText] catch Exception: " + e);
             return null;
         }
