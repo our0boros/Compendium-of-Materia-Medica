@@ -52,15 +52,15 @@ public class PersonalInfo extends AppCompatActivity implements UserAvatarDialogF
                 dialogFragment.show(getSupportFragmentManager(), "user_avatar_dialog");
             }
         });
-        user_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserNameDialogFragment dialogFragment = UserNameDialogFragment.newInstance();
-                dialogFragment.show(getSupportFragmentManager(), "user_name_dialog");
-            }
-
-        });
-
+//        remove set user name funtion
+//        user_name.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                UserNameDialogFragment dialogFragment = UserNameDialogFragment.newInstance();
+//                dialogFragment.show(getSupportFragmentManager(), "user_name_dialog");
+//            }
+//
+//        });
 
         // back to Profile fragment page
         back = findViewById(R.id.back_btn);

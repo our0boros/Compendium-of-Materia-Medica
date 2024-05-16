@@ -16,6 +16,11 @@ import model.Datastructure.RBTree;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
 
+
+/**
+ * @author Haochen Gong
+ * UserTreeManager class test
+ **/
 public class UserTreeManagerTest {
 
     private RBTree<User> userTree;

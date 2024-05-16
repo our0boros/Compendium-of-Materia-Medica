@@ -14,6 +14,11 @@ import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
 import model.Datastructure.RBTree;
 
+
+/**
+ * @author Haochen Gong
+ * PlantTreeManager class test
+ **/
 public class PlantTreeManagerTest {
 
     private RBTree<Plant> plantTree;

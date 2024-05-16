@@ -5,8 +5,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * @author: Haochen Gong
- * @description: user树的生成器（处理user的json数据，generateTree()方法可以将处理后的数据生成树）
+ * @author Haochen Gong
+ * user tree generator
+ * (process user's json data, generateTree() method can generate a tree from the processed data)）
  **/
 public class UserTreeGenerator implements TreeGenerator<User> {
 
@@ -26,9 +27,9 @@ public class UserTreeGenerator implements TreeGenerator<User> {
                 String password = jsonObject.getString("password");
                 String avatar = jsonObject.getString("avatar_url");
 
-                // 创建并插入节点
+                // Creating and inserting nodes
                 User user = new User(id,name,email,password,avatar);
-                // 设置user id 作key
+                // set user id as key
                 userRBTree.insert(id, user);
             }catch (JSONException e) {
                 e.printStackTrace();
