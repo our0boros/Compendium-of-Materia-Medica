@@ -5,6 +5,10 @@ import static model.UtilsApp.loadImageFromURL;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +53,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private final FragmentManager fragmentManager;
     private final boolean showLikeButton;
     private final User currentUser;
+    private SoundPool soundPool;
+    private int soundId;
 
     // Constructor to initialize the adapter with necessary data
     public PostAdapter(Context context, List<Post> postsList, FragmentManager fragmentManager, Boolean showLikeButton, User currentUser) {
@@ -57,6 +63,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         this.fragmentManager = fragmentManager;
         this.showLikeButton = showLikeButton;
         this.currentUser = currentUser;
+        initSoundPool();
     }
 
     // Inflate the post_item layout and creates a new instance of PostViewHolder
@@ -116,6 +123,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     if (!isLiked[0]) {
                         isLiked[0] = true;
                         holder.buttonLike.setImageResource(R.drawable.post_like_btn);
+                        if (soundPool != null) {
+                            soundPool.play(soundId, 1, 1, 0, 0, 1);
+                        }
                         post.likedByUser(currentUser.getUser_id());
                     } else {
                         isLiked[0] = false;
@@ -126,28 +136,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             // Set delete button behavior if enabled
             holder.buttonDelete.setVisibility(View.GONE); // if has functional bug, use this
-            // if without bugs, use this
-//            if (post_uid == currentUser.getUser_id()){
-//                // show delete button
-//                holder.buttonDelete.setVisibility(View.VISIBLE);
-//                holder.buttonDelete.setImageResource(R.drawable.icon_delete);
-//                holder.buttonDelete.setOnClickListener(v -> {
-//                    Log.d("Delete clicked", "They are same? " + (post_uid == currentUser.getUser_id()));
-//                    Log.d("Delete clicked", "Current post id is " + post.getPost_id() + ", username is " + postUser.getUsername());
-//                    Log.d("Delete clicked", "App user id  is " + currentUser.getUser_id() + ", username is " + currentUser.getUsername());
-//                    // delete post from tree
-//                    System.out.println(postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id())).size());
-//                    postTreeManager.delete(post.getPost_id());
-//                    System.out.println(postTreeManager.search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(post.getPost_id())).size());
-//                    // update ui
-//                    postsList.remove(post);
-//                    notifyDataSetChanged();
-//
-//                });
-//            } else{
-//                holder.buttonDelete.setVisibility(View.GONE);
-//            }
-
 
             // Load user avatar and post photo from URLs
             loadImageFromURL(context, postUserAvatarURL, holder.userAvatar, "Avatar");
@@ -183,6 +171,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         postsList.clear();
         postsList.addAll(posts);
         notifyDataSetChanged();
+    }
+    private void initSoundPool() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(1)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+        } else {
+            soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        }
+
+        soundId = soundPool.load(context, R.raw.sound_like, 1);
+    }
+    public void releaseSoundPool() {
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+        }
     }
 
     // ViewHolder class to hold the views inside each post item
