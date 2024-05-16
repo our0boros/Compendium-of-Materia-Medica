@@ -270,38 +270,6 @@ Note that the core criteria of contribution is based on `code contribution` (the
 ### Parser
 
 ### <u>Grammar(s)</u>
-*[How do you design the grammar? What are the advantages of your designs?]*
-*If there are several grammars, list them all under this section and what they relate to.*
-
-由于我们的Parser主要用于数据的搜索语法上，而搜索语法的主要目的是为了让用户使用时能得到更精确或者更具有共性的的搜索内容，因此该语法主要考虑的是语法整体的兼容性以及它的可扩展性。更具体的来说就是当搜索项目的植物时用户可以通过植物所属的族群、植物的学名、具有相似描述的内容等信息精确到一定范围的植物，而当用户搜索植物相关的post时也可以根据相关的植物的信息与时间范围等属性更精确的找到相关的post。
-
-此外考虑到数据的各种属性会随着数据库的内容的丰富逐渐丰富数据的attribute，我们要一定程度上增强语法的兼容性即当出现新的attribute时，可以通过该语法将attribute和搜索内容一一对应。
-
-因此，经过多方考虑目前的搜索语法主要可以分为三个部分，标签栏目、参数栏目与搜索方法栏目，每个栏目由一个标识符加内容框来表述。标识符分别为
-
-|              | 栏目标识符 |
-| ------------ | ---------- |
-| 标签栏目     | #:         |
-| 参数栏目     | $:         |
-| 搜索方法栏目 | *:         |
-
-而在搜索方法栏目上依据当前app的需要，暂时定为AND和OR两种搜索逻辑分别表示更精确的搜索以及更广泛的搜索。
-每个标识符的内容通过,区分，并且可以自由分配。这种设计可以让标签内容与参数内容一一对应，并且便于使用者记忆，搜索语法的表达方式就是 `[]: {}`, 这种格式的堆叠。
-
-Production Rules:
-
-     <Exp>        := <TagColumn>, <TextColumn>, <METHOD> | <TextColumn>, <TagColumn>, <METHOD>
-     <TagColumn>  := #: { <Content> },
-     <TextColumn> := $: { <Content> },
-     <Method>     := *: {&} | *: {|}
-     <Content>    := STR | STR, <Content>
-
-综上，当前的语法具有一定的兼容性、可扩展性与易读性。
-
----
-
-
-
 Since our Parser is mainly used for the syntax of data searching, and the main purpose of the search syntax is to allow users to obtain more accurate or more generic search results, the syntax mainly considers the compatibility of the overall syntax and its scalability. More specifically, when searching for plants in the search project, users can accurately search for plants within a certain range based on information such as the plant's family, scientific name, or content with similar descriptions. Similarly, when users search for plant-related posts, they can also find related posts more accurately based on information about the relevant plants and attributes such as time range.
 
 In addition, considering that various attributes of the data will gradually enrich as the content of the database expands, we need to enhance the compatibility of the syntax to some extent so that when new attributes appear, they can be matched with search content through the syntax one by one.
@@ -329,49 +297,6 @@ In summary, the current syntax has a certain level of compatibility, scalability
 
 
 ### <u>Tokenizers and Parsers</u>
-
-*[Where do you use tokenisers and parsers? How are they built? What are the advantages of the designs?]*
-
-<hr>
-
-
-
-为了处理人机交互界面的输入问题，目前我们的分词器主要在两个场景下使用，分别是搜索的语法内容以及发布帖子的文字内容。
-
-首先对于搜索的语法内容，为了提高解析器的识别效率并将词法记号化，我们需要在用户使用语法搜索时先将输入的单一字串转化为Token列表，再进行后续的语法处理。这样的好处是可以确保在进入Parser之前用户所输入的语法符号符合预期（不存在非法字符或者乱码），以提高语法逻辑的处理效率。
-
-由于普遍的自然语言理解逻辑是单向的，我们在处理分词器的逻辑时时会按照读取的串流依次排查，如果当前输入的字符匹配到关键字符则提取当前字符并将其放入词组列表中，反之则继续堆叠当前的字符直到找到下一个对应的字符组为止。
-
-具体的算法表达如下：
-
-
-```
-  1. 初始化一个空的 Token List 对象，用于存储所有的 Token。
-  2. 当前还有未处理的 Token 时，进入循环。
-     3. 在循环中，将当前 Token 添加到 Token List 列表中。
-
-         4. 去除当前缓冲区中的空白字符。
-         5. 如果缓冲区已经为空，则将当前 Token 设为 null，表示没有剩余的 Token，然后结束方法。
-         6. 获取缓冲区中的第一个字符，并根据不同的字符类型来识别 Token 的类型。
-         7. 根据第一个字符的不同，生成相应的 Token 对象，并将其设为当前 Token。
-         8. 如果第一个字符是满足字符要求，则进入循环，依次读取连续的字符，直到遇到不满足字符要求的字符为止，
-         	9. 将这一部分字符作为一个 Token 的字符串，生成 Token 对象并设为当前 Token。
-         10. 如果第一个字符不是以上任何一种情况，则抛出异常，表示遇到了意外的 Token。
-         11. 将当前 Token 从缓冲区中移除。
-
-     12. 重复步骤 3 ，直到没有剩余的 Token。
-  13. 返回存储了所有 Token 的 Token List。
-```
-
-接下来对于搜索语法的算法，我们可以参照前文 `Grammar(s)` 中提到的详细描述将语法的识别拆分为多个子逻辑块逐一处理，从最表层的`ExpParser` 到最底层的`ContentParser`，分别进行语义的识别。由于在最初的语法设计时就考虑到了语法的复杂性问题，每一个字逻辑快的处理都非常的简单，通常我们只需要确认子字串的开头和结尾有没有出现预期字符即可，这大大的提高了语法处理的效率。而程序后端在处理时会将标签栏目和参数栏目的所有子字串一一对应集成为一个HashMap 回传到前端，同时回传当前的搜索方法。接下来我们就可以通过得到的搜索语法参数和搜索方法调用红黑树的search() 进行后续的进一步处理，直到我们得到满足用户语法的所有植物/Post ID列表为止。
-
-而当用户输入错误的Token或者语法时，我们同样可以隔离当前Token搜索栏对应的内容并检索后续的部分，而不需要像单一的字符串一样，当遇到错误时直接跳出整个语法处理逻辑。
-
-此外当用户发布帖子时，我们同样会对其输入的文字进行分词处理。这样做可以快速定位用户输入的关键词，使我们能够快速实现敏感词汇的过滤功能，有效屏蔽不当内容。为了方便其他用户高效地搜索帖子内容，我们会对帖子进行分词处理，并逐个检索关键词。这样的处理方式可以使搜索方法更加高效快速。
-
----
-
-
 
 To address the input issues in human-computer interaction, our tokenizer is currently mainly used in two scenarios: the syntax of searches and the textual content of posted threads.
 
