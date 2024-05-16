@@ -67,7 +67,7 @@ public class ParserEventHandler {
                     for (Object node : temp) {
                         Integer nodeValueIndex = null;
                         nodeValueIndex = ((Plant) node).getId();
-                        searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 1) + 1);
+                        searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 0) + 1);
                     }
                     // POST CASE
                 }else if (dataType == DataType.POST) {
@@ -90,7 +90,7 @@ public class ParserEventHandler {
                     for (Object node : temp) {
                         Integer nodeValueIndex = null;
                         nodeValueIndex = ((Post) node).getPost_id();
-                        searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 1) + 1);
+                        searchResult.put(nodeValueIndex, searchResult.getOrDefault(nodeValueIndex, 0) + 1);
                     }
                 } else {
                     temp = new ArrayList<>();
@@ -140,16 +140,18 @@ public class ParserEventHandler {
     }
     public static String getSearchedResultsFromBlurParameter(PostTreeManager.PostInfoType postInfoType, String value, double bestSimilarity) {
         System.out.println("=== [getSearchedResultsFromBlurParameter] ===");
+
         // get all plant list
         String guessValue = "";
+        // discard
         if (!(bestSimilarity > 0 ||
-            postInfoType == PostTreeManager.PostInfoType.CONTENT)) {
+            false)) {
             return guessValue;
         }
         ArrayList<Post> postArrayList = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.CONTENT, "");
         System.out.println(postArrayList.size());
         for (Post post : postArrayList) {
-            double similarity = calculateStringSimilarity((String) post.getByType(postInfoType), value);
+            double similarity = calculateStringSimilarity(String.valueOf(post.getByType(postInfoType)), value);
             if (similarity > bestSimilarity) {
                 System.out.println("[getSearchedResultsFromBlurParameter] find similar string");
                 bestSimilarity = similarity;
@@ -172,14 +174,18 @@ public class ParserEventHandler {
      * @return IDList
      */
     private static ArrayList<Integer> getIDListFromSearchedResults(Map<Integer, Integer> searchResult, Token.Type searchType, int paramLength) {
+        System.out.println("[getIDListFromSearchedResults] search Type:" + searchType);
         ArrayList<Integer> IDList = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : searchResult.entrySet()) {
+            System.out.println("[getIDListFromSearchedResults] " + entry.getKey() + " | " + entry.getValue());
             // If it is OR, add it directly
             if (searchType == Token.Type.OR) {
+                System.out.println("[getIDListFromSearchedResults] OR");
                 IDList.add(entry.getKey());
             }
             // If it is AND, only add plants with the same number of occurrences as attribute size.
             if (searchType == Token.Type.AND && paramLength == entry.getValue()) {
+                System.out.println("[getIDListFromSearchedResults] AND");
                 IDList.add(entry.getKey());
             }
 
