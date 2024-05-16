@@ -16,6 +16,9 @@ public class PlantTreeManager implements TreeManager<Plant>{
 
     private static PlantTreeManager instance;
     private PlantTreeManager(RBTree<Plant> plantRBTree) {
+        if (instance != null) {
+            throw new IllegalStateException("Instance already created");
+        }
         this.plantRBTree = plantRBTree;
     }
     public static synchronized PlantTreeManager getInstance(RBTree<Plant> plantRBTree) {
@@ -24,7 +27,7 @@ public class PlantTreeManager implements TreeManager<Plant>{
         }
         return instance;
     }
-    public static PlantTreeManager getInstance() {
+    public static synchronized PlantTreeManager getInstance() {
         if (instance == null) {
             throw new IllegalStateException("Instance not created. Call getInstance(RBTree<Plant>) first.");
         }
