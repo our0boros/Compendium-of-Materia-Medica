@@ -12,56 +12,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:paddingLeft="40dp"
-            android:paddingTop="40dp"
-            android:paddingRight="40dp">
-
-            <Button
-                android:id="@+id/button_post_share_cancel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cancel" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-
-            <Button
-                android:id="@+id/button_post_share_post"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Post" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/editText_post_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="Say something..."
-                android:inputType="textMultiLine"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Captured Plant"
+            android:fontFamily="@font/aver"
+            android:textSize="40sp"
+            android:textColor="@color/simple_text"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,52 +28,51 @@
             android:layout_weight="3"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/rounded_corner">
 
             <ImageView
-                android:id="@+id/imageView_post_share_photo"
-                android:layout_width="0dp"
+                android:id="@+id/toPostPlantImage"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/load_image_fail"
-                tools:srcCompat="@drawable/load_image_fail" />
+                android:layout_margin="10dp"
+                app:srcCompat="@drawable/example_plant" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="320dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:layout_margin="10dp"
                 android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/toPostPlantImage"
-                    android:layout_width="73dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/example_plant" />
 
                 <TextView
                     android:id="@+id/toPostPlantCommonName"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Common Name" />
+                    android:text="Common Name"
+                    android:fontFamily="@font/roboto"/>
 
                 <TextView
                     android:id="@+id/toPostSciName"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Sci Name" />
+                    android:text="Sci Name"
+                    android:fontFamily="@font/roboto"/>
 
                 <TextView
                     android:id="@+id/toPostFamily"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Plant Family" />
+                    android:text="Plant Family"
+                    android:fontFamily="@font/roboto"/>
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -125,11 +83,13 @@
                         android:id="@+id/toPostDescription"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Description" />
+                        android:text="Description"
+                        android:fontFamily="@font/roboto"/>
                 </ScrollView>
 
             </LinearLayout>
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -165,14 +125,85 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.7"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/rounded_corner">
 
             <TextView
                 android:id="@+id/locationText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:layout_marginHorizontal="40dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/rounded_corner"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:id="@+id/imageView_post_share_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:layout_margin="10dp"
+                app:srcCompat="@drawable/load_image_fail"
+                tools:srcCompat="@drawable/load_image_fail" />
+
+            <EditText
+                android:id="@+id/editText_post_content"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Say something..."
+                android:inputType="textMultiLine"
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto"
+                android:layout_margin="10dp"
+                android:textColor="@color/simple_text"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            android:paddingTop="40dp"
+            android:paddingRight="40dp">
+
+            <Button
+                android:id="@+id/button_post_share_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:backgroundTint="@color/button"/>
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5" />
+
+            <Button
+                android:id="@+id/button_post_share_post"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Post"
+                android:backgroundTint="@color/button"/>
         </LinearLayout>
 
         <LinearLayout

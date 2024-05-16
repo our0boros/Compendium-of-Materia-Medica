@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="milk_white">#FFCDD2</color>
+
+    <color name="simple_text">#36282b</color>
+    <color name="button">#438546</color>
+    <color name="card_background">#438546</color>
 </resources>

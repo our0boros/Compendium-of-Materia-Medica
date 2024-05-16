@@ -4,7 +4,7 @@
         android:width="1dp"
         android:color="@color/transparent" />
 
-    <solid android:color="#E1F5FE" />
+    <solid android:color="@color/card_background" />
 
     <padding
         android:left="1dp"
@@ -12,5 +12,5 @@
         android:bottom="1dp"
         android:top="1dp" />
 
-    <corners android:radius="25dp" />
+    <corners android:radius="40dp" />
 </shape>

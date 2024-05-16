@@ -23,7 +23,7 @@
         android:textSize="50px"
         android:text="Compendium of Materia Medica"
         android:fontFamily="@font/vergilia"
-        android:textColor="#36282b"/>
+        android:textColor="@color/simple_text"/>
 
     <!--App slogan-->
     <TextView
@@ -35,7 +35,7 @@
         android:textSize="90px"
         android:text="Find More  Save More"
         android:fontFamily="@font/aver"
-        android:textColor="#36282b"/>
+        android:textColor="@color/simple_text"/>
 
     <!-- Email TextInputLayout -->
     <com.google.android.material.textfield.TextInputLayout

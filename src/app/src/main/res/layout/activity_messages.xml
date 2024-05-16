@@ -20,8 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="30sp"
-        android:text="List"/>
+        android:textSize="50dp"
+        android:text="List"
+        android:fontFamily="@font/aver"
+        android:textColor="@color/simple_text"/>
 
     <!--Same layout for My Post/ Messages-->
 
@@ -29,6 +31,6 @@
         android:id="@+id/messages_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CDCDCD" />
+        android:layout_margin="20dp"/>
 
 </LinearLayout>
