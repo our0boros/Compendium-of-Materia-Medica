@@ -12,6 +12,7 @@ import java.util.Objects;
  *  if * search method is &-and: find TAG1: TEXT1 and TAG2: TEXT2 and ...
  *  if * search method is |-or: find TAG1: TEXT1 or TAG2: TEXT2 and ...
  *
+ * <TOKEN LIST>
  * TAG: #
  * TEXT: $
  * LBRACE: {
@@ -22,48 +23,52 @@ import java.util.Objects;
  * OR: |
  * AND: &
  * STR: TEXT/ TAG/ ...
+ * </TOKEN LIST>
  *
  * @author: Hongjun Xu
- * @datetime: 2024/4/27
+ * @datetime: 2024/05/16
  * @description: Basic Tokens
  */
 public class Token {
-    // The following enum defines different types of tokens. Example of accessing these: Token.Type.INT
+    // TOKEN LIST
     public enum Type {TAG, TEXT, LBRACE, RBRACE, SEP, COLON, METHOD, OR, AND, STR}
 
     /**
-     * The following exception should be thrown if a tokenizer attempts to tokenize something that is not of one
-     * of the types of tokens.
+     * Unable to understand Token caught when handling Token
      */
     public static class IllegalTokenException extends IllegalArgumentException {
         public IllegalTokenException(String errorMessage) {
             super(errorMessage);
         }
     }
-
-    // Fields of the class Token.
+    // ====================================
+    // Class Token Fields
+    // ====================================
     private final String token; // Token representation in String form.
-    private final Type type;    // Type of the token.
+    private final Type type; // Type of the token.
 
     public Token(String token, Type type) {
         this.token = token;
         this.type = type;
     }
-
+    // ====================================
+    // Getters
+    // ====================================
     public String getToken() {
         return token;
     }
-
     public Type getType() {
         return type;
     }
-
+    // ====================================
+    // METHODS
+    // ====================================
     @Override
     public String toString() {
         if (type == Type.STR) {
             return "STR(" + token + ")";
         } else {
-            return type + "";
+            return String.valueOf(type);
         }
     }
 

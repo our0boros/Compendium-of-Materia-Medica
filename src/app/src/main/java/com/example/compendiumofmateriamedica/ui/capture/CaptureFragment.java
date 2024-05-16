@@ -74,7 +74,7 @@ import model.Datastructure.User;
  * @description: Capture Page, user can search and take photo here
  */
 public class CaptureFragment extends Fragment {
-    // =========== UI变量 ===========
+    // =========== UI PARAMETERS ===========
     private FragmentCaptureBinding binding;
 
     private TextView greeting;
@@ -83,13 +83,12 @@ public class CaptureFragment extends Fragment {
     private ImageButton captureButton;
     private ImageView searchHint;
     private User currentUser;
-    // =========== 当前搜索方法设定 ===========
-    private Boolean searchMethod;
+    // =========== SEARTCH METHOD SETTINGS ===========
     private Spinner spinner;
     private Switch plantPostSwitch;
     private boolean isPost = false;
     private ArrayAdapter<CharSequence> currentArrayAdapter;
-    // ================ Xing Chen 拍照用
+    // ================ CAPTURE ================
     private String currentPhotoPath;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -97,8 +96,8 @@ public class CaptureFragment extends Fragment {
                 if (isGranted) {
                     dispatchTakePictureIntent();
                 } else {
-                    // 权限被拒绝,你可以在这里处理,例如显示一个 Toast 提示用户
-                    Toast.makeText(getContext(), "需要相机权限才能拍照", Toast.LENGTH_SHORT).show();
+                    // Permission is denied, you can handle it here, for example, display a Toast to prompt the user
+                    Toast.makeText(getContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -123,24 +122,13 @@ public class CaptureFragment extends Fragment {
         currentUser = (User) getActivity().getIntent().getSerializableExtra("User");
         // ======================== UI ========================
         greeting = binding.textDashboard;
-        // 获取当前用户的名称
+        // Get the name of the current user
         captureViewModel.setGreetingText(getResources().getString(R.string.greeting_msg).replace("[]",
                 currentUser.getUsername()));
         captureViewModel.getGreetingText().observe(getViewLifecycleOwner(), greeting::setText);
         userImage = binding.userHeader;
         String userURL = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, currentUser.getUser_id()).get(0).getAvatar_url();
         loadImageFromURL(getContext(), userURL, userImage, "Avatar");
-        userImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                FragmentManager fragmentManager = getParentFragmentManager();
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.fragment_capture, fragmentManager.findFragmentById(R.id.fragment_profile))
-//                        .addToBackStack(null)
-//                        .commit();
-
-            }
-        });
         searchHint = binding.searchHint;
         searchHint.setImageDrawable(getResources().getDrawable(R.drawable.ic_error_outline_24));
         searchHint.setOnClickListener(new View.OnClickListener() {
@@ -162,27 +150,23 @@ public class CaptureFragment extends Fragment {
             }
         });
 
-        // ======================== 搜索逻辑 ========================
-        // 搜索内容切换
+        // ======================== Search logic ======================
+        // Search content switching
         plantPostSwitch = binding.plantPostSwitch;
-        // 设置Switch的Text
-//        captureViewModel.setSwitchTextText(getResources().getString(R.string.search_switch));
-//        captureViewModel.getSwitchText().observe(getViewLifecycleOwner(), plantPostSwitch::setText);
-        // 搜索栏文字监听
+        //Search bar text monitoring
         searchText = binding.searchBarText;
-        // 添加一个下拉菜单
+        //Add a drop-down menu
         spinner = binding.plantsAttribute;
-        // 设置 spinner 列表
+        //Set spinner list
         currentArrayAdapter = ArrayAdapter.createFromResource(
                 getContext(),
                 R.array.plants_attribute,
                 android.R.layout.simple_spinner_item
         );
         currentArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // ======================== 拍照 ========================
-        // 拍照按钮
+        // ======================= Take photos ======================= =
+        // Photo button
         captureButton = binding.captureButton;
-
 
         return root;
     }
@@ -191,7 +175,7 @@ public class CaptureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 检测Switch的状态
+        // Detect the status of Switch
         plantPostSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -230,13 +214,12 @@ public class CaptureFragment extends Fragment {
         spinner.setAdapter(currentArrayAdapter);
 
 
-        /**
-         * 添加输入框监听，当输入完成时直接进行搜索， 删除原有的按钮搜索方法
-         */
+        // Add input box monitoring, search directly when the input is completed,
+        // delete the original button search method
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                // 隐藏键盘
+                // Hide keyboard
                 InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(textView.getWindowToken(), 0);
 
@@ -250,20 +233,23 @@ public class CaptureFragment extends Fragment {
                 // =============================================================================
                 // Search with grammar
                 // =============================================================================
-                // 如果spinner选择的不是第一项【语法搜索】，反之按照当前选择搜索
+                // If the spinner selects something other than the first item [grammar search],
+                // otherwise it will search according to the current selection.
                 if (spinner.getSelectedItemId() == 0) {
-                    // 反之进行语法判定逻辑
-                    ArrayList<Integer> IDList = ParserEventHandler.getIDListFromGrammarText(String.valueOf(textView.getText()), isPost ? DataType.POST : DataType.PLANT);
+                    // Otherwise, perform grammar judgment logic
+                    ArrayList<Integer> IDList = ParserEventHandler.getIDListFromGrammarText(
+                            String.valueOf(textView.getText()),
+                            (isPost ? DataType.POST : DataType.PLANT),
+                            0.5);
                     Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search with grammar");
                     Toast.makeText(requireActivity().getApplicationContext(), "Search with grammar", Toast.LENGTH_LONG).show();
-                    // 跳转界面
+                    // Jump interface
                     textView.setText("");
                     if (IDList == null || IDList.size() == 0) {
                         Intent noResult = new Intent(getContext(), EmptySearchResult.class);
                         startActivity(noResult);
                         return false;
                     } else {
-                        // 跳转界面
                         Intent postIntent = new Intent(getContext(), SearchedResults.class);
                         postIntent.putExtra("isPost", isPost);
                         postIntent.putExtra("idList", IDList);
@@ -279,7 +265,7 @@ public class CaptureFragment extends Fragment {
                     Toast.makeText(requireActivity().getApplicationContext(), "Search without grammar", Toast.LENGTH_LONG).show();
                     Log.println(Log.ASSERT, "DEBUG", "[OnClick] Search " + PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1]
                             + " with: " + textView.getText().toString().trim());
-                    // 搜索节点
+                    //Search for nodes
                     ArrayList<Integer> IDList = new ArrayList<>();
                     if (!isPost) {
                         ArrayList<Plant> searchResult = PlantTreeManager.getInstance().search(
@@ -289,7 +275,8 @@ public class CaptureFragment extends Fragment {
                         if (searchResult.size() == 0) {
                             String guessValue = ParserEventHandler.getSearchedResultsFromBlurParameter(
                                     PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1],
-                                    textView.getText().toString().trim());
+                                    textView.getText().toString().trim(),
+                                    0.5);
                             if (!guessValue.equals("")) {
                                 searchResult = PlantTreeManager.getInstance().search(
                                         PlantTreeManager.PlantInfoType.values()[(int) spinner.getSelectedItemId() - 1],
@@ -308,7 +295,8 @@ public class CaptureFragment extends Fragment {
                         if (searchResult.size() == 0) {
                             String guessValue = ParserEventHandler.getSearchedResultsFromBlurParameter(
                                     PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1],
-                                    textView.getText().toString().trim());
+                                    textView.getText().toString().trim(),
+                                    0.5);
                             if (!guessValue.equals("")) {
                                 searchResult = PostTreeManager.getInstance().search(
                                         PostTreeManager.PostInfoType.values()[(int) spinner.getSelectedItemId() - 1],
@@ -320,7 +308,7 @@ public class CaptureFragment extends Fragment {
                             IDList.add(node.getPost_id());
                         }
                     }
-                    // 跳转界面
+                    // Jump interface
                     Log.println(Log.ASSERT, "DEBUG", "[OnClick] putExtra: " + IDList.size());
                     textView.setText("");
                     if (IDList.size() == 0) {
