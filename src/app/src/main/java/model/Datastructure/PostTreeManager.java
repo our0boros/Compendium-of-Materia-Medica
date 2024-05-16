@@ -68,9 +68,9 @@ public class PostTreeManager implements TreeManager<Post> {
                 RBTreeNode<Post> post = this.postRBTree.search(Integer.parseInt((String) info));
                 if (post != null) {
                     posts.add(post.getValue());
-                    Log.d("PostTreeManager", "Found post id " + post.getValue().getPost_id() + " in postTree.");
+                    //Log.d("PostTreeManager", "Found post id " + post.getValue().getPost_id() + " in postTree.");
                 } else{
-                    Log.d("PostTreeManager", "Post id is not in postTree.");
+                    //Log.d("PostTreeManager", "Post id is not in postTree.");
                 }
             } catch (NumberFormatException e) {
                 return posts;
@@ -188,8 +188,8 @@ public class PostTreeManager implements TreeManager<Post> {
         }
         // Search post with given uID
         ArrayList<Post> user_post_data = search(PostTreeManager.PostInfoType.UID, String.valueOf(uid));
-        if(user_post_data != null)
-            Log.d("PostTreeManager", "This user has " + user_post_data.size() + " posts in me.");
+        //if(user_post_data != null)
+            //Log.d("PostTreeManager", "This user has " + user_post_data.size() + " posts in me.");
 //        Log.w("PostTree root",""+instance.postRBTree);
         List<Post> user_post_data_list = new ArrayList<>();
         if (!user_post_data.isEmpty()) {
@@ -198,7 +198,7 @@ public class PostTreeManager implements TreeManager<Post> {
             }
             return user_post_data_list;
         } else {
-            Log.w("PostTreeManager", "Get posts by user id" + uid + " failed, there is no posts of this user");
+            //Log.w("PostTreeManager", "Get posts by user id" + uid + " failed, there is no posts of this user");
         }
         return user_post_data_list;
     }

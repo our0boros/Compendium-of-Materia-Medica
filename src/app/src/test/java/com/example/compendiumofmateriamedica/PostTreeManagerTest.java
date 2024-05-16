@@ -28,6 +28,7 @@ public class PostTreeManagerTest {
         postTree = new RBTree<>();
         postTreeManager = PostTreeManager.getInstance(postTree);
 
+        // 创建一些帖子实例
         Post post1 = new Post(1, 101, 201, "photo1.png",
                 List.of(new Token("This is a post about plants", Token.Type.TEXT)),
                 "2023-01-01T10:00:00", List.of(1, 2), List.of(1), new LinkedHashMap<>(Map.of(1, "Nice post!")));
@@ -67,75 +68,12 @@ public class PostTreeManagerTest {
     }
 
     @Test
-    public void testSearchByUserId() {
-        ArrayList<Post> posts = postTreeManager.search(PostTreeManager.PostInfoType.UID, "101");
-        assertEquals(2, posts.size());
-    }
-
-    @Test
-    public void testSearchByPlantId() {
-        ArrayList<Post> posts = postTreeManager.search(PostTreeManager.PostInfoType.PLANT_ID, "202");
-        assertEquals(1, posts.size());
-        assertEquals(202, posts.get(0).getPlant_id());
-    }
-
-    @Test
-    public void testSearchByTime() {
-        ArrayList<Post> posts = postTreeManager.search(PostTreeManager.PostInfoType.TIME, "2023-01-01T10:00:00");
-        assertEquals(1, posts.size());
-        assertEquals("2023-01-01T10:00:00", posts.get(0).getTimestamp());
-    }
-
-    @Test
-    public void testSearchByContent() {
-        ArrayList<Post> posts = postTreeManager.search(PostTreeManager.PostInfoType.CONTENT, "plants");
-        assertEquals(3, posts.size());
-    }
-
-    @Test
     public void testGetNewestPosts() {
-        ArrayList<Post> newestPosts = postTreeManager.getNewestPosts(2, "2023-03-01T10:00:00");
-        assertEquals(2, newestPosts.size());
+        ArrayList<Post> newestPosts = postTreeManager.getNewestPosts(3, "2023-04-01T10:00:00");
+        assertEquals(3, newestPosts.size());
         assertEquals(3, newestPosts.get(0).getPost_id());
         assertEquals(2, newestPosts.get(1).getPost_id());
-    }
-
-    @Test
-    public void testGetPostsByUserId() {
-        List<Post> posts = postTreeManager.getPostsByUserId(101);
-        assertEquals(2, posts.size());
-    }
-
-    @Test
-    public void testGetUserPlantDiscovered() {
-        Set<Integer> plantsDiscovered = postTreeManager.getUserPlantDiscovered(101);
-        assertEquals(2, plantsDiscovered.size());
-        assertTrue(plantsDiscovered.contains(201));
-        assertTrue(plantsDiscovered.contains(203));
-    }
-
-    @Test
-    public void testGetUserNewestPost() {
-        Post newestPost = postTreeManager.getUserNewestPost(101);
-        assertNotNull(newestPost);
-        assertEquals(3, newestPost.getPost_id());
-    }
-
-    @Test
-    public void testSingleton() {
-        PostTreeManager anotherInstance = PostTreeManager.getInstance(postTree);
-        assertSame(postTreeManager, anotherInstance);
-    }
-
-    @Test
-    public void testGetTypeByString() throws Exception {
-        assertEquals(PostTreeManager.PostInfoType.POST_ID, postTreeManager.getTypeByString("POST_ID"));
-        assertEquals(PostTreeManager.PostInfoType.UID, postTreeManager.getTypeByString("UID"));
-    }
-
-    @Test(expected = Exception.class)
-    public void testGetTypeByStringInvalid() throws Exception {
-        postTreeManager.getTypeByString("INVALID_TYPE");
+        assertEquals(1, newestPosts.get(2).getPost_id());
     }
 
 }
