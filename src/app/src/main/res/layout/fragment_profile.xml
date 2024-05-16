@@ -177,12 +177,12 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_personal_information_24dp"/>
             <TextView
-                android:id="@+id/personal_information"
+                android:id="@+id/random_avatar"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Personal Information"
+                android:text="Surprise Avatar Change"
                 android:paddingLeft="20dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/roboto"/>

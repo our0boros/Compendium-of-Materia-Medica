@@ -20,7 +20,12 @@ import java.util.TreeMap;
 import model.Parser.SearchGrammarParser;
 import model.Parser.Token;
 import model.Parser.Tokenizer;
-
+/**
+ * @author: Hongjun Xu
+ * @uid: u7733037
+ * @datetime: 2024/05/16
+ * @description: SearchGrammarParser Test
+ */
 public class GrammarParserTest {
     private static Tokenizer tokenizer;
 

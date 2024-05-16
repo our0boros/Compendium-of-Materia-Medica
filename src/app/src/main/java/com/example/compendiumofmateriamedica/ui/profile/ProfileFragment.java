@@ -1,6 +1,7 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
 
+import static model.UtilsApp.generateRandomString;
 import static model.UtilsApp.loadImageFromURL;
 
 import android.Manifest;
@@ -24,12 +25,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.databinding.FragmentProfileBinding;
@@ -156,7 +159,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
         notificationCountTextView.setText(String.valueOf(eventHandler.getUnreadNotifications()));
 
         // other features in profile
-        TextView personal_information=binding.personalInformation;
+        TextView random_avatar=binding.randomAvatar;
         TextView settings=binding.settings;
 
         // Initialize LocationManager
@@ -205,12 +208,19 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
                 startActivity(intent);
             }
         });
-        personal_information.setOnClickListener(new View.OnClickListener() {
+        random_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), PersonalInfo.class);
-                intent.putExtra("CurrentUser", currentUser); // Pass the current user object
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), PersonalInfo.class);
+//                intent.putExtra("CurrentUser", currentUser); // Pass the current user object
+//                startActivity(intent);
+                String imageUrl="https://robohash.org/"+generateRandomString();
+                Log.w("url",imageUrl);
+                UserTreeManager.getInstance().findUserById(currentUser.getUser_id()).setAvatar_url(imageUrl);
+                // refresh current user avatar
+                userAvatar = binding.profileUserAvatar;
+                loadImageFromURL(getContext(), UserTreeManager.getInstance().findUserById(currentUser.getUser_id()).getAvatar_url(), userAvatar, "Avatar");
+                Toast.makeText(getContext(), "Surprise", Toast.LENGTH_SHORT).show();
             }
         });
         messages.setOnClickListener(new View.OnClickListener() {
@@ -304,8 +314,6 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
     public void onEventChanged() {
         updateNotificationCount();
     }
-
-
 
 
 }

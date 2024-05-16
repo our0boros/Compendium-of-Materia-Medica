@@ -9,6 +9,12 @@ import android.widget.TextView;
 
 import com.example.compendiumofmateriamedica.R;
 
+/**
+ * @author: Hongjun Xu
+ * @uid: u7733037
+ * @datetime: 2024/05/16
+ * @description: Empty Result Page
+ */
 public class EmptySearchResult extends AppCompatActivity {
 
     TextView textView;

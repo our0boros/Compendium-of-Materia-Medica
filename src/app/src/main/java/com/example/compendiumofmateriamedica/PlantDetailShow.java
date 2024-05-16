@@ -20,7 +20,8 @@ import java.net.URL;
 
 
 /**
- * @author: Haochen Gong u7776634, Hongjun Xu
+ * @author: Haochen Gong, Hongjun Xu
+ * @uid: u , u7733037
  * @datetime: 2024/05/16
  * @description: Display detailed introduction interface of plants
  **/
@@ -88,15 +89,5 @@ public class PlantDetailShow extends AppCompatActivity {
             return bitmap;
         }
 
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
 
-            // 更新UI，显示从URL获取的图片
-            if (bitmap != null) {
-                plant_image.setImageBitmap(bitmap);
-            }
-        }
-    }
 }
-
