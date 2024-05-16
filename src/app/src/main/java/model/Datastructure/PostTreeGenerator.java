@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import model.Parser.Tokenizer;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * post tree generator
  * (processing post json data, generateTree() method can generate a tree from the processed data)
  **/

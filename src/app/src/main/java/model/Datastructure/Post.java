@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import model.Parser.Token;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * Post class
  **/
 public class Post implements Comparable<Post>{

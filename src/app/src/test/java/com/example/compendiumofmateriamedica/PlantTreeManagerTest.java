@@ -16,7 +16,7 @@ import model.Datastructure.RBTree;
 
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * PlantTreeManager class test
  **/
 public class PlantTreeManagerTest {

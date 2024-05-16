@@ -3,7 +3,7 @@ package model.Datastructure;
 import androidx.annotation.NonNull;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * Enumerated classes for stored data types
  **/
 public enum DataType {

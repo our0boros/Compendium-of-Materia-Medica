@@ -3,7 +3,7 @@ package model.Datastructure;
 import androidx.annotation.NonNull;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * Plant class
  **/
 public class Plant implements Comparable<Plant>{

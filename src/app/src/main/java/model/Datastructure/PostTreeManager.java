@@ -13,7 +13,7 @@ import java.util.Set;
 import model.Parser.Token;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * PostTree management method class
  **/
 public class PostTreeManager implements TreeManager<Post> {

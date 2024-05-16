@@ -21,7 +21,7 @@ import model.Parser.Token;
 
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * PostTreeManager class test
  **/
 public class PostTreeManagerTest {

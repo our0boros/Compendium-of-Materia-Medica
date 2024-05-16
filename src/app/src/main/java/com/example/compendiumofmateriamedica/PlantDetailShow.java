@@ -3,17 +3,24 @@ package com.example.compendiumofmateriamedica;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
-import model.Datastructure.RBTreeNode;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 /**
- * @author: Haochen Gong, Hongjun Xu
+ * @author: Haochen Gong u7776634, Hongjun Xu
  * @datetime: 2024/05/16
  * @description: Display detailed introduction interface of plants
  **/
@@ -26,6 +33,7 @@ public class PlantDetailShow extends AppCompatActivity {
     private TextView family;
     private TextView description;
     private int plantId;
+    private ImageView plant_image;
 
 
     @Override
@@ -39,6 +47,7 @@ public class PlantDetailShow extends AppCompatActivity {
         genus = findViewById(R.id.genus);
         family = findViewById(R.id.family);
         description = findViewById(R.id.description);
+        plant_image = findViewById(R.id.plant_image);
 
         // get plant id from last activity
         plantId = (int) this.getIntent().getSerializableExtra("PlantId");
@@ -52,7 +61,42 @@ public class PlantDetailShow extends AppCompatActivity {
         genus.setText(plant.getGenus());
         family.setText(plant.getFamily());
         description.setText(plant.getDescription());
+
+        String url = plant.getImage();
+        new FetchImageTask().execute(url);
     }
 
+    private class FetchImageTask extends AsyncTask<String, Void, Bitmap> {
 
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            String urlString = strings[0];
+            Bitmap bitmap = null;
+
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                try {
+                    InputStream inputStream = urlConnection.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                } finally {
+                    urlConnection.disconnect();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+            // 更新UI，显示从URL获取的图片
+            if (bitmap != null) {
+                plant_image.setImageBitmap(bitmap);
+            }
+        }
+    }
 }
+
