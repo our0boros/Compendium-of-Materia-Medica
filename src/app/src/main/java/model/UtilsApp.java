@@ -20,6 +20,12 @@ import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
 
+/**
+ * @author: Tianhao Shan
+ * @uid: u7709429
+ * @datetime: 2024/05/16
+ * @description: Some utils methods of this project
+ */
 public class UtilsApp {
 
     private UtilsApp() {

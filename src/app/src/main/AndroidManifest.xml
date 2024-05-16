@@ -86,9 +86,6 @@
             android:name=".ui.profile.PlantDiscovered"
             android:exported="false" />
         <activity
-            android:name=".ui.profile.PersonalInfo"
-            android:exported="false" />
-        <activity
             android:name=".ui.profile.Settings"
             android:exported="false" />
         <activity

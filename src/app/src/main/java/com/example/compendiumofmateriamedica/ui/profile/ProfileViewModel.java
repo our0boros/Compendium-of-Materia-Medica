@@ -9,6 +9,12 @@ import java.util.List;
 import model.Datastructure.Post;
 import model.Datastructure.User;
 
+/**
+ * @author: Tianhao Shan
+ * @uid: u7709429
+ * @datetime: 2024/05/16
+ * @description: get user information
+ */
 public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<User> user;
     private final MutableLiveData<String> user_name;

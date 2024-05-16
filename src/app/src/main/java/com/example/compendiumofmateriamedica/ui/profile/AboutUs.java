@@ -11,8 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.compendiumofmateriamedica.R;
 /**
  * @author: Tianhao Shan
- * @datetime: 2024/5
- * @description:
+ * @uid: u7709429
+ * @datetime: 2024/05/16
+ * @description: Activity with 'About us' content, introduction of our group
  */
 public class AboutUs extends AppCompatActivity {
 

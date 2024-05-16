@@ -26,7 +26,12 @@ import model.Datastructure.RBTree;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
 
-
+/**
+ * @author: Tianhao Shan
+ * @uid: u7709429
+ * @datetime: 2024/05/16
+ * @description: Splash Activity to load data before log in activity
+ */
 public class SplashActivity extends AppCompatActivity {
     // RBTrees to save data
     private RBTree<User> userTree;

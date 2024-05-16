@@ -25,8 +25,9 @@ import model.Datastructure.UserTreeManager;
 
 /**
  * @author: Tianhao Shan
- * @datetime: 2024/4/24
- * @description: Login Page
+ * @uid: u7709429
+ * @datetime: 2024/05/16
+ * @description: Activity to login
  */
 
 public class LoginActivity extends AppCompatActivity {

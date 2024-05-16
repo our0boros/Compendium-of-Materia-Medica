@@ -20,8 +20,9 @@ import model.Adapters.NotificationAdapter;
 
 /**
  * @author: Tianhao Shan
- * @datetime: 2024/5
- * @description:
+ * @uid: u7709429
+ * @datetime: 2024/05/16
+ * @description: Activity with links to some content 'Privacy Policy' and 'About Us', provide log out button
  */
 public class Settings extends AppCompatActivity {
 
