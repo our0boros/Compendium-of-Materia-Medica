@@ -10,7 +10,16 @@
     <color name="transparent">#00000000</color>
     <color name="milk_white">#FFCDD2</color>
 
-    <color name="simple_text">#36282b</color>
+    <color name="light_green">#78B159</color>
+    <color name="dark_green">#44693D</color>
+    <color name="cream">#F2E5B1</color>
+    <color name="sage_green">#C9CBA3</color>
+    <color name="taupe">#A69E82</color>
+    <color name="deep_brown">#362828</color>
+
+
+    <color name="simple_text">#362828</color>
     <color name="button">#438546</color>
     <color name="card_background">#89E78E</color>
+
 </resources>

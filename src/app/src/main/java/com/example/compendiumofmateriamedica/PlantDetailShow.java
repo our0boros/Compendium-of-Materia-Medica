@@ -3,6 +3,7 @@ package com.example.compendiumofmateriamedica;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class PlantDetailShow extends AppCompatActivity {
     private TextView description;
     private int plantId;
     private ImageView plant_image;
+    private ImageView back;
 
 
     @Override
@@ -65,6 +67,17 @@ public class PlantDetailShow extends AppCompatActivity {
 
         String url = plant.getImage();
         new FetchImageTask().execute(url);
+
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            // when start an activity from a fragment, the fragment never got killed
+            // simply come back to original fragment by kill the current activity
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 
     private class FetchImageTask extends AsyncTask<String, Void, Bitmap> {

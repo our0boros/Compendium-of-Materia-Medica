@@ -47,6 +47,8 @@ public class Messages extends AppCompatActivity {
 
         page_name=findViewById(R.id.page_name);
         page_name.setText("Messages");
+
+        // back button
         back=findViewById(R.id.back_btn);
         back.setOnClickListener(new View.OnClickListener() {
             // when start an activity from a fragment, the fragment never got killed

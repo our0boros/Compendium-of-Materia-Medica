@@ -24,7 +24,6 @@
         android:layout_height="80dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="80dp"
-        android:background="@drawable/rounded_corner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/unknown_user" />
@@ -68,9 +67,9 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:fontFamily="@font/roboto"
-            android:text="@string/search_text"
-            android:textAlignment="textStart"
-            android:textStyle="bold" />
+            android:textSize="15dp"
+            android:text="Tips at Upper Right. Press Enter to Search"
+            android:textAlignment="textStart" />
     </LinearLayout>
 
     <LinearLayout

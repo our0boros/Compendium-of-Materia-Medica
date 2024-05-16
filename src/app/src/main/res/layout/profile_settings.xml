@@ -13,14 +13,18 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/ic_arrow_left_24dp"/>
+
     <TextView
+        android:id="@+id/page_name"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="30sp"
-        android:text="Settings"/>
+        android:textSize="40sp"
+        android:text="Settings"
+        android:fontFamily="@font/aver"
+        android:textColor="@color/simple_text"/>
 
     <LinearLayout
         android:layout_width="350dp"
@@ -41,8 +45,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Privacy Policy"
-                android:textSize="25sp"
-                android:layout_gravity="center_vertical" />
+                android:textSize="22sp"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/simple_text"/>
             <ImageView
                 android:layout_marginLeft="155dp"
                 android:layout_width="24dp"
@@ -63,10 +69,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="About Us"
-                android:textSize="25sp"
-                android:layout_gravity="center_vertical" />
+                android:textSize="22sp"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/simple_text"
+                />
             <ImageView
-                android:layout_marginLeft="206dp"
+                android:layout_marginLeft="200dp"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_arrow_right_24dp"
