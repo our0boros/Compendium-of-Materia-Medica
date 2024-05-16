@@ -3,13 +3,22 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.compendiumofmateriamedica.R;
 
+import java.io.InputStream;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.OkHttpClient;
 
 public class UtilsApp {
 
@@ -39,6 +48,11 @@ public class UtilsApp {
                 errorImage = R.drawable.load_image_fail;
                 break;
         }
+
+        // Create custom RequestOptions
+        RequestOptions requestOptions = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.NONE) // Optional: Disable disk caching
+                .timeout(30000); // Set timeout in milliseconds (e.g., 30 seconds)
 
         Glide.with(context)
                 .load(url)
@@ -96,5 +110,26 @@ public class UtilsApp {
         // Username is valid
         return true;
     }
+
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?";
+
+    public static String generateRandomString() {
+        SecureRandom random = new SecureRandom();
+
+        // generate random lenth: min 1 to max 20
+        int max=20;
+        int min=1;
+        int length=random.nextInt(max - min + 1) + min;
+
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(index));
+        }
+
+        return sb.toString();
+    }
+
 
 }
