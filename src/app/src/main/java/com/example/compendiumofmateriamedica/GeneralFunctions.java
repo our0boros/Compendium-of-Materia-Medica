@@ -23,9 +23,11 @@ public class GeneralFunctions {
     private GeneralFunctions(Context context) {
         this.context = context;
     }
-
+    private GeneralFunctions() {}
     public static GeneralFunctions getInstance() {
-        assert instance != null;
+        if (instance == null) {
+            instance = new GeneralFunctions();
+        }
         return instance;
     }
     public static GeneralFunctions getInstance(Context context) {
@@ -34,6 +36,11 @@ public class GeneralFunctions {
         }
         return instance;
     }
+
+    public static void setContext(Context context) {
+        GeneralFunctions.context = context;
+    }
+
     // Add and load sensitive word dictionary
     public static boolean isSensitiveWord(String word) {
         try {
