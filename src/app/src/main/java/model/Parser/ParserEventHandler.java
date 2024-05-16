@@ -129,11 +129,11 @@ public class ParserEventHandler {
         System.out.println(plantArrayList.size());
         // Iterate each entities
         for (Plant plant : plantArrayList) {
-            double similarity = calculateStringSimilarity((String) plant.getByType(plantInfoType), value);
+            double similarity = calculateStringSimilarity(String.valueOf(plant.getByType(plantInfoType)), value);
             if (similarity > bestSimilarity) {
                 System.out.println("[getSearchedResultsFromBlurParameter] find similar string");
                 bestSimilarity = similarity;
-                guessValue = (String) plant.getByType(plantInfoType);
+                guessValue = String.valueOf(plant.getByType(plantInfoType));
             }
         }
         return guessValue;
@@ -155,7 +155,7 @@ public class ParserEventHandler {
             if (similarity > bestSimilarity) {
                 System.out.println("[getSearchedResultsFromBlurParameter] find similar string");
                 bestSimilarity = similarity;
-                guessValue = (String) post.getByType(postInfoType);
+                guessValue = String.valueOf(post.getByType(postInfoType));
             }
         }
         return guessValue;
