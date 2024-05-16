@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import model.Parser.Token;
 import model.Parser.Tokenizer;
 
+/**
+ * @author: Hongjun Xu
+ * @uid: u7733037
+ * @datetime: 2024/05/16
+ * @description: Tokenizer Test
+ */
 public class TokenizerTest {
 
     private static Tokenizer tokenizer;

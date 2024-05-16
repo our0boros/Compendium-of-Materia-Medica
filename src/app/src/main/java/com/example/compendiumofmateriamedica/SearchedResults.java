@@ -26,6 +26,7 @@ import model.Adapters.RowAdapter;
 
 /**
  * @author: Hongjun Xu
+ * @uid: u7733037
  * @datetime: 2024/05/16
  * @description: When the search syntax or simple search
  * obtains the specific plant ID and post ID, read the

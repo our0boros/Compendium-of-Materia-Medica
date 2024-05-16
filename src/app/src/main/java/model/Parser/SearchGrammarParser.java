@@ -10,6 +10,7 @@ import java.util.Stack;
 
 /**
  * @author: Hongjun Xu
+ * @uid: u7733037
  * @datetime: 2024/05/16
  * @description:
  * Read the plain text of the input and convert it into a machine-friendly concrete variable class
