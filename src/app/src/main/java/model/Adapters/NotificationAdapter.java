@@ -107,8 +107,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         // Set activity time
         holder.userActivityTime.setText(formatTime(event.getEventTime()));
 
-        // Show divider if the current item is not the last item
-        holder.divider.setVisibility(position == notifications.size() - 1 ? View.GONE : View.VISIBLE);;
+//        // Show divider if the current item is not the last item
+//        holder.divider.setVisibility(position == notifications.size() - 1 ? View.GONE : View.VISIBLE);;
     }
 
     // Get total number of notifications
