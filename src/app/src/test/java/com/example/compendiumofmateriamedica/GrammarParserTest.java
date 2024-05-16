@@ -1,6 +1,7 @@
 package com.example.compendiumofmateriamedica;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import com.google.common.collect.ImmutableMap;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import model.Parser.SearchGrammarParser;
+import model.Parser.Token;
 import model.Parser.Tokenizer;
 
 public class GrammarParserTest {
@@ -33,6 +35,7 @@ public class GrammarParserTest {
                 "$: {bBb}, #: {aAa}, *: {&}",
                 "$: {世界}, #: {你好}, *: {|}"
         };
+        Token.Type[] types = {Token.Type.OR, Token.Type.OR, Token.Type.AND, Token.Type.AND, Token.Type.OR, Token.Type.AND, Token.Type.OR};
 
         ArrayList<Map<String, String>> expectResults = new ArrayList<>();
         expectResults.add(new ImmutableMap.Builder<String, String>()
@@ -59,6 +62,44 @@ public class GrammarParserTest {
             System.out.println( new TreeMap<>(results));
             System.out.println(new TreeMap<>(expectResults.get(idx)));
             assertEquals(results, expectResults.get(idx));
+            assertEquals(types[idx], searchGrammarParser.getSearchMethod());
+        }
+    }
+
+
+    @Test(timeout=1000)
+    public void testAdvanceConvert() throws IllegalAccessException {
+        String testExample = "#: {ID, COMMON_NAME, SLUG, GENUS, FAMILY}, $: {77116, Milfoil, dactylis-glomerata, Quercus, Asteraceae}, *: {|}";
+
+        Map<String, String> expectResults = new ImmutableMap.Builder<String, String>()
+                .put("ID".toUpperCase(), "77116")
+                .put("COMMON_NAME".toUpperCase(), "Milfoil")
+                .put("SLUG".toUpperCase(), "dactylis-glomerata")
+                .put("GENUS".toUpperCase(), "Quercus")
+                .put("FAMILY".toUpperCase(), "Asteraceae")
+                .build();
+
+        tokenizer = new Tokenizer(testExample, false);
+        SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer, false);
+        Map<String, String> results = searchGrammarParser.parseExp();
+        assertEquals(results, expectResults);
+
+    }
+
+    @Test(timeout=1000)
+    public void testIllegalProductionException() {
+        String[] inputs = new String[] {
+                "aha", "*: {|}", "*: {|}, #: {ID, COMMON_NAME, SLUG, GENUS, FAMILY}, $: {77116, Milfoil, dactylis-glomerata, Quercus, Asteraceae}",
+                ",,,", "#: {Eihei}, #: {Eihei}, $: {？}, *: {&}", "#: {Eihei}, $: {？}, *: {:}", "#: {Eihei}, $: {{？}, *: {&}", "#: {Eihei}, $: {？}, *: {&}}",
+                "#: {Eihei}, $$: {？}, *: {&}", "#:& {Eihei}, $: {？}, *: {&}"
+        };
+
+        for (String input : inputs) {
+            // Provide a series of tokens that should invoke this exception
+            assertThrows(SearchGrammarParser.IllegalProductionException.class, () -> {
+                tokenizer = new Tokenizer(input, false);
+                Map<String, String> result = new SearchGrammarParser(tokenizer, false).parseExp();
+            });
         }
     }
 }

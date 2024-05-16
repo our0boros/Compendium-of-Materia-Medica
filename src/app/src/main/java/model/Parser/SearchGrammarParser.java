@@ -48,9 +48,9 @@ public class SearchGrammarParser {
      * Parse tokens into expression
      * <Exp>        := <TagColumn>, <TextColumn>, <METHOD> | <TextColumn>, <TagColumn>, <METHOD>
      * @return
-     * @throws IllegalAccessException
+     * @throws IllegalProductionException
      */
-    public Map<String, String> parseExp() throws IllegalAccessException {
+    public Map<String, String> parseExp() throws IllegalProductionException {
 
         System.out.println("[parseExp] start parsing token");
         Stack<String> BRACEStack = new Stack<>();
@@ -92,7 +92,7 @@ public class SearchGrammarParser {
             SearchGrammarParser searchGrammarParser2 = new SearchGrammarParser(new Tokenizer(columns.get(0), useWordsFilter), useWordsFilter);
             tagList = searchGrammarParser1.parseTagColumn();
             textList = searchGrammarParser2.parseTextColumn();
-        } else throw new IllegalAccessException("Unexpected Columns");
+        } else throw new IllegalProductionException("Unexpected Columns");
         // check search method
         SearchGrammarParser searchGrammarParser3 = new SearchGrammarParser(new Tokenizer(columns.get(2), useWordsFilter), useWordsFilter);
         this.searchMethod = searchGrammarParser3.parseMethod() ? Token.Type.OR : Token.Type.AND;

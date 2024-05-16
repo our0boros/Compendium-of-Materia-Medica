@@ -219,7 +219,7 @@ public class ParserEventHandler {
             ArrayList<Integer> IDList = getIDListFromSearchedResults(searchResult, searchMethod, searchParam.size());
             return IDList;
             // =============================================================================
-        } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException | IllegalAccessException e) {
+        } catch (SearchGrammarParser.IllegalProductionException | Token.IllegalTokenException e) {
             System.out.println("[getIDListFromGrammarText] catch Exception: " + e);
             return null;
         }
