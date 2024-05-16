@@ -62,14 +62,13 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_corner"
             android:ems="10"
+            android:fontFamily="@font/roboto"
             android:hint="@string/hint_notation"
             android:inputType="text"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:fontFamily="@font/roboto"
-            android:textSize="15dp"
-            android:text="Tips at Upper Right. Press Enter to Search"
-            android:textAlignment="textStart" />
+            android:textAlignment="textStart"
+            android:textSize="15dp" />
     </LinearLayout>
 
     <LinearLayout
