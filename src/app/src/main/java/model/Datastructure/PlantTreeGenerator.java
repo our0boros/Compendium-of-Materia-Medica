@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * plant tree generator
  * (processing plant's json data, generateTree() method can generate tree from the processed data)
  **/

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * Generate tree factory class , encapsulates the process of reading a json file ,
  * processing the json file through the corresponding tree generator , and generating the corresponding tree .
  **/

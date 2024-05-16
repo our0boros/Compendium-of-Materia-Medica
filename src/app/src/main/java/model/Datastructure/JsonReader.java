@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * json file read, return jsonObject arraylist
  **/
 public class JsonReader {

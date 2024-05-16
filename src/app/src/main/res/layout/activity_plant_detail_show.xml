@@ -19,6 +19,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/rounded_corner">
 
+        <ImageView
+            android:id="@+id/plant_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:scaleType="centerCrop"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -32,7 +39,7 @@
                 android:layout_weight="1"
                 android:text="Common name:"
                 android:gravity="center"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/aver"
                 android:textColor="@color/simple_text"/>
@@ -43,7 +50,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/simple_text"/>
         </LinearLayout>
@@ -61,7 +68,7 @@
                 android:layout_weight="1"
                 android:text="Scientific name:"
                 android:gravity="center"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/aver"
                 android:textColor="@color/simple_text"/>
@@ -72,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/simple_text"/>
         </LinearLayout>
@@ -90,7 +97,7 @@
                 android:layout_weight="1"
                 android:text="Genus:"
                 android:gravity="center"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/aver"
                 android:textColor="@color/simple_text"/>
@@ -101,7 +108,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/simple_text"/>
         </LinearLayout>
@@ -119,7 +126,7 @@
                 android:layout_weight="1"
                 android:text="Family:"
                 android:gravity="center"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/aver"
                 android:textColor="@color/simple_text"/>
@@ -130,7 +137,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/simple_text"/>
         </LinearLayout>
@@ -148,7 +155,7 @@
                 android:layout_weight="1"
                 android:text="Slug:"
                 android:gravity="center"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/aver"
                 android:textColor="@color/simple_text"/>
@@ -159,7 +166,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/simple_text"/>
         </LinearLayout>
@@ -171,7 +178,7 @@
             android:layout_weight="0.3"
             android:text="Description:"
             android:gravity="center"
-            android:textSize="25sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:fontFamily="@font/aver"
             android:textColor="@color/simple_text"/>
@@ -180,11 +187,10 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:fontFamily="@font/roboto"
             android:gravity="center"
             android:textColor="@color/simple_text"/>
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

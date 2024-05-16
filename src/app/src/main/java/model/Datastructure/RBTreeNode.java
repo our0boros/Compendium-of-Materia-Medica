@@ -1,7 +1,7 @@
 package model.Datastructure;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * RBTree node class
  **/
 public class RBTreeNode<V> {

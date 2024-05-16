@@ -1,7 +1,7 @@
 package model.Datastructure;
 
 /**
- * @author Haochen Gong
+ * @author Haochen Gong u7776634
  * A generic interface to the method class that manages the tree
  * @using method: 1) Build the tree's manger with an existing tree (already defined in activity's attribute, there are already methods to initialize the data and build the tree):
  *                   xxxTreeManager treeManager = new xxxTreeManager(xxxTree);
