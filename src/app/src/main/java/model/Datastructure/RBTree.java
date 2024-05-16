@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Haochen Gong u7776634
- * RBTree class
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: RBTree class
  **/
 public class RBTree<V> {
     RBTreeNode<V> root;

@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author Haochen Gong u7776634
- * UserTree management method class
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: UserTree management method class
  **/
 public class UserTreeManager implements TreeManager<User> {
 

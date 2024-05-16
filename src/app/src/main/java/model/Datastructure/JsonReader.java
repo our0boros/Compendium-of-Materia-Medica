@@ -13,8 +13,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * @author Haochen Gong u7776634
- * json file read, return jsonObject arraylist
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: json file read, return jsonObject arraylist
  **/
 public class JsonReader {
 

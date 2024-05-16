@@ -13,8 +13,9 @@ import java.util.Set;
 import model.Parser.Token;
 
 /**
- * @author Haochen Gong u7776634
- * PostTree management method class
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: PostTree management method class
  **/
 public class PostTreeManager implements TreeManager<Post> {
     private final RBTree<Post> postRBTree;

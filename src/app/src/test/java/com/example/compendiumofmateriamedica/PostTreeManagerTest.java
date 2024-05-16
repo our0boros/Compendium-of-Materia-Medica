@@ -21,8 +21,9 @@ import model.Parser.Token;
 
 
 /**
- * @author Haochen Gong u7776634
- * PostTreeManager class test
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: PostTreeManager class test
  **/
 public class PostTreeManagerTest {
     private RBTree<Post> postTree;

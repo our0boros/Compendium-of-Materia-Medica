@@ -18,8 +18,9 @@ import model.Datastructure.UserTreeManager;
 
 
 /**
- * @author Haochen Gong u7776634
- * UserTreeManager class test
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: UserTreeManager class test
  **/
 public class UserTreeManagerTest {
 

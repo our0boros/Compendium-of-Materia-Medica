@@ -3,8 +3,9 @@ package model.Datastructure;
 import androidx.annotation.NonNull;
 
 /**
- * @author Haochen Gong u7776634
- * Plant class
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: Plant class
  **/
 public class Plant implements Comparable<Plant>{
     private final int id;

@@ -5,8 +5,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * @author Haochen Gong u7776634
- * user tree generator
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: user tree generator
  * (process user's json data, generateTree() method can generate a tree from the processed data)）
  **/
 public class UserTreeGenerator implements TreeGenerator<User> {

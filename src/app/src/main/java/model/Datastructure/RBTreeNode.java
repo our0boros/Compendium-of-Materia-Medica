@@ -1,8 +1,9 @@
 package model.Datastructure;
 
 /**
- * @author Haochen Gong u7776634
- * RBTree node class
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: RBTree node class
  **/
 public class RBTreeNode<V> {
     private final boolean RED = false;

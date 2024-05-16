@@ -3,8 +3,9 @@ package model.Datastructure;
 import java.util.ArrayList;
 
 /**
- * @author Haochen Gong u7776634
- * PlantTree management methodology class
+ * @author Haochen Gong
+ * @uid u7776634
+ * @description: PlantTree management methodology class
  **/
 public class PlantTreeManager implements TreeManager<Plant>{
 
