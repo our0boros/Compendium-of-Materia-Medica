@@ -117,11 +117,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
                 android:paddingTop="10dp"
                 android:text="Plants Discovered"
+                android:textAlignment="center"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/roboto"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
