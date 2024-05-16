@@ -319,7 +319,7 @@ public class PostShareActivity extends AppCompatActivity {
 
         // create post and add it into post tree
         try {
-            Tokenizer tokenizer = new Tokenizer(content);
+            Tokenizer tokenizer = new Tokenizer(content, true);
             Post post = new Post(postId, uid, plantId, photo, tokenizer.getFullToken(), timestamp);
             PostTreeManager.getInstance().insert(post.getPost_id(), post);
             Log.d("SharePost", "Post added to the postTree in MainActivity");

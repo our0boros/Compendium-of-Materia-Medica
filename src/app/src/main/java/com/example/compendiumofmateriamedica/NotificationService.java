@@ -199,7 +199,7 @@ public class NotificationService extends Service {
             Map<Integer, String> comments = new LinkedHashMap<>();
 
             // create new post
-            Tokenizer tokenizer = new Tokenizer(content);
+            Tokenizer tokenizer = new Tokenizer(content, true);
             Log.d("NotificationService", "Post read successfully.");
             return new Post(postId,uid,plantId,photo,tokenizer.getFullToken(),timestamp,likes,likesRecord,comments);
 

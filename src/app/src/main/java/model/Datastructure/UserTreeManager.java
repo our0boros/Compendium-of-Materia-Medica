@@ -18,6 +18,9 @@ public class UserTreeManager implements TreeManager<User> {
     }
     private static UserTreeManager instance;
     private UserTreeManager(RBTree<User> userRBTree) {
+        if (instance != null) {
+            throw new IllegalStateException("Instance already created");
+        }
         this.userRBTree = userRBTree;
     }
     public static synchronized UserTreeManager getInstance(RBTree<User> userRBTree){

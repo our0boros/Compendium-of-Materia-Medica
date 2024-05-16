@@ -547,7 +547,11 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     - *Code coverage: ...*
     - *Types of tests created and descriptions: ...*
 
-2. xxx
+2. Tests for Singleton
+    - Code: [SingletonTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/androidTest/java/com/example/compendiumofmateriamedica/SingletonTest.java) for the [PostTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L26-49), [UserTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L19-37), [PlantTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L17-35) and [NotificationAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/NotificationAdapter.java?ref_type=heads#L33-57) Class.
+    - *Number of test cases: 12*
+    - *Code coverage: [SingletonTest Class](media/Screenshots/OneOfSingletonTest.jpg), [Example Case](media/Screenshots/SingletonTest.jpg), [Result](media/Screenshots/SingletonTestResult.jpg)*
+    - *Types of tests created and descriptions: Using reflection to create newinstance, getInstance() and multi-thread environment for each class*
 
 ...
 

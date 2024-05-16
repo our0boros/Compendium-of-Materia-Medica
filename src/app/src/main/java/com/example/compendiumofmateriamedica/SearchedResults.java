@@ -23,6 +23,15 @@ import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTreeNode;
 import model.Adapters.RowAdapter;
 
+
+/**
+ * @author: Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description: When the search syntax or simple search
+ * obtains the specific plant ID and post ID, read the
+ * list of these IDs and display them on the UI through
+ * the adapter
+ */
 public class SearchedResults extends AppCompatActivity {
     ArrayList<Integer> dataToShow;
     boolean isPost;
@@ -35,15 +44,14 @@ public class SearchedResults extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searched_results);
-//        this.getSupportActionBar().hide();
+        // load data from previous page
         dataToShow = (ArrayList<Integer>) getIntent().getExtras().getSerializable("idList");
         isPost = (boolean) getIntent().getExtras().getSerializable("isPost");
         if (dataToShow.size() != 0) {
             Log.println(Log.ASSERT, "DEBUG", "[SearchedPostResults] sample search result: " + dataToShow.size()
                     + " " + (isPost ? "Post" : "Plant"));
         }
-
-
+        // Preprocess data
         ArrayList<Integer> plantIDs, postIDs;
         if (!isPost) {
             plantIDs = dataToShow;
@@ -64,11 +72,11 @@ public class SearchedResults extends AppCompatActivity {
             plantIDs = new ArrayList<>();
             plantIDs.addAll(plantSets);
         }
-        // =============================================================================
-        // 上半部分显示搜索到的植物，下班部分显示植物相关的post
-        // =============================================================================
+        // ================================================ =============================
+        // The upper part displays the searched plants, and the off-duty part displays plant-related posts.
+        // ================================================ =============================
 
-        // 植物相关结果显示
+        // Display of plant related results
         RecyclerView plantResults = findViewById(R.id.plantLists);
         plantResults.setLayoutManager(new GridLayoutManager(this, 3));
 
@@ -121,12 +129,12 @@ public class SearchedResults extends AppCompatActivity {
 
     }
 
-    // 获取 ArrayList 的前 n 项，如果数量不足 n 项则返回原始列表
+    // Get the first n items of ArrayList, if there are less than n items, return the original list
     public static <T> ArrayList<T> getFirstNItems(ArrayList<T> list, int count) {
         ArrayList<T> resultList = new ArrayList<>();
-        int size = Math.min(list.size(), count); // 获取列表的大小和 n 之间的较小值
+        int size = Math.min(list.size(), count); // Get the smaller value between the size of the list and n
         for (int i = 0; i < size; i++) {
-            resultList.add(list.get(i)); // 将前 n 项添加到结果列表中
+            resultList.add(list.get(i)); // Add the first n items to the result list
         }
         return resultList;
     }

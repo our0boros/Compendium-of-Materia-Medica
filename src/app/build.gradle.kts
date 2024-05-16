@@ -67,6 +67,7 @@ dependencies {
 
 //    implementation("net.sourceforge.htmlunit:htmlunit-android:2.63.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    androidTestImplementation("org.testng:testng:6.9.6")
 //    implementation("org.apache.httpcomponents:httpmime:4.5.6")
 
 }

@@ -32,6 +32,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     // Constructor is private to enforce singleton pattern
     private NotificationAdapter(Context context, List<NewEvent> notifications) {
+        if (instance != null) {
+            throw new IllegalStateException("Instance already created");
+        }
         this.context = context;
         this.notifications = notifications;
     }

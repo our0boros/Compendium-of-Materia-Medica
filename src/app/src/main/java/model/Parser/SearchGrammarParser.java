@@ -9,6 +9,11 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
+ * @author: Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description:
+ * Read the plain text of the input and convert it into a machine-friendly concrete variable class
+ * String -> Map< String, String >
  * parser grammar:
  * <Exp>        := <TagColumn>, <TextColumn>, <METHOD> | <TextColumn>, <TagColumn>, <METHOD>
  * <TagColumn>  := #: { <Content> },
@@ -17,7 +22,7 @@ import java.util.Stack;
  * <Content>    := STR | STR, <Content>
  */
 public class SearchGrammarParser {
-
+    // Exceptions
     public static class IllegalProductionException extends IllegalArgumentException {
         public IllegalProductionException(String errorMessage) {
             super(errorMessage);
@@ -25,17 +30,29 @@ public class SearchGrammarParser {
     }
 
     Tokenizer tokenizer;
-    // false as &, true as |
+    // Only accept AND, OR
     Token.Type searchMethod = null;
     Map<String, String> output;
-
+    private boolean useWordsFilter = false;
     public SearchGrammarParser(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
+        useWordsFilter = false;
     }
 
+    public SearchGrammarParser(Tokenizer tokenizer, boolean useWordsFilter) {
+        this.tokenizer = tokenizer;
+        this.useWordsFilter = useWordsFilter;
+    }
+
+    /**
+     * Parse tokens into expression
+     * <Exp>        := <TagColumn>, <TextColumn>, <METHOD> | <TextColumn>, <TagColumn>, <METHOD>
+     * @return
+     * @throws IllegalAccessException
+     */
     public Map<String, String> parseExp() throws IllegalAccessException {
 
-        Log.println(Log.ASSERT, "DEBUG", "[parseExp] start parsing token");
+        System.out.println("[parseExp] start parsing token");
         Stack<String> BRACEStack = new Stack<>();
         ArrayList<String> columns = new ArrayList<>();
         columns.add(""); // set init String
@@ -59,25 +76,25 @@ public class SearchGrammarParser {
 
             tokenizer.next();
         }
-        Log.println(Log.ASSERT, "DEBUG", "[parseExp] found mapping columns: " + columns);
+        System.out.println("[parseExp] found mapping columns: " + columns);
         if (columns.size() != 3) throw new IllegalProductionException("Mapping columns should be 3/ Tag, Text, Method");
         ArrayList<String> tagList;
         ArrayList<String> textList;
         // Case: <TagColumn>, <TextColumn>, <METHOD>
         if (columns.get(0).charAt(0) == '#' && columns.get(1).charAt(0) == '$') {
-            SearchGrammarParser searchGrammarParser1 = new SearchGrammarParser(new Tokenizer(columns.get(0)));
-            SearchGrammarParser searchGrammarParser2 = new SearchGrammarParser(new Tokenizer(columns.get(1)));
+            SearchGrammarParser searchGrammarParser1 = new SearchGrammarParser(new Tokenizer(columns.get(0), useWordsFilter), useWordsFilter);
+            SearchGrammarParser searchGrammarParser2 = new SearchGrammarParser(new Tokenizer(columns.get(1), useWordsFilter), useWordsFilter);
             tagList = searchGrammarParser1.parseTagColumn();
             textList = searchGrammarParser2.parseTextColumn();
         // Case: <TextColumn>, <TagColumn>, <METHOD>
         } else if (columns.get(0).charAt(0) == '$' && columns.get(1).charAt(0) == '#') {
-            SearchGrammarParser searchGrammarParser1 = new SearchGrammarParser(new Tokenizer(columns.get(1)));
-            SearchGrammarParser searchGrammarParser2 = new SearchGrammarParser(new Tokenizer(columns.get(0)));
+            SearchGrammarParser searchGrammarParser1 = new SearchGrammarParser(new Tokenizer(columns.get(1), useWordsFilter), useWordsFilter);
+            SearchGrammarParser searchGrammarParser2 = new SearchGrammarParser(new Tokenizer(columns.get(0), useWordsFilter), useWordsFilter);
             tagList = searchGrammarParser1.parseTagColumn();
             textList = searchGrammarParser2.parseTextColumn();
         } else throw new IllegalAccessException("Unexpected Columns");
         // check search method
-        SearchGrammarParser searchGrammarParser3 = new SearchGrammarParser(new Tokenizer(columns.get(2)));
+        SearchGrammarParser searchGrammarParser3 = new SearchGrammarParser(new Tokenizer(columns.get(2), useWordsFilter), useWordsFilter);
         this.searchMethod = searchGrammarParser3.parseMethod() ? Token.Type.OR : Token.Type.AND;
         if (this.searchMethod == null) throw new IllegalProductionException("Invalid search Method");
         // if tag do not match text
@@ -85,13 +102,17 @@ public class SearchGrammarParser {
         // store output
         output = new HashMap<>();
         for (int idx = 0; idx < tagList.size(); idx++) {
-            output.put(tagList.get(idx).toUpperCase(), textList.get(idx));
+            output.put(tagList.get(idx).toUpperCase().strip(), textList.get(idx).strip());
         }
 
         return output;
     }
 
-    // <TagColumn>  := #: { <Content> },
+    /**
+     * Parse Tag column into Content
+     * <TagColumn>  := #: { <Content> },
+     * @return Tag list
+     */
     public ArrayList<String> parseTagColumn() {
         ArrayList<Token> fullToken = tokenizer.getFullToken();
         if (fullToken.get(0).getType() == Token.Type.TAG &&
@@ -103,13 +124,18 @@ public class SearchGrammarParser {
             for (int idx = 3; idx < fullToken.size() - 2; idx++) {
                 recursiveContent.append(fullToken.get(idx).getToken()).append(" ");
             }
-            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString()));
+            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString(), useWordsFilter), useWordsFilter);
             return searchGrammarParser.parseContent();
         } else {
             throw new IllegalProductionException("Unexpected token...");
         }
     }
-    // <TextColumn>  := $: { <Content> },
+
+    /**
+     * Parse Text column into Content
+     * <TextColumn>  := $: { <Content> },
+     * @return Text list
+     */
     public ArrayList<String> parseTextColumn() {
         ArrayList<Token> fullToken = tokenizer.getFullToken();
         if (fullToken.get(0).getType() == Token.Type.TEXT &&
@@ -121,13 +147,18 @@ public class SearchGrammarParser {
             for (int idx = 3; idx < fullToken.size() - 2; idx++) {
                 recursiveContent.append(fullToken.get(idx).getToken()).append(" ");
             }
-            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString()));
+            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString(), useWordsFilter), useWordsFilter);
             return searchGrammarParser.parseContent();
         } else {
             throw new IllegalProductionException("Unexpected token...");
         }
     }
-    // <Content>    := STR | STR, <Content>
+
+    /**
+     * Parse Content into Real Token or next Content
+     * <Content>    := STR | STR, <Content>
+     * @return Token List
+     */
     public ArrayList<String> parseContent() {
         ArrayList<Token> fullToken = tokenizer.getFullToken();
         // Case: STR
@@ -149,7 +180,7 @@ public class SearchGrammarParser {
                 for (int idx = 2; idx < fullToken.size(); idx++) {
                     recursiveContent.append(fullToken.get(idx).getToken()).append(" ");
                 }
-                SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString()));
+                SearchGrammarParser searchGrammarParser = new SearchGrammarParser(new Tokenizer(recursiveContent.toString(), useWordsFilter), useWordsFilter);
                 ArrayList<String> output = searchGrammarParser.parseContent();
                 output.add(0, fullToken.get(0).getToken());
                 return output;

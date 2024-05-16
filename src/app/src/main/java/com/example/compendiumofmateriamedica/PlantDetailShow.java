@@ -13,8 +13,9 @@ import model.Datastructure.RBTreeNode;
 
 
 /**
- * @author: Haochen Gong
- * @description: 植物数据显示页面。
+ * @author: Haochen Gong, Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description: Display detailed introduction interface of plants
  **/
 public class PlantDetailShow extends AppCompatActivity {
 

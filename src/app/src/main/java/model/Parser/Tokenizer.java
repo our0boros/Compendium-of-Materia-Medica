@@ -7,34 +7,63 @@ import java.util.ArrayList;
 
 /**
  * @author: Hongjun Xu
- * @datetime: 2024/4/27
- * @description: Tokenize search input
+ * @datetime: 2024/05/16
+ * @description: Convert the input PlainText into tokens
  */
 public class Tokenizer {
+    // ====================================
+    // Class Tokenizer Fields
+    // ====================================
     private String buffer;          // String to be transformed into tokens each time next() is called.
     private Token currentToken;     // The current token. The next token is extracted when next() is called.
-    private ArrayList<Token> fullToken;
+    private boolean useWordsFilter;
 
     public Tokenizer(String text) {
-//        Log.println(Log.ASSERT, "DEBUG", "[Tokenizer] Init new text: " + text);
         buffer = text;
+        useWordsFilter = false;
         next();
     }
+    public Tokenizer(String text, boolean useWordsFilter) {
+        buffer = text;
+        this.useWordsFilter = useWordsFilter;
+        next();
+    }
+    // ====================================
+    // METHODS
+    // ====================================
 
-    // define Type.STR
+    public void setUseWordsFilter(boolean useWordsFilter) {
+        this.useWordsFilter = useWordsFilter;
+    }
+
+    /**
+     * define Type.STR
+     * Use regular expressions to determine whether the current
+     * string meets the requirements of STR. Currently, STR includes
+     * any English, numbers, Chinese and common symbols except
+     * grammatical symbols.
+     * @param str
+     * @return is STR
+     */
     public static boolean isLetterDigitOrChinese(String str) {
         String regex = "^[_a-z0-9A-Z\u4e00-\u9fa5-.* ！？“”]+$";
         return str.matches(regex);
     }
 
+    /**
+     * Streaming reads the tokenizable object of the current plain
+     * text and returns the read token, while deleting the
+     * corresponding part of the plain text.
+     */
     public void next() {
+        // remove space
         buffer = buffer.trim();
-
+        // exception case
         if (buffer.isEmpty()) {
             currentToken = null;
             return;
         }
-
+        // check the first character in stream
         char firstChar = buffer.charAt(0);
         if (firstChar == '#') currentToken = new Token("#", Token.Type.TAG);
         else if (firstChar == '$') currentToken = new Token("$", Token.Type.TEXT);
@@ -45,15 +74,24 @@ public class Tokenizer {
         else if (firstChar == '*') currentToken = new Token("*", Token.Type.METHOD);
         else if (firstChar == '|') currentToken = new Token("|", Token.Type.OR);
         else if (firstChar == '&') currentToken = new Token("&", Token.Type.AND);
-
+        // When processing STR, since it may contain more than a single character,
+        // you need to loop through until you find characters that do not meet the
+        // requirements of STR (, } ...)
         else if (isLetterDigitOrChinese(String.valueOf(firstChar))) {
             int count = 0;
+            // Iterative find all mapping chars
             do {
                 count++;
             } while (count < buffer.length() && isLetterDigitOrChinese(String.valueOf(buffer.charAt(count))));
+            // ***********************************************************
+            // One of the special effects of Tokenizer can effectively block related sensitive words
+            // ***********************************************************
             String newToken = buffer.substring(0, count);
-            if (GeneralFunctions.getInstance().isSensitiveWord(newToken)) {
-                newToken = "*".repeat(newToken.length());
+            if (useWordsFilter) {
+                if (GeneralFunctions.getInstance().isSensitiveWord(newToken)) {
+                    // When sensitive words appear, use * instead
+                    newToken = "*".repeat(newToken.length());
+                }
             }
             currentToken = new Token(newToken, Token.Type.STR);
         }
@@ -65,6 +103,7 @@ public class Tokenizer {
     }
 
     /**
+     * Function From CLab-06
      * Returns the current token extracted by {@code next()}
      * @return type: Token
      */
@@ -73,6 +112,7 @@ public class Tokenizer {
     }
 
     /**
+     * Function From CLab-06
      * Check whether tokenizer still has tokens left
      * @return type: boolean
      */
@@ -80,12 +120,20 @@ public class Tokenizer {
         return currentToken != null;
     }
 
+    /**
+     * In order to facilitate Parser's quick processing (the original
+     * hasNext method is logically misleading and complicates the
+     * problem), we directly implement the quick list of the entire
+     * tokenizer
+     * @return Token List
+     */
     public ArrayList<Token> getFullToken() {
-        this.fullToken = new ArrayList<>();
+        ArrayList<Token> fullToken = new ArrayList<>();
+        // Iterate all plain text
         while (this.hasNext()) {
-            this.fullToken.add(this.currentToken);
+            fullToken.add(this.currentToken);
             this.next();
         }
-        return this.fullToken;
+        return fullToken;
     }
 }

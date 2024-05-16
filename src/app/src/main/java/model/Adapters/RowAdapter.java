@@ -30,6 +30,11 @@ import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
 import model.Parser.Token;
 
+/**
+ * @author: Hongjun Xu
+ * @datetime: 2024/05/16
+ * @description: Used to load and display specific post content, mainly displaying pictures of post and their common names
+ */
 public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
     private Context context;
     private ArrayList<Integer> data;
@@ -49,26 +54,20 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
     public void onBindViewHolder(@NonNull RowViewHolder holder, int position) {
         ArrayList<Post> posts = PostTreeManager.getInstance().search(PostTreeManager.PostInfoType.POST_ID, String.valueOf(data.get(position)));
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: posts size " + posts.size());
-        // 加载Post图片
+        // Load Post image
         String postURL = posts.get(0).getPhoto_url();
         loadImageFromURL(this.context, postURL, holder.postImage, "Photo");
-        // 加载用户图片
+        // Load user image
         User user = UserTreeManager.getInstance().search(UserTreeManager.UserInfoType.ID, posts.get(0).getUser_id()).get(0);
         String userURL = user.getAvatar_url();
         Log.println(Log.ASSERT, "DEBUG", "[GridAdapter] onBindViewHolder: user avatar: " + userURL);
         loadImageFromURL(this.context, userURL, holder.userImage, "Avatar");
-        // 加载用户名字
+        // Load user name
         holder.userName.setText(user.getUsername());
 
         List<Token> postContent = posts.get(0).getContent();
         holder.postContent.setText(postContent.stream().map(Token::getToken).collect(Collectors.joining(" ")));
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent();
-            }
-        });
+        
     }
 
     @Override
