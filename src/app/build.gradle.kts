@@ -7,11 +7,11 @@ plugins {
 android {
     namespace = "com.example.compendiumofmateriamedica"
     compileSdk = 34
-//    useLibrary("org.apache.http.legacy")
+    //    useLibrary("org.apache.http.legacy")
 
     defaultConfig {
         applicationId = "com.example.compendiumofmateriamedica"
-        minSdk = 33
+        minSdk = 27
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

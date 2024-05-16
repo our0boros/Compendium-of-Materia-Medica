@@ -47,7 +47,7 @@ public class NewEventHandler {
     public List<NewEvent> getEventList() {
         return eventList;
     }
-
+    public void clearEventList(){this.eventList = new ArrayList<>();}
     public void setEventList(List<NewEvent> eventList) {
         this.eventList = eventList;
     }
