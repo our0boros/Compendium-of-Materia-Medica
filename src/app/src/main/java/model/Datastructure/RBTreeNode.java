@@ -64,6 +64,10 @@ public class RBTreeNode<V> {
         return value;
     }
 
+    public void setValue(V value){
+        this.value = value;
+    }
+
     public String toString() {
         return "RBTreeNode{" +
                 ",key=" + key +
