@@ -88,6 +88,17 @@ public class PlantDetailShow extends AppCompatActivity {
             }
             return bitmap;
         }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+            // 更新UI，显示从URL获取的图片
+            if (bitmap != null) {
+                plant_image.setImageBitmap(bitmap);
+            }
+        }
     }
+}
 
 }
