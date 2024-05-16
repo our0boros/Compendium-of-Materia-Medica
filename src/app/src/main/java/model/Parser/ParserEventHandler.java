@@ -202,7 +202,7 @@ public class ParserEventHandler {
         try {
             // Search with grammar
             Tokenizer tokenizer = new Tokenizer(text, true);
-            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer);
+            SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer, true);
             Map<String, String> searchParam = searchGrammarParser.parseExp();
             Token.Type searchMethod = searchGrammarParser.getSearchMethod(); // otherwise AND
             // get List IDs
