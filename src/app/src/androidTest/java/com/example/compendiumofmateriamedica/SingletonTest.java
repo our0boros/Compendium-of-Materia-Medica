@@ -12,9 +12,13 @@ import org.junit.Test;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
+import model.Adapters.NotificationAdapter;
 import model.Datastructure.DataType;
 import model.Datastructure.GeneratorFactory;
+import model.Datastructure.NewEvent;
 import model.Datastructure.Plant;
 import model.Datastructure.PlantTreeManager;
 import model.Datastructure.Post;
@@ -82,21 +86,21 @@ public class SingletonTest {
 
     @Test(timeout = 1000)
     public void testUserTreeManagerSingleton() {
-        // 尝试使用反射创建新实例
+        // Try using reflection to create a new instance
         try {
             Constructor<UserTreeManager> constructor = UserTreeManager.class.getDeclaredConstructor(RBTree.class);
             constructor.setAccessible(true);
             UserTreeManager newInstance = constructor.newInstance(userTree);
             Assert.fail("UserTreeManager is not a singleton! New instance created via reflection.");
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            // 预期的行为，无法通过反射创建新实例
+            // Expected behavior, new instance cannot be created via reflection
         }
 
-        // 使用 getInstance 获取实例并比较
+        // Use getInstance to get the instance and compare
         UserTreeManager anotherInstance = UserTreeManager.getInstance(userTree);
         Assert.assertSame("UserTreeManager instances are not the same!", userTreeManager, anotherInstance);
 
-        // 多线程环境下测试单例
+        // Test singleton in multi-threaded environment
         UserTreeManager[] instanceFromThreads = new UserTreeManager[2];
         Thread thread1 = new Thread(() -> instanceFromThreads[0] = UserTreeManager.getInstance(userTree));
         Thread thread2 = new Thread(() -> instanceFromThreads[1] = UserTreeManager.getInstance(userTree));
@@ -113,21 +117,21 @@ public class SingletonTest {
 
     @Test(timeout = 1000)
     public void testPlantTreeManagerSingleton() {
-        // 尝试使用反射创建新实例
+        // Try using reflection to create a new instance
         try {
             Constructor<PlantTreeManager> constructor = PlantTreeManager.class.getDeclaredConstructor(RBTree.class);
             constructor.setAccessible(true);
             PlantTreeManager newInstance = constructor.newInstance(plantTree);
             Assert.fail("PlantTreeManager is not a singleton! New instance created via reflection.");
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            // 预期的行为，无法通过反射创建新实例
+            // Expected behavior, new instance cannot be created via reflection
         }
 
-        // 使用 getInstance 获取实例并比较
+        // Use getInstance to get the instance and compare
         PlantTreeManager anotherInstance = PlantTreeManager.getInstance(plantTree);
         Assert.assertSame("PlantTreeManager instances are not the same!", plantTreeManager, anotherInstance);
 
-        // 多线程环境下测试单例
+        // Test singleton in multi-threaded environment
         PlantTreeManager[] instanceFromThreads = new PlantTreeManager[2];
         Thread thread1 = new Thread(() -> instanceFromThreads[0] = PlantTreeManager.getInstance(plantTree));
         Thread thread2 = new Thread(() -> instanceFromThreads[1] = PlantTreeManager.getInstance(plantTree));
@@ -141,4 +145,37 @@ public class SingletonTest {
         }
         Assert.assertSame("PlantTreeManager instances from different threads are not the same!", instanceFromThreads[0], instanceFromThreads[1]);
     }
+
+    @Test(timeout = 1000)
+    public void testNotificationAdapterSingleton() {
+        List<NewEvent> notifications = new ArrayList<>();
+        // Try using reflection to create a new instance
+        try {
+            Constructor<NotificationAdapter> constructor = NotificationAdapter.class.getDeclaredConstructor(Context.class, List.class);
+            constructor.setAccessible(true);
+            NotificationAdapter newInstance = constructor.newInstance(context, notifications);
+            Assert.fail("NotificationAdapter is not a singleton! New instance created via reflection.");
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            // Expected behavior, new instance cannot be created via reflection
+        }
+
+        // Use getInstance to get the instance and compare
+        NotificationAdapter anotherInstance = NotificationAdapter.getInstance(context, notifications);
+        Assert.assertSame("NotificationAdapter instances are not the same!", NotificationAdapter.getInstance(), anotherInstance);
+
+        // Test singleton in multi-threaded environment
+        NotificationAdapter[] instanceFromThreads = new NotificationAdapter[2];
+        Thread thread1 = new Thread(() -> instanceFromThreads[0] = NotificationAdapter.getInstance(context, notifications));
+        Thread thread2 = new Thread(() -> instanceFromThreads[1] = NotificationAdapter.getInstance(context, notifications));
+        thread1.start();
+        thread2.start();
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assert.assertSame("NotificationAdapter instances from different threads are not the same!", instanceFromThreads[0], instanceFromThreads[1]);
+    }
+
 }
