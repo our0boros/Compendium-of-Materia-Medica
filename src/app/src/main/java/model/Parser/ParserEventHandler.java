@@ -201,7 +201,7 @@ public class ParserEventHandler {
         // 反之进行语法判定逻辑
         try {
             // Search with grammar
-            Tokenizer tokenizer = new Tokenizer(text);
+            Tokenizer tokenizer = new Tokenizer(text, true);
             SearchGrammarParser searchGrammarParser = new SearchGrammarParser(tokenizer);
             Map<String, String> searchParam = searchGrammarParser.parseExp();
             Token.Type searchMethod = searchGrammarParser.getSearchMethod(); // otherwise AND

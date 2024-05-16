@@ -61,7 +61,7 @@ public class PostTreeGenerator implements TreeGenerator<Post>{
                 }
 
                 // 创建并插入节点
-                Tokenizer tokenizer = new Tokenizer(content);
+                Tokenizer tokenizer = new Tokenizer(content, true);
                 Post post = new Post(postId,uid,plantId,photo,tokenizer.getFullToken(),timestamp,likes,likesRecord,comments);
                 if(post.getLikes() == null
                         || post.getLikesRecord() == null

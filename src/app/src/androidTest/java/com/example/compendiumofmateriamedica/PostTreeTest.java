@@ -6,7 +6,6 @@ import androidx.test.core.app.ApplicationProvider;
 
 import org.json.JSONException;
 import org.junit.Assert;
-import org.testng.annotations.BeforeTest;
 import org.junit.Before;
 import org.junit.Test;
 

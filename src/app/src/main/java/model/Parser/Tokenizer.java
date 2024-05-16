@@ -16,14 +16,24 @@ public class Tokenizer {
     // ====================================
     private String buffer;          // String to be transformed into tokens each time next() is called.
     private Token currentToken;     // The current token. The next token is extracted when next() is called.
+    private Boolean useWordsFilter;
 
     public Tokenizer(String text) {
         buffer = text;
         next();
     }
+    public Tokenizer(String text, boolean useWordsFilter) {
+        buffer = text;
+        this.useWordsFilter = useWordsFilter;
+        next();
+    }
     // ====================================
     // METHODS
     // ====================================
+
+    public void setUseWordsFilter(boolean useWordsFilter) {
+        this.useWordsFilter = useWordsFilter;
+    }
 
     /**
      * define Type.STR
@@ -76,7 +86,7 @@ public class Tokenizer {
             // One of the special effects of Tokenizer can effectively block related sensitive words
             // ***********************************************************
             String newToken = buffer.substring(0, count);
-            if (GeneralFunctions.getInstance().isSensitiveWord(newToken)) {
+            if (useWordsFilter != null || Boolean.TRUE.equals(useWordsFilter) || GeneralFunctions.getInstance().isSensitiveWord(newToken)) {
                 // When sensitive words appear, use * instead
                 newToken = "*".repeat(newToken.length());
             }
