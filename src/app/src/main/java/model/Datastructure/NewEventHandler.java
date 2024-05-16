@@ -10,9 +10,12 @@ import java.util.List;
  * Singleton and observer pattern used here.
  */
 public class NewEventHandler {
+    // a list to store event
     private List<NewEvent> eventList;
+    // a list of observer
     private List<EventObserver> observers = new ArrayList<>();
     private int unreadNotifications;
+    // singleton mode
     private static NewEventHandler instance;
     private NewEventHandler(List<NewEvent> eventList){
         this.eventList = eventList;
@@ -47,7 +50,10 @@ public class NewEventHandler {
     public List<NewEvent> getEventList() {
         return eventList;
     }
-    public void clearEventList(){this.eventList = new ArrayList<>();}
+    public void clearEventList(){
+        this.eventList = new ArrayList<>();
+        this.unreadNotifications = 0;
+    }
     public void setEventList(List<NewEvent> eventList) {
         this.eventList = eventList;
     }

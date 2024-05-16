@@ -1,13 +1,10 @@
 package com.example.compendiumofmateriamedica.ui.profile;
 
-import android.app.usage.UsageEvents;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,14 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import model.Datastructure.NewEvent;
 import com.example.compendiumofmateriamedica.R;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import model.Adapters.NotificationAdapter;
 import model.Datastructure.NewEventHandler;
@@ -32,7 +23,7 @@ import model.Datastructure.User;
  * @uid: u7725171
  * @description: Show all unread messages
  */
-public class MessagesActivity extends AppCompatActivity {
+public class Messages extends AppCompatActivity {
 
     private TextView page_name;
     private ImageView back;

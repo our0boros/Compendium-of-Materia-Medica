@@ -124,6 +124,7 @@ public class NotificationService extends Service {
     }
     // simulate like
     private void simulateLikes() {
+        Log.d(TAG, "Current user is :" + currentUser.getUsername());
         Post userNewestPost = postTreeManager.getUserNewestPost(currentUser.getUser_id());
         if(userNewestPost != null){
             // only execute when user newest post has less than 6 likes

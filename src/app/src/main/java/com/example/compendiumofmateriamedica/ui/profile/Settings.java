@@ -16,6 +16,8 @@ import com.example.compendiumofmateriamedica.MyApp;
 import com.example.compendiumofmateriamedica.NotificationService;
 import com.example.compendiumofmateriamedica.R;
 
+import model.Adapters.NotificationAdapter;
+
 /**
  * @author: Tianhao Shan
  * @datetime: 2024/5
@@ -77,9 +79,10 @@ public class Settings extends AppCompatActivity {
                 // stop notification service
                 Intent intentService = new Intent(Settings.this, NotificationService.class);
                 stopService(intentService);
-                // get MyApp and call getEventHandler().clearEventList() to clear events
+                // clear events
                 MyApp myApp = (MyApp) getApplication();
-                myApp.getEventHandler().clearEventList();
+                myApp.getEventHandler().markAllEventsAsRead();
+                NotificationAdapter.getInstance().getNotifications().clear();
                 // Navigate to the login activity
                 Intent intent = new Intent(Settings.this, LoginActivity.class);
                 // Clear the back stack so that the user can't navigate back to this activity

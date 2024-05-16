@@ -24,7 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.compendiumofmateriamedica.MainActivity;
 import com.example.compendiumofmateriamedica.R;
 import com.example.compendiumofmateriamedica.databinding.FragmentProfileBinding;
 import com.example.compendiumofmateriamedica.ui.social.PhotoDialogFragment;
@@ -219,7 +217,7 @@ public class ProfileFragment extends Fragment implements NewEventHandler.EventOb
             @Override
             public void onClick(View view) {
                 eventHandler.markAllEventsAsRead();
-                Intent intent = new Intent(getActivity(), MessagesActivity.class);
+                Intent intent = new Intent(getActivity(), Messages.class);
                 intent.putExtra("CurrentUser", currentUser); // Pass the current user object
                 startActivity(intent);
             }

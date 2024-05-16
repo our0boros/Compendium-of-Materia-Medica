@@ -129,4 +129,5 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public List<NewEvent> getNotifications(){
         return this.notifications;
     }
+
 }
