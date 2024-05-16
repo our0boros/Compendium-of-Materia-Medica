@@ -26,7 +26,11 @@ import model.Datastructure.PostTreeManager;
 import model.Datastructure.RBTree;
 import model.Datastructure.User;
 import model.Datastructure.UserTreeManager;
-
+/**
+ * @author: Xing Chen
+ * @uid: u7725171
+ * @description: Test if TreeManagers and NotificationAdapter are singleton.
+ */
 public class SingletonTest {
     private final Context context = ApplicationProvider.getApplicationContext();
     private RBTree<Post> postTree;

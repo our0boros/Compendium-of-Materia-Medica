@@ -54,6 +54,7 @@ public class MyApp extends Application {
     public void onCreate(){
         super.onCreate();
 
+        // initialization of data and functions
         generalFunctions = GeneralFunctions.getInstance(getBaseContext());
         try {
             userTree = (RBTree<User>) GeneratorFactory.tree(this, DataType.USER, R.raw.users);
@@ -97,9 +98,9 @@ public class MyApp extends Application {
                 showNotification("You have " + eventHandler.getUnreadNotifications()  + " unread messages.");
         }
     }
+    // show system notification window on top
     private void showNotification(String message) {
         // show window on top
-
         Context context = getApplicationContext();
         // create notification channel
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
