@@ -21,7 +21,7 @@ import java.net.URL;
 
 /**
  * @author: Haochen Gong, Hongjun Xu
- * @uid: u , u7733037
+ * @uid: u7776634 , u7733037
  * @datetime: 2024/05/16
  * @description: Display detailed introduction interface of plants
  **/
@@ -88,6 +88,6 @@ public class PlantDetailShow extends AppCompatActivity {
             }
             return bitmap;
         }
-
+    }
 
 }
