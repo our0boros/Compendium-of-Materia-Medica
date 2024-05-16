@@ -42,7 +42,8 @@
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userHeader"
-        tools:text="@string/greeting_msg" />
+        tools:text="@string/greeting_msg"
+        android:textColor="@color/simple_text"/>
 
 
     <LinearLayout

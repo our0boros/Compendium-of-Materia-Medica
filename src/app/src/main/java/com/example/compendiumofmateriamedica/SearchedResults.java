@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -36,6 +37,8 @@ public class SearchedResults extends AppCompatActivity {
     boolean isPost;
     private TextView viewmore_1;
     private TextView viewmore_2;
+
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +116,17 @@ public class SearchedResults extends AppCompatActivity {
                 rowAdapter.setData(postIDs);
             }
         });
+
+
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
     }
 
     // Get the first n items of ArrayList, if there are less than n items, return the original list

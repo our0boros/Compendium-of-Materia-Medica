@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginVertical="40dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"
         android:orientation="vertical"
@@ -18,14 +18,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="left"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_left_24dp"/>
 
         <TextView
             android:id="@+id/searchedResultTitle"
-            android:layout_width="match_parent"
-            android:layout_height="39dp"
-            android:text="List of Results"
-            android:textSize="35sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="40dp"
+            android:text="Plants"
+            android:fontFamily="@font/aver"
+            android:textColor="@color/simple_text"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,10 +46,10 @@
 
             <TextView
                 android:id="@+id/searchedSubtitle1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
-                android:text="Plant Entries" />
+                android:text="Items" />
 
             <TextView
                 android:id="@+id/searchedResultViewmore"
@@ -51,8 +63,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/plantLists"
             android:layout_width="match_parent"
-            android:layout_height="326dp"
-            tools:visibility="visible" >
+            android:layout_height="250dp"
+            tools:visibility="visible">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -63,16 +75,19 @@
 
             <TextView
                 android:id="@+id/searchedResultSubtitle2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2.5"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="40dp"
                 android:text="Posts"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/aver"
+                android:textColor="@color/simple_text"/>
 
             <TextView
                 android:id="@+id/searchedResultViewmore2"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="View more"

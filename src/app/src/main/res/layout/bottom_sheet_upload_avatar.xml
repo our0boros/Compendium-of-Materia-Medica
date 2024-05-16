@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/rounded_corner">
 
     <!-- ImageView to display current user avatar -->
     <ImageView
@@ -17,8 +18,9 @@
     <!-- EditText to enter image URL -->
     <EditText
         android:id="@+id/input_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:hint="Enter Image URL"
         android:inputType="textUri"
         android:layout_marginBottom="8dp"/>
@@ -26,8 +28,10 @@
     <!-- Button to upload image from URL  -->
     <Button
         android:id="@+id/button_upload"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload from URL"/>
+        android:layout_gravity="center"
+        android:text="Upload from URL"
+        android:backgroundTint="@color/button"/>
 
 </LinearLayout>
