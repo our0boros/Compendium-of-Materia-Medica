@@ -342,6 +342,7 @@ Additionally, when users post threads, we similarly tokenize their textual input
 *[What other design decisions have you made which you feel are relevant? Feel free to separate these into their own subheadings.]*
 
 <br>
+
 <hr>
 
 ## Implemented Features
@@ -365,14 +366,19 @@ Additionally, when users post threads, we similarly tokenize their textual input
     * The page will search for the plant in the generated plantTree based on the plant id passed in, and add the relevant attributes of the plant instance to the textView of the page.
 
 4. [DataStream]. After a user logs in, a background service periodically generates events where random users like the current app user's post. The user can see notifications of new events and handle them. (medium)
-    * Code: NotificationService.java
-    * The service will generate a new event representing other user's like action periodically.
-    * The service will also simulate other user sharing posts, reading post information from json.
-    * The social page can do real-time update when someone share a new post.
-    * If the app user's newest post has less than 6 likes, it will be liked by a random user.
-    * User will get notification both as system notification and UI updates.
+   * Code: NotificationService.java
+   * The service will generate a new event representing other user's like action periodically.
+   * The service will also simulate other user sharing posts, reading post information from json.
+   * The social page can do real-time update when someone share a new post.
+   * If the app user's newest post has less than 6 likes, it will be liked by a random user.
+   * User will get notification both as system notification and UI updates.
    <br>
 5. [Search]. (medium)
+    -   Code: Class Token, Class Tokenizer, Class SearchGrammarParser, Class ParserEventHandler
+    -   Users can search for two types of objects, "Plant" and "Post," using a switch. Depending on the currently selected object, when the app performs a syntax-based search, it will generate a corresponding result list based on the search logic and display it on the page for users to view in detail.
+    -   When a user inputs a search query, the program first tokenizes the input and then interprets the specific logical content of the syntax (by Class Tokenizer, Class Token). 
+    -   At this stage, the backend of the app obtains a reference table of the search content derived from the syntax and the search method (e.g., "AND", "OR") (by Class ParserEventHandler, Class SearchGrammarParser). 
+    -   Based on the information provided in the table, it generates a corresponding list of plant or post IDs, then navigates to the search results display page, and loads the specific content through these IDs (by Class SearchGrammarParser, methods getIDListFromSearchedResults, Class SearchedResults).
 
 ### Custom Features
 
@@ -414,6 +420,11 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     * Code: [class PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads#L220-266)
     * When a user shares a post, the user's current gps location is automatically obtained
     * The share post page uses Geocoder to get the current latitude and longitude, which are then sent to the server to request the address.
+
+Feature Category: Search-related features
+1.  [Search-Invalid] The app will correct user typos to a certain extent and continue the search based on the corrected input.
+    -   Code: Class ParserEventHandler, method [getSearchedResultsFromParameters()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L32-107), [getSearchedResultsFromBlurParameter()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L110-165), [calculateStringSimilarity()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L230-273)
+    -   When performing a search, if the user's input contains a specific term that is not found in the data, the program will automatically conduct a similar term search. It will then use the term with the highest similarity which similarity is larger than 0.5 to the original term as the key for a new search. If no similar term is found, the current search will be skipped.
 
 <hr>
 
@@ -469,7 +480,7 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     - *testMidTokenCase(): Tests mid-token types to ensure the tokenizer correctly processes strings containing text, separators, and other tokens.*
     - *testAdvancedTokenResult(): Tests advanced token processing to ensure the tokenizer correctly handles complex input strings and generates the expected token sequence.*
     - *testExceptionToken(): Tests illegal token input to ensure the tokenizer throws an IllegalTokenException when encountering unrecognizable tokens.*
-<br><br>
+    <br><br>
 2. Tests for Grammar Parser
     - Code: [GrammarParserTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/GrammarParserTest.java) for the [SearchGrammarParser Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java)
     - *Number of test cases: 3*
