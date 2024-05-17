@@ -43,7 +43,7 @@ The key area(s) of responsibilities for each member
 | [u7776634] | [Haochen Gong] |                  [Data structure] |
 | [u7755061] |  [Yusi Zhong]  | [Data prepare] |
 | [u7733037] |     [Hongjun Xu]     |                          [Search] |
-| [u7725171] |     [Xing Chen]     |                            [role] |
+| [u7725171] |     [Xing Chen]     |                            [User Interactivity ] |
 
 
 ## Summary of Individual Contributions
@@ -366,55 +366,48 @@ Additionally, when users post threads, we similarly tokenize their textual input
 5. [Search]. 
 
 ### Custom Features
-Feature Category: Privacy <br>
-1. [Privacy-Request]. Description of the feature  (easy)
-    * Code: [Class X, methods Z, Y](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
-    * Description of your implementation: ... <br>
-      <br>
-
-2. [Privacy-Block]. Description ... ... (medium)
-   ... ...
-   <br><br>
 
 Feature Category: Firebase Integration <br>
-3. [FB-Auth]. Implemented Firebase Authentication for secure user login and management. Users authenticate using their email and password (easy)
+1. [FB-Auth]. Implemented Firebase Authentication for secure user login and management. Users authenticate using their email and password (easy)
     * Code: [Class X, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43) and Class Y, ...
     * [Class B](../src/path/to/class/file.java#L30-85): methods A, B, C, lines of code: 30 to 85
     * The UserRepository class handles user authentication, while the LoginActivity class manages user login UI and interaction. Upon successful authentication, users are redirected to the main activity of the application.
 
 
 Feature Category: User Interactivity <br>
-4. [Interact-Micro] User can like other users' posts by clicking the like button
+2. [Interact-Micro] User can like other users' posts by clicking the like button
     * Code: class PostAdapter
     * If the post is already liked by user, clicking like button will unlike it.
 
-5. [Interact-Share] User can share post after taking photo of plants
+3. [Interact-Share] User can share post after taking photo of plants
     * Code: class PostShareActivity, CaptureFragment
     * Click the camera icon in Capture page, the app will call camera of the cellphone.
     * After taking a photo of plant, user can post this photo with some content and share it with other user in Social page.
 
-6. [Interact-Noti] User can get notifications when user's post is liked.
+4. [Interact-Noti] User can get notifications when user's post is liked.
     * Code: class NotificationService
     * If user's newest post has less than 6 likes, the backstage service will simulate other user liking this post.
     * User can see how many unread messages he has now. After checking the messages, the number will be reset to 0.
     * If the unread notifications are more than 3, user will get system notification.
 
 Feature Category: Greater Data Usage, Handling and Sophistication <br>
-7. [Data-Profile] Profile page has a user level icon.
+5. [Data-Profile] Profile page has a user level icon.
     * Code: class ProfileFragment, ProfilePage, PostAdapter
     * Based on how many plants user has discovered, the profile page will display different level icon.
     * There is a process bar showing how many plants left to level up.
     * User level will also be shown in his posts.
 
-8. [Data-Formats] We read JSON and xxx file from local files.
-    * Code: class JsonReader 还有哪里读了文件？？图片？？
-    * Read from JSON: We read local JSON files(all data of our app) from the `res/raw` directory in our Android app, then we use the `JsonReader` class to open the resource file as an `InputStream`, read its contents with a `BufferedReader`, and parse the data into an `ArrayList` of `JSONObject`s.
-    * Read picture from url?: 待完成
+6. [Data-Formats] We read JSON and xxx file from local files.
+    * Code: [class JsonReader](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/JsonReader.java), 
+    * Read data from JSON: We read local JSON files(all data of our app) from the `res/raw` directory in our Android app, then we use the `JsonReader` class to open the resource file as an `InputStream`, read its contents with a `BufferedReader`, and parse the data into an `ArrayList` of `JSONObject`s.
+    * Read picture from png: 待完成
 
-9. [Data-GPS] Users can get information about their current location
-    * Code: class PostShareActivity    profile是怎么获取的？？
+7. [Data-GPS] Users can get information about their current location
+    * Code: [class PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads#L220-266), [class ProfileFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfileFragment.java?ref_type=heads#L165-184)
     * When a user shares a post, the user's current gps location is automatically obtained
     * The user's profile page also displays the current gps location.
+    * Two sections use different GPS retrieval methods. The share post page uses Geocoder to get the current latitude and longitude, which are then sent to the server to request the address. The profile page obtains location information from multiple channels, including network GPS and mobile carriers.
+    * Note: When running the APK on our own Android phones, the GPS does not display correctly, but it works fine on the emulator. We are not sure if this issue is because our Android phones are Chinese models.
 
 
 <hr>
