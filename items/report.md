@@ -405,10 +405,10 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     * There is a process bar showing how many plants left to level up.
     * User level will also be shown in his posts.
 
-6. [Data-Formats] We read JSON and png file from local files.
-    * Code: [class JsonReader](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/JsonReader.java), 
+6. [Data-Formats] We read JSON and mp3 file from local files.
+    * Code: [class JsonReader](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/JsonReader.java),class PostAdapter [initSoundPool(),releaseSoundPool()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/PostAdapter.java?ref_type=heads#L175-196)
     * Read data from JSON: We read local JSON files(all data of our app) from the `res/raw` directory in our Android app, then we use the `JsonReader` class to open the resource file as an `InputStream`, read its contents with a `BufferedReader`, and parse the data into an `ArrayList` of `JSONObject`s.
-    * Read picture from png: 待完成
+    * Read music from mp3: Sounds are stored as mp3 files in the `res/raw` directory and are loaded and played using a SoundPool. For instance, when a user likes a post, the play() method of SoundPool is called to play the sound effect identified by R.raw.sound_like.
 
 7. [Data-GPS] Users can get information about their current location
     * Code: [class PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads#L220-266)
