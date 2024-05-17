@@ -354,17 +354,17 @@ Additionally, when users post threads, we similarly tokenize their textual input
     * Description of feature: ... <br>
     * Description of your implementation: ... <br>
 
-2. [DataFiles]. Create at least 2500 valid data instances (easy)
+2. [DataFiles]. Create at least 2500 valid data instances. (easy)
     * Code to the Data File [posts.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/posts.json), [plants.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/plants.json), [users.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/users.json), [posts_stream.json](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/res/raw/posts_stream.json)
     * Link to the Firebase repo: https://console.firebase.google.com/project/gp-24s1-fb08c/overview?hl=zh-cn
     * Plants includes plant names, images, common names, scientific names, genus, family, and extensive descriptions, it sourced from APIs, ensuring accuracy and relevance.
     * Posts and users were generated for development purposes, providing a realistic dataset for testing the app’s social features.
 
-3. [LoadShowData]. Implemented a page that shows information about a single plant instance.
+3. [LoadShowData]. Implemented a page that shows information about a single plant instance. (easy)
     * Code: class PlantDetailShow: [PlantDetailShow.java](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PlantDetailShow.java)
     * The page will search for the plant in the generated plantTree based on the plant id passed in, and add the relevant attributes of the plant instance to the textView of the page.
 
-4. [DataStream]. After a user logs in, a background service periodically generates events where random users like the current app user's post. The user can see notifications of new events and handle them.
+4. [DataStream]. After a user logs in, a background service periodically generates events where random users like the current app user's post. The user can see notifications of new events and handle them. (medium)
     * Code: NotificationService.java
     * The service will generate a new event representing other user's like action periodically.
     * The service will also simulate other user sharing posts, reading post information from json.
@@ -372,45 +372,45 @@ Additionally, when users post threads, we similarly tokenize their textual input
     * If the app user's newest post has less than 6 likes, it will be liked by a random user.
     * User will get notification both as system notification and UI updates.
    <br>
-5. [Search]. 
+5. [Search]. (medium)
 
 ### Custom Features
 
 Feature Category: Firebase Integration <br>
-1. [FB-Auth]. Implemented Firebase Authentication for secure user login and management. Users authenticate using their email and password (easy)
+1. [FB-Auth]. Implemented Firebase Authentication for secure user login and management. Users authenticate using their email and password. (easy)
     * Code: [LoginAuth.java](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Firebase/LoginAuth.java), [LoginViewModel](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/LoginViewModel.java)
     * The LoginAuth class handles user authentication, while the LoginActivity class manages user login UI and interaction. Upon successful authentication, users are redirected to the main activity of the application.
 
 
 Feature Category: User Interactivity <br>
-2. [Interact-Micro] User can like other users' posts by clicking the like button
+2. [Interact-Micro] User can like other users' posts by clicking the like button. (easy)
     * Code: class PostAdapter
     * If the post is already liked by user, clicking like button will unlike it.
 
-3. [Interact-Share] User can share post after taking photo of plants
+3. [Interact-Share] User can share post after taking photo of plants. (easy)
     * Code: class PostShareActivity, CaptureFragment
     * Click the camera icon in Capture page, the app will call camera of the cellphone.
     * After taking a photo of plant, user can post this photo with some content and share it with other user in Social page.
 
-4. [Interact-Noti] User can get notifications when user's post is liked.
+4. [Interact-Noti] User can get notifications when user's post is liked. (medium)
     * Code: class NotificationService
     * If user's newest post has less than 6 likes, the backstage service will simulate other user liking this post.
     * User can see how many unread messages he has now. After checking the messages, the number will be reset to 0.
     * If the unread notifications are more than 3, user will get system notification.
 
 Feature Category: Greater Data Usage, Handling and Sophistication <br>
-5. [Data-Profile] Profile page has a user level icon.
+5. [Data-Profile] Profile page has a user level icon. (easy)
     * Code: class ProfileFragment, ProfilePage, PostAdapter
     * Based on how many plants user has discovered, the profile page will display different level icon.
     * There is a process bar showing how many plants left to level up.
     * User level will also be shown in his posts.
 
-6. [Data-Formats] We read JSON and mp3 file from local files.
+6. [Data-Formats] We read JSON and mp3 file from local files. (easy)
     * Code: [class JsonReader](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/JsonReader.java),class PostAdapter [initSoundPool(),releaseSoundPool()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/PostAdapter.java?ref_type=heads#L175-196)
     * Read data from JSON: We read local JSON files(all data of our app) from the `res/raw` directory in our Android app, then we use the `JsonReader` class to open the resource file as an `InputStream`, read its contents with a `BufferedReader`, and parse the data into an `ArrayList` of `JSONObject`s.
     * Read music from mp3: Sounds are stored as mp3 files in the `res/raw` directory and are loaded and played using a SoundPool. For instance, when a user likes a post, the play() method of SoundPool is called to play the sound effect identified by R.raw.sound_like.
 
-7. [Data-GPS] Users can get information about their current location
+7. [Data-GPS] Users can get information about their current location. (easy)
     * Code: [class PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads#L220-266)
     * When a user shares a post, the user's current gps location is automatically obtained
     * The share post page uses Geocoder to get the current latitude and longitude, which are then sent to the server to request the address.
