@@ -471,7 +471,7 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     - *testMidTokenCase(): Tests mid-token types to ensure the tokenizer correctly processes strings containing text, separators, and other tokens.*
     - *testAdvancedTokenResult(): Tests advanced token processing to ensure the tokenizer correctly handles complex input strings and generates the expected token sequence.*
     - *testExceptionToken(): Tests illegal token input to ensure the tokenizer throws an IllegalTokenException when encountering unrecognizable tokens.*
-
+<br><br>
 2. Tests for Grammar Parser
     - Code: [GrammarParserTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/GrammarParserTest.java) for the [SearchGrammarParser Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java)
     - *Number of test cases: 3*
@@ -480,19 +480,19 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     - *testSimpleConvert(): Tests simple grammar conversions to ensure that the input strings are correctly converted to the expected key-value pairs and checks the search method type.*
     - *testAdvanceConvert(): Tests advanced grammar conversions to ensure that the input string is correctly converted to the expected results with multiple key-value pairs.*
     - *testIllegalProductionException(): Tests if illegal grammar inputs correctly throw the IllegalProductionException.*
-
+      <br><br>
 3. Tests for Singleton
     - Code: [SingletonTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/androidTest/java/com/example/compendiumofmateriamedica/SingletonTest.java) for the [PostTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L26-49), [UserTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L19-37), [PlantTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L17-35) and [NotificationAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/NotificationAdapter.java?ref_type=heads#L33-57) Class.
     - *Number of test cases: 4*
     - *Code coverage: Result:*
-    - *![Result](media/Screenshots/SingletonTestResult.jpg)*
+    - ![Result](media/Screenshots/SingletonTestResult.jpg)
     - *Types of tests created and descriptions:*
     - *Using reflection to create newinstance, getInstance() and multi-thread environment for each class*
     - *testPostTreeManagerSingleton(): Verifies that PostTreeManager correctly implements the singleton pattern.*
     - *testUserTreeManagerSingleton(): Verifies that UserTreeManager correctly implements the singleton pattern.*
     - *testPlantTreeManagerSingleton(): Verifies that PlantTreeManager correctly implements the singleton pattern.*
     - *testNotificationAdapterSingleton(): Verifies that NotificationAdapter correctly implements the singleton pattern.*
-
+      <br><br>
 4. Tests for UserTreeManager
     - Code: [UserTreeManagerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/UserTreeManagerTest.java?ref_type=heads#L1-109) for the [UserTreeManager Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads)
     - *Number of test cases: 9*
@@ -507,7 +507,7 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     - *testGetAllUser(): Verifies that all users can be retrieved from the UserTreeManager.*
     - *testFindUserById(): Verifies that a user can be found in the UserTreeManager by their user ID.*
     - *testSingleton(): Verifies that the UserTreeManager correctly implements the singleton pattern.*
-
+      <br><br>
 5. Tests for PlantTreeManager
     - Code: [PlantTreeManagerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/PlantTreeManagerTest.java?ref_type=heads#L1-114) for the [PlantTreeManager Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L1-128)
     - *Number of test cases: 10*
@@ -523,7 +523,7 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     - *testSingleton(): Verifies that the PlantTreeManager correctly implements the singleton pattern.*
     - *testGetTypeByString(): Verifies that the correct PlantInfoType enum value can be retrieved by string.*
     - *testGetTypeByStringInvalid(): Verifies that an exception is correctly thrown when an invalid string is passed.*
-
+      <br><br>
 6. Tests for PostTreeManager
     - Code: [PostTreeManagerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/PostTreeManagerTest.java?ref_type=heads#L1-84) for the [PostTreeManager Class, method: getNewestPosts()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L131-151) and [PostTreeManager Class, method:insert(), delete()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L53-60)
     - *Number of test cases: 3*
@@ -555,6 +555,20 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
 (If you choose to make this an external document, link to it here)]*
 
 This shall include an agreed procedure for situations including (but not limited to):
-- e.g., if a member fails to meet the initial plan and/or deadlines
-- e.g., if your group has issues, how will your group reach consensus or solve the problem?
-- e.g., if a member gets sick, what is the solution? Alternatively, what is your plan to mitigate the impact of unforeseen incidents for this 6-to-8-week project? 
+<br><br>
+1. Failure to Meet Initial Plan or Deadlines：
+- Schedule weekly progress meetings to review the status of each member's tasks.
+- During these meetings, identify any potential delays early and adjust the plan accordingly.
+- If a member consistently fails to meet deadlines, their tasks can be reassigned to other members who have the capability and time to complete them, ensuring the project stays on track.
+<br><br>
+
+2. Reaching Consensus or Solving Problems within the Team：
+- Establish a group chat (e.g., WeChat) where all members can discuss issues and share progress.
+- Use a voting system to reach consensus, ensuring every member's opinion is heard and considered.
+- If internal conflicts cannot be resolved, involve a mentor or a third-party mediator to help the team reach an agreement.
+<br><br>
+
+3. Addressing Unforeseen Incidents like Member Sickness:
+- Maintain flexibility in task assignments, allowing the team to adjust based on actual circumstances.
+- Encourage team members to support each other, and temporarily redistribute workloads if necessary to cope with unexpected situations.
+
