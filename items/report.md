@@ -116,7 +116,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 4. **u7733037, Hongjun Xu**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
-    - Feature [Search] - class [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads), class [SearchGrammarParser](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java?ref_type=heads), class [Token](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Token.java?ref_type=heads), class [Tokenizer](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java?ref_type=heads), class ParserEventHandler, class SearchedResults
+    - Feature [Search] - class [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads), class [SearchGrammarParser](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java?ref_type=heads), class [Token](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Token.java?ref_type=heads), class [Tokenizer](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java?ref_type=heads), class [ParserEventHandler](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads), class [SearchedResults](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/SearchedResults.java?ref_type=heads)
     - Feature [Search-Invalid] - class ParserEventHandler: [getSearchedResultsFromParameters()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L42-107), [getSearchedResultsFromBlurParameter()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L110-165)
     - Facade Design Pattern - class PlantIdentification: [getPlantNetAPIResult()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/PlantIdentification.java?ref_type=heads#L97-180), [getPlantNetAPIResultOKHttp()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/PlantIdentification.java?ref_type=heads#L181-234), [getFromWiki()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/PlantIdentification.java?ref_type=heads#L236-296)
     - Singleton Design Pattern - class [GeneralFunctions](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/GeneralFunctions.java?ref_type=heads)
@@ -142,12 +142,12 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 5. **u7725171, Xing Chen**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
-    - Feature DataStream - class MyApp, NotificationService, NewEvent, NewEventHandler
-    - Feature Interact-Micro - class PostAdapter, SocialFragment, SocialViewModel, PhotoDialogFragment
-    - Feature Interact-Share - class PostShareActivity
-    - Feature Interact-Noti - class MyApp, NotificationService, NewEvent, NewEventHandler, NotificationAdapter, MessagesActivity
-    - Feature Data-Profile, Data-Formats - class ProfileFragment, ProfilePage, MyPost, PlantDiscovered
-    - Singleton Design Pattern - class PostTreeManager, PlantTreeManager, UserTreeManager, NewEventHandler
+    - Feature DataStream - class [MyApp](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/MyApp.java?ref_type=heads), [NotificationService](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/NotificationService.java?ref_type=heads), [NewEvent](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEvent.java?ref_type=heads), [NewEventHandler](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEventHandler.java?ref_type=heads)
+    - Feature Interact-Micro - class [PostAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/PostAdapter.java?ref_type=heads), [SocialFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/social/SocialFragment.java?ref_type=heads), [SocialViewModel](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/social/SocialViewModel.java?ref_type=heads), [PhotoDialogFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/social/PhotoDialogFragment.java?ref_type=heads)
+    - Feature Interact-Share - class [PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads)
+    - Feature Interact-Noti - class [MyApp](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/MyApp.java?ref_type=heads), [NotificationService](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/NotificationService.java?ref_type=heads), [NewEvent](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEvent.java?ref_type=heads), [NewEventHandler](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEventHandler.java?ref_type=heads), [NotificationAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/NotificationAdapter.java?ref_type=heads), [MessagesActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/Messages.java?ref_type=heads)
+    - Feature Data-Profile, Data-Formats - class [ProfileFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfileFragment.java?ref_type=heads), [ProfilePage](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfilePage.java?ref_type=heads), [MyPost](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/MyPost.java?ref_type=heads), [PlantDiscovered](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/PlantDiscovered.java?ref_type=heads)
+    - Singleton Design Pattern - [Class PostTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L18-35), [Class PlantTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L21-32), [Class UserTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L21-32), [Class NewEventHandler, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEventHandler.java?ref_type=heads#L24-35)
     - Observer Design Pattern - class NewEventHandler, MainActivity, ProfileFragment
     - Camera use - class CaptureFragment
     - ImageLoader function
@@ -254,7 +254,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
         * [Class PostTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L18-35)
         * [Class PlantTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L21-32)
         * [Class UserTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L21-32)
-        * Class NewEventHandler, methods
+        * [Class NewEventHandler, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEventHandler.java?ref_type=heads#L24-35)
     * *Reasons:*
         * Controlled Initialization: Guarantees managers are properly initialized with an RBTree<T> before use, preventing errors from premature use.
         * Resource Efficiency: Saves memory and processing power by preventing the creation of multiple instances of data management objects.
@@ -390,23 +390,23 @@ Feature Category: Firebase Integration <br>
 
 Feature Category: User Interactivity <br>
 2. [Interact-Micro] User can like other users' posts by clicking the like button. (easy)
-    * Code: class PostAdapter
+    * Code: class [PostAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/PostAdapter.java?ref_type=heads#)
     * If the post is already liked by user, clicking like button will unlike it.
 
 3. [Interact-Share] User can share post after taking photo of plants. (easy)
-    * Code: class PostShareActivity, CaptureFragment
+    * Code: class [PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads), [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads)
     * Click the camera icon in Capture page, the app will call camera of the cellphone.
     * After taking a photo of plant, user can post this photo with some content and share it with other user in Social page.
 
 4. [Interact-Noti] User can get notifications when user's post is liked. (medium)
-    * Code: class NotificationService
+    * Code: class [NotificationService](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/NotificationService.java?ref_type=heads)
     * If user's newest post has less than 6 likes, the backstage service will simulate other user liking this post.
     * User can see how many unread messages he has now. After checking the messages, the number will be reset to 0.
     * If the unread notifications are more than 3, user will get system notification.
 
 Feature Category: Greater Data Usage, Handling and Sophistication <br>
 5. [Data-Profile] Profile page has a user level icon. (easy)
-    * Code: class ProfileFragment, ProfilePage, PostAdapter
+    * Code: class [ProfileFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfileFragment.java?ref_type=heads), [ProfilePage](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfilePage.java?ref_type=heads), [PostAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/PostAdapter.java?ref_type=heads)
     * Based on how many plants user has discovered, the profile page will display different level icon.
     * There is a process bar showing how many plants left to level up.
     * User level will also be shown in his posts.
