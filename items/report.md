@@ -397,18 +397,15 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     * There is a process bar showing how many plants left to level up.
     * User level will also be shown in his posts.
 
-6. [Data-Formats] We read JSON and xxx file from local files.
+6. [Data-Formats] We read JSON and png file from local files.
     * Code: [class JsonReader](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/JsonReader.java), 
     * Read data from JSON: We read local JSON files(all data of our app) from the `res/raw` directory in our Android app, then we use the `JsonReader` class to open the resource file as an `InputStream`, read its contents with a `BufferedReader`, and parse the data into an `ArrayList` of `JSONObject`s.
     * Read picture from png: 待完成
 
 7. [Data-GPS] Users can get information about their current location
-    * Code: [class PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads#L220-266), [class ProfileFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfileFragment.java?ref_type=heads#L165-184)
+    * Code: [class PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads#L220-266)
     * When a user shares a post, the user's current gps location is automatically obtained
-    * The user's profile page also displays the current gps location.
-    * Two sections use different GPS retrieval methods. The share post page uses Geocoder to get the current latitude and longitude, which are then sent to the server to request the address. The profile page obtains location information from multiple channels, including network GPS and mobile carriers.
-    * Note: When running the APK on our own Android phones, the GPS does not display correctly, but it works fine on the emulator. We are not sure if this issue is because our Android phones are Chinese models.
-
+    * The share post page uses Geocoder to get the current latitude and longitude, which are then sent to the server to request the address.
 
 <hr>
 
