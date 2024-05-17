@@ -168,7 +168,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 ## Application Description
 
-*XXX is a social application aimed at plant enthusiasts, providing detailed information about various plants, including image examples, common names, slugs, scientific names, genus, and family information, along with extensive textual descriptions. Users can obtain plant information by taking photos of plants they encounter or by searching directly using text. Additionally, users can post their own photos of plants on the social channel to share their discoveries and experiences with all users.*
+*xxx is a social application aimed at plant enthusiasts, providing detailed information about various plants, including image examples, common names, slugs, scientific names, genus, and family information, along with extensive textual descriptions. Users can obtain plant information by taking photos of plants they encounter or by searching directly using text. Additionally, users can post their own photos of plants on the social channel to share their discoveries and experiences with all users.*
 
 
 ### Application Use Cases and or Examples
@@ -415,10 +415,6 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     * Code: class PostShareActivity    profile是怎么获取的？？
     * When a user shares a post, the user's current gps location is automatically obtained
     * The user's profile page also displays the current gps location.
-   
-10. [Data-Deletion] Users can delete their own posts.
-    * Code: class PostTreeManager 还需要具体实现删除post的代码
-    * Users can delete their own post, the specific logic for the red-black tree node deletion operations.
 
 
 <hr>
@@ -466,19 +462,76 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
 
 *Here is an example:*
 
-1. Tests for Search
-    - Code: [TokenizerTest Class, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java) for the [Tokenizer Class, entire file](https://gitlab.cecs.anu.edu.au/comp2100/group-project/ga-23s2/-/blob/main/items/media/_examples/Dummy.java#L22-43)
-    - *Number of test cases: ...*
-    - *Code coverage: ...*
-    - *Types of tests created and descriptions: ...*
+1. Tests for Tokenizer
+    - Code: [TokenizerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/TokenizerTest.java) for the [Tokenizer Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java)
+    - *Number of test cases: 4*
+    - *Code coverage: ![TokenizerTestCoverage](media/Screenshots/TokenizerTest.png)*
+    - *Types of tests created and descriptions:*
+    - *testAllTokenBasic(): Tests all basic token types to ensure the tokenizer correctly identifies and handles different types of tokens.*
+    - *testMidTokenCase(): Tests mid-token types to ensure the tokenizer correctly processes strings containing text, separators, and other tokens.*
+    - *testAdvancedTokenResult(): Tests advanced token processing to ensure the tokenizer correctly handles complex input strings and generates the expected token sequence.*
+    - *testExceptionToken(): Tests illegal token input to ensure the tokenizer throws an IllegalTokenException when encountering unrecognizable tokens.*
 
-2. Tests for Singleton
+2. Tests for Grammar Parser
+    - Code: [GrammarParserTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/GrammarParserTest.java) for the [SearchGrammarParser Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java)
+    - *Number of test cases: 3*
+    - *Code coverage: ![GrammarTestCoverage](media/Screenshots/grammarTest.png)*
+    - *Types of tests created and descriptions:*
+    - *testSimpleConvert(): Tests simple grammar conversions to ensure that the input strings are correctly converted to the expected key-value pairs and checks the search method type.*
+    - *testAdvanceConvert(): Tests advanced grammar conversions to ensure that the input string is correctly converted to the expected results with multiple key-value pairs.*
+    - *testIllegalProductionException(): Tests if illegal grammar inputs correctly throw the IllegalProductionException.*
+
+3. Tests for Singleton
     - Code: [SingletonTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/androidTest/java/com/example/compendiumofmateriamedica/SingletonTest.java) for the [PostTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L26-49), [UserTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L19-37), [PlantTreeManager](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L17-35) and [NotificationAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/NotificationAdapter.java?ref_type=heads#L33-57) Class.
-    - *Number of test cases: 12*
-    - *Code coverage: [SingletonTest Class](media/Screenshots/OneOfSingletonTest.jpg), [Example Case](media/Screenshots/SingletonTest.jpg), [Result](media/Screenshots/SingletonTestResult.jpg)*
-    - *Types of tests created and descriptions: Using reflection to create newinstance, getInstance() and multi-thread environment for each class*
+    - *Number of test cases: 4*
+    - *Code coverage: Result:*
+    - *![Result](media/Screenshots/SingletonTestResult.jpg)*
+    - *Types of tests created and descriptions:*
+    - *Using reflection to create newinstance, getInstance() and multi-thread environment for each class*
+    - *testPostTreeManagerSingleton(): Verifies that PostTreeManager correctly implements the singleton pattern.*
+    - *testUserTreeManagerSingleton(): Verifies that UserTreeManager correctly implements the singleton pattern.*
+    - *testPlantTreeManagerSingleton(): Verifies that PlantTreeManager correctly implements the singleton pattern.*
+    - *testNotificationAdapterSingleton(): Verifies that NotificationAdapter correctly implements the singleton pattern.*
 
-...
+4. Tests for UserTreeManager
+    - Code: [UserTreeManagerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/UserTreeManagerTest.java?ref_type=heads#L1-109) for the [UserTreeManager Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads)
+    - *Number of test cases: 9*
+    - *Code coverage: ![UserTreeManagerTestCoverage](media/Screenshots/userTreeManagerTest.png)*
+    - *Types of tests created and descriptions:*
+    - *testInsert(): Verifies that a new user can be correctly inserted into the UserTreeManager.*
+    - *testDelete(): Verifies that a user can be correctly deleted from the UserTreeManager.*
+    - *testSearchByID(): Verifies that a user can be searched in the UserTreeManager by their user ID.*
+    - *testSearchByName(): Verifies that a user can be searched in the UserTreeManager by their username.*
+    - *testSearchByEmail(): Verifies that a user can be searched in the UserTreeManager by their email.*
+    - *testSearchByAvatar(): Verifies that a user can be searched in the UserTreeManager by their avatar.*
+    - *testGetAllUser(): Verifies that all users can be retrieved from the UserTreeManager.*
+    - *testFindUserById(): Verifies that a user can be found in the UserTreeManager by their user ID.*
+    - *testSingleton(): Verifies that the UserTreeManager correctly implements the singleton pattern.*
+
+5. Tests for PlantTreeManager
+    - Code: [PlantTreeManagerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/PlantTreeManagerTest.java?ref_type=heads#L1-114) for the [PlantTreeManager Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L1-128)
+    - *Number of test cases: 10*
+    - *Code coverage: ![PlantTreeManagerTestCoverage](media/Screenshots/plantTreeManagerTest.png)*
+    - *Types of tests created and descriptions:*
+    - *testInsert(): Verifies that a new plant can be correctly inserted into the PlantTreeManager.*
+    - *testDelete(): Verifies that a plant can be correctly deleted from the PlantTreeManager.*
+    - *testSearchByCommonName(): Verifies that a plant can be searched in the PlantTreeManager by its common name.*
+    - *testSearchBySlug(): Verifies that a plant can be searched in the PlantTreeManager by its slug.*
+    - *testSearchByScientificName(): Verifies that a plant can be searched in the PlantTreeManager by its scientific name.*
+    - *testSearchByGenus(): Verifies that a plant can be searched in the PlantTreeManager by its genus.*
+    - *testSearchByFamily(): Verifies that a plant can be searched in the PlantTreeManager by its family.*
+    - *testSingleton(): Verifies that the PlantTreeManager correctly implements the singleton pattern.*
+    - *testGetTypeByString(): Verifies that the correct PlantInfoType enum value can be retrieved by string.*
+    - *testGetTypeByStringInvalid(): Verifies that an exception is correctly thrown when an invalid string is passed.*
+
+6. Tests for PostTreeManager
+    - Code: [PostTreeManagerTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/PostTreeManagerTest.java?ref_type=heads#L1-84) for the [PostTreeManager Class, method: getNewestPosts()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L131-151) and [PostTreeManager Class, method:insert(), delete()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L53-60)
+    - *Number of test cases: 3*
+    - *Code coverage: ![PostTreeManagerTestCoverage](media/Screenshots/postTreeManagerTest.png)*
+    - *Types of tests created and descriptions:*
+    - *testInsert(): Verifies that a new post can be correctly inserted into the PostTreeManager.*
+    - *testDelete(): Verifies that a post can be correctly deleted from the PostTreeManager.*
+    - *testGetNewestPosts(): Verifies that the newest posts can be retrieved from the PostTreeManager based on a timestamp.*
 
 <br> <hr>
 
