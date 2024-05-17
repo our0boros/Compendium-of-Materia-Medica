@@ -134,7 +134,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 4. **u7733037, Hongjun Xu**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
-    - Feature [Search] - class [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads), class [SearchGrammarParser](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java?ref_type=heads), class [Token](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Token.java?ref_type=heads), class [Tokenizer](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java?ref_type=heads), class ParserEventHandler, class SearchedResults
+    - Feature [Search] - class [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads), class [SearchGrammarParser](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java?ref_type=heads), class [Token](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Token.java?ref_type=heads), class [Tokenizer](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/Tokenizer.java?ref_type=heads), class [ParserEventHandler](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads), class [SearchedResults](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/SearchedResults.java?ref_type=heads)
     - Feature [Search-Invalid] - class ParserEventHandler: [getSearchedResultsFromParameters()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L42-107), [getSearchedResultsFromBlurParameter()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L110-165)
     - Facade Design Pattern - class PlantIdentification: [getPlantNetAPIResult()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/PlantIdentification.java?ref_type=heads#L97-180), [getPlantNetAPIResultOKHttp()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/PlantIdentification.java?ref_type=heads#L181-234), [getFromWiki()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/PlantIdentification.java?ref_type=heads#L236-296)
     - Singleton Design Pattern - class [GeneralFunctions](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/GeneralFunctions.java?ref_type=heads)
@@ -160,12 +160,12 @@ Note that the core criteria of contribution is based on `code contribution` (the
 
 5. **u7725171, Xing Chen**  I have 20% contribution, as follows: <br>
 - **Code Contribution in the final App**
-    - Feature DataStream - class MyApp, NotificationService, NewEvent, NewEventHandler
-    - Feature Interact-Micro - class PostAdapter, SocialFragment, SocialViewModel, PhotoDialogFragment
-    - Feature Interact-Share - class PostShareActivity
-    - Feature Interact-Noti - class MyApp, NotificationService, NewEvent, NewEventHandler, NotificationAdapter, MessagesActivity
-    - Feature Data-Profile, Data-Formats - class ProfileFragment, ProfilePage, MyPost, PlantDiscovered
-    - Singleton Design Pattern - class PostTreeManager, PlantTreeManager, UserTreeManager, NewEventHandler
+    - Feature DataStream - class [MyApp](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/MyApp.java?ref_type=heads), [NotificationService](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/NotificationService.java?ref_type=heads), [NewEvent](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEvent.java?ref_type=heads), [NewEventHandler](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEventHandler.java?ref_type=heads)
+    - Feature Interact-Micro - class [PostAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/PostAdapter.java?ref_type=heads), [SocialFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/social/SocialFragment.java?ref_type=heads), [SocialViewModel](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/social/SocialViewModel.java?ref_type=heads), [PhotoDialogFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/social/PhotoDialogFragment.java?ref_type=heads)
+    - Feature Interact-Share - class [PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads)
+    - Feature Interact-Noti - class [MyApp](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/MyApp.java?ref_type=heads), [NotificationService](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/NotificationService.java?ref_type=heads), [NewEvent](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEvent.java?ref_type=heads), [NewEventHandler](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEventHandler.java?ref_type=heads), [NotificationAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/NotificationAdapter.java?ref_type=heads), [MessagesActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/Messages.java?ref_type=heads)
+    - Feature Data-Profile, Data-Formats - class [ProfileFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfileFragment.java?ref_type=heads), [ProfilePage](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfilePage.java?ref_type=heads), [MyPost](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/MyPost.java?ref_type=heads), [PlantDiscovered](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/PlantDiscovered.java?ref_type=heads)
+    - Singleton Design Pattern - [Class PostTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L18-35), [Class PlantTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L21-32), [Class UserTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L21-32), [Class NewEventHandler, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEventHandler.java?ref_type=heads#L24-35)
     - Observer Design Pattern - class NewEventHandler, MainActivity, ProfileFragment
     - Camera use - class CaptureFragment
     - ImageLoader function
@@ -272,7 +272,7 @@ Note that the core criteria of contribution is based on `code contribution` (the
         * [Class PostTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PostTreeManager.java?ref_type=heads#L18-35)
         * [Class PlantTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/PlantTreeManager.java?ref_type=heads#L21-32)
         * [Class UserTreeManager, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/UserTreeManager.java?ref_type=heads#L21-32)
-        * Class NewEventHandler, methods
+        * [Class NewEventHandler, methods getInstance()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Datastructure/NewEventHandler.java?ref_type=heads#L24-35)
     * *Reasons:*
         * Controlled Initialization: Guarantees managers are properly initialized with an RBTree<T> before use, preventing errors from premature use.
         * Resource Efficiency: Saves memory and processing power by preventing the creation of multiple instances of data management objects.
@@ -360,6 +360,7 @@ Additionally, when users post threads, we similarly tokenize their textual input
 *[What other design decisions have you made which you feel are relevant? Feel free to separate these into their own subheadings.]*
 
 <br>
+
 <hr>
 
 ## Implemented Features
@@ -383,14 +384,19 @@ Additionally, when users post threads, we similarly tokenize their textual input
     * The page will search for the plant in the generated plantTree based on the plant id passed in, and add the relevant attributes of the plant instance to the textView of the page.
 
 4. [DataStream]. After a user logs in, a background service periodically generates events where random users like the current app user's post. The user can see notifications of new events and handle them. (medium)
-    * Code: NotificationService.java
-    * The service will generate a new event representing other user's like action periodically.
-    * The service will also simulate other user sharing posts, reading post information from json.
-    * The social page can do real-time update when someone share a new post.
-    * If the app user's newest post has less than 6 likes, it will be liked by a random user.
-    * User will get notification both as system notification and UI updates.
+   * Code: NotificationService.java
+   * The service will generate a new event representing other user's like action periodically.
+   * The service will also simulate other user sharing posts, reading post information from json.
+   * The social page can do real-time update when someone share a new post.
+   * If the app user's newest post has less than 6 likes, it will be liked by a random user.
+   * User will get notification both as system notification and UI updates.
    <br>
 5. [Search]. (medium)
+    -   Code: Class Token, Class Tokenizer, Class SearchGrammarParser, Class ParserEventHandler
+    -   Users can search for two types of objects, "Plant" and "Post," using a switch. Depending on the currently selected object, when the app performs a syntax-based search, it will generate a corresponding result list based on the search logic and display it on the page for users to view in detail.
+    -   When a user inputs a search query, the program first tokenizes the input and then interprets the specific logical content of the syntax (by Class Tokenizer, Class Token). 
+    -   At this stage, the backend of the app obtains a reference table of the search content derived from the syntax and the search method (e.g., "AND", "OR") (by Class ParserEventHandler, Class SearchGrammarParser). 
+    -   Based on the information provided in the table, it generates a corresponding list of plant or post IDs, then navigates to the search results display page, and loads the specific content through these IDs (by Class SearchGrammarParser, methods getIDListFromSearchedResults, Class SearchedResults).
 
 ### Custom Features
 
@@ -402,23 +408,23 @@ Feature Category: Firebase Integration <br>
 
 Feature Category: User Interactivity <br>
 2. [Interact-Micro] User can like other users' posts by clicking the like button. (easy)
-    * Code: class PostAdapter
+    * Code: class [PostAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/PostAdapter.java?ref_type=heads#)
     * If the post is already liked by user, clicking like button will unlike it.
 
 3. [Interact-Share] User can share post after taking photo of plants. (easy)
-    * Code: class PostShareActivity, CaptureFragment
+    * Code: class [PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads), [CaptureFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/capture/CaptureFragment.java?ref_type=heads)
     * Click the camera icon in Capture page, the app will call camera of the cellphone.
     * After taking a photo of plant, user can post this photo with some content and share it with other user in Social page.
 
 4. [Interact-Noti] User can get notifications when user's post is liked. (medium)
-    * Code: class NotificationService
+    * Code: class [NotificationService](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/NotificationService.java?ref_type=heads)
     * If user's newest post has less than 6 likes, the backstage service will simulate other user liking this post.
     * User can see how many unread messages he has now. After checking the messages, the number will be reset to 0.
     * If the unread notifications are more than 3, user will get system notification.
 
 Feature Category: Greater Data Usage, Handling and Sophistication <br>
 5. [Data-Profile] Profile page has a user level icon. (easy)
-    * Code: class ProfileFragment, ProfilePage, PostAdapter
+    * Code: class [ProfileFragment](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfileFragment.java?ref_type=heads), [ProfilePage](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/ui/profile/ProfilePage.java?ref_type=heads), [PostAdapter](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Adapters/PostAdapter.java?ref_type=heads)
     * Based on how many plants user has discovered, the profile page will display different level icon.
     * There is a process bar showing how many plants left to level up.
     * User level will also be shown in his posts.
@@ -432,6 +438,11 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     * Code: [class PostShareActivity](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/com/example/compendiumofmateriamedica/PostShareActivity.java?ref_type=heads#L220-266)
     * When a user shares a post, the user's current gps location is automatically obtained
     * The share post page uses Geocoder to get the current latitude and longitude, which are then sent to the server to request the address.
+
+Feature Category: Search-related features
+1.  [Search-Invalid] The app will correct user typos to a certain extent and continue the search based on the corrected input.
+    -   Code: Class ParserEventHandler, method [getSearchedResultsFromParameters()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L32-107), [getSearchedResultsFromBlurParameter()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L110-165), [calculateStringSimilarity()](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/ParserEventHandler.java?ref_type=heads#L230-273)
+    -   When performing a search, if the user's input contains a specific term that is not found in the data, the program will automatically conduct a similar term search. It will then use the term with the highest similarity which similarity is larger than 0.5 to the original term as the key for a new search. If no similar term is found, the current search will be skipped.
 
 <hr>
 
@@ -487,7 +498,7 @@ Feature Category: Greater Data Usage, Handling and Sophistication <br>
     - *testMidTokenCase(): Tests mid-token types to ensure the tokenizer correctly processes strings containing text, separators, and other tokens.*
     - *testAdvancedTokenResult(): Tests advanced token processing to ensure the tokenizer correctly handles complex input strings and generates the expected token sequence.*
     - *testExceptionToken(): Tests illegal token input to ensure the tokenizer throws an IllegalTokenException when encountering unrecognizable tokens.*
-<br><br>
+    <br><br>
 2. Tests for Grammar Parser
     - Code: [GrammarParserTest Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/test/java/com/example/compendiumofmateriamedica/GrammarParserTest.java) for the [SearchGrammarParser Class, entire file](https://gitlab.cecs.anu.edu.au/u7733037/gp-24s1/-/blob/main/src/app/src/main/java/model/Parser/SearchGrammarParser.java)
     - *Number of test cases: 3*
